@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Baku');
 function generateRandomString($length) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -141,6 +142,22 @@ if($page == 'myprofile'){
                     $error = 'Неправильно введен старый пароль';
                 }
             }
+        }
+    }
+}
+
+if($page == 'addquestion'){
+    if($cookie_checked){
+        if(isset($_POST['add_question_title'])){
+            $add_question = R::dispense('questions');
+            $add_question->title = htmlspecialchars($_POST['add_question_title']);
+            $add_question->tags = htmlspecialchars($_POST['add_question_tags']);
+            $add_question->content = $_POST['HCeditorContent'];
+            $add_question->user = $user_infos->login;
+            $add_question->views = 0;
+            $add_question->date = date('d.m.Y');
+            $add_question->time = date('H:i');
+            R::store($add_question);
         }
     }
 }
