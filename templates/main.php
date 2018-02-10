@@ -4,41 +4,76 @@
 </div>
 <div class="main_page_header_after">
 	<div class="question_list">
-		<a href="#" class="question_list_titles">Новые</a>
-		<a href="#" class="question_list_titles">Популярные</a>
-		<a href="#" class="question_list_titles">Без ответа</a>
+		<a href="index.php?page=questions&new" class="question_list_titles">Новые</a>
+		<a href="index.php?page=questions&popular" class="question_list_titles">Популярные</a>
+		<a href="index.php?page=questions&notanswer" class="question_list_titles">Без ответа</a>
 	</div>
-	<?php if($cookie_checked):?>
+	<?php
+	if(isset($_GET['new'])){
+		$question_list = R::find('questions','ORDER BY date,time DESC');
+		echo "
+		<script>
+		$('.question_list_titles').eq(0).attr('id','opened_question_page');
+		</script>
+		";
+	}elseif(isset($_GET['popular'])){
+		$question_list = R::find('questions','ORDER BY views DESC, date,time DESC');
+		echo "
+		<script>
+		$('.question_list_titles').eq(1).attr('id','opened_question_page');
+		</script>
+		";
+	}elseif(isset($_GET['notanswer'])){
+		$question_list = R::find('questions','answers = 0 ORDER BY date,time DESC');
+		echo "
+		<script>
+		$('.question_list_titles').eq(2).attr('id','opened_question_page');
+		</script>
+		";
+	}
+	if($cookie_checked):?>
 	<div class="add_question">
 		<a href="index.php?page=addquestion" id="add_question_button"> <span>Задать вопрос</span> <img id="add_image" src="images/add.png"> </a>
 	</div>
 <?php endif;?>
 </div>
 <div class="questions">
-	<?php for($i = 0; $i <= 19; $i++ ): ?>
+	<?php foreach($question_list as $question):
+		$tagsarray = explode(',',$question->tags);
+		?>
 <div class="question">
 <div class="question2">
 <div class="question_information_block">
-	<a href="index.php?page=question&question=12" class="question_title">Как сделать сайт за 1 час? skjdaklhdlashdsdjfh sadhdsf asdhask asd asdkasdj asdl fsjajksdfhjshdfjsdhf</a>
-	<p class="question_information">1212 просмотров &#8226; 15 мин. назад</p>
+	<div class='question_tags_wrapper' >
+	<a href="index.php?page=question&question=<?=$question->id?>"><img src="tagimages/<?=$tagsarray[0]?>.png"></a>
+	<a href="index.php?page=question&question=<?=$question->id?>" class='question_tags' ><?=$tagsarray[0]?></a>
+	<?php if(count($tagsarray) > 1):?>
+	<a href="index.php?page=question&question=<?=$question->id?>" class='question_tags_more_tags'> &nbsp; и ещё <?=count($tagsarray) - 1?></a>
+	<?php endif;?>
+	</div>
+	<a href="index.php?page=question&question=<?=$question->id?>" class="question_title"><?=$question->title?></a>
+	<p class="question_information"><?=$question->views?> просмотров &#8226; <?=$question->date.' '.$question->time?></p>
 </div>
 <div class="question_answers">
 	<div class="question_answers_wrapper">
-		<p>15</p>
+		<p><?=$question->answers?></p>
 		<p>Ответов</p>
 	</div>
 </div>
 		</div>
 			</div>
-	<?php endfor; ?>
-	<div class="questions_pages">
-		<a href="#">&#8592; Предыдущий</a>
-		<a href="#">1</a>
-		<a href="#">2</a>
-		<a href="#">3</a>
-		<a href="#">4</a>
-		<a href="#">5</a>
-		<a href="#">Следующий &#8594;</a>
-	</div>
+<?php endforeach;
+	if(count($question_list) > 15):
+?>
+		<div class="questions_pages">
+			<a href="#">&#8592; Предыдущий</a>
+			<a href="#">1</a>
+			<a href="#">2</a>
+			<a href="#">3</a>
+			<a href="#">4</a>
+			<a href="#">5</a>
+			<a href="#">Следующий &#8594;</a>
+		</div>
+<?php endif;?>
 </div>
 <?php require 'templates/main_page_blog.php';?>

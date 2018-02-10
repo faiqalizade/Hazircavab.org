@@ -4,7 +4,7 @@ $checkedTagsArr = [];
 foreach ($_POST['checkTag'] as $tagname) {
     $check_sent_tag = R::findOne('tags','tagname = ?',[mb_strtolower($tagname)]);
     if(!empty($check_sent_tag)){
-        $checkedTagsArr[] = $tagname;
+        $checkedTagsArr[] = $check_sent_tag->tagname;
     }  
 }
 ?>

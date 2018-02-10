@@ -155,9 +155,31 @@ if($page == 'addquestion'){
             $add_question->content = $_POST['HCeditorContent'];
             $add_question->user = $user_infos->login;
             $add_question->views = 0;
+            $add_question->answers = 0;
+            $add_question->check_answer = 0;
             $add_question->date = date('d.m.Y');
             $add_question->time = date('H:i');
             R::store($add_question);
+        }
+    }
+}
+if($page == 'question'){
+    if(!empty($_POST)){
+        if(isset($_POST['HCeditorContent'])){
+            if($cookie_checked){
+                $change_question_answered = R::load('questions',$opened_question);
+                $change_question_answered->answers = $change_question_answered->answers + 1;
+                R::store($change_question_answered);
+                $add_answer_to_question = R::dispense('answers');
+                $add_answer_to_question->question_id = $opened_question;
+                $add_answer_to_question->answer_content = $_POST['HCeditorContent'];
+                $add_answer_to_question->date = date('d.m.Y');
+                $add_answer_to_question->time = date('H:i');
+                $add_answer_to_question->user = $user_infos->login;
+                $add_answer_to_question->likes = 0;
+                $add_answer_to_question->check_answer = 0;
+                R::store($add_answer_to_question);
+            }
         }
     }
 }

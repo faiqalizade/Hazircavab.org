@@ -211,21 +211,14 @@ $(document).ready(function () {
             }
         });
     <?php else:?>
-
-    $('#add_question_send_button,#add_question_send_button2').click(function () {
-            if($('.add_question_send_button').css('cursor') == 'pointer'){
-                tagLength = 0;
+    $('#add_question_send_button,#add_question_send_button2,#opened_question_question_add_answer_submit').click(function () {
                 var sendToFunText = $('#editor_textarea').val();
                 var readyText = selectionTagsInText(sendToFunText);
-                if(readyText.length - tagLength <= 30){
-                    //Здесь должны вывести ошибку
-                    $('#HCeditor_error').text('Минимальная длина текста: 30, максимальная: 10 000');
-                }else{
+                if(readyText.length - tagLength > 0){
                     $('#HCeditor_error').text('');
                     $('#HCeditorcopy').val(readyText);
-                    $('#add_question_form').submit();
+                    $('#add_question_form,#HCeditorForm').submit();
                 }
-            }
         });
     <?php endif;?>
     //Начало функции для отбора тегов с текста

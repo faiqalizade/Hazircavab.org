@@ -4,6 +4,7 @@ $blog = $_GET['blog'];
 $opened_user_profile = $_GET['user'];
 $tag = $_GET['tag'];
 $profile = $_GET['profile'];
+$opened_question = $_GET['question'];
 $accaunt = $_GET['password'];
 $activate_accaunt = $_GET['activate_code'];
 require 'db.php';
@@ -118,7 +119,7 @@ require 'header_title.php';
 					</div>
 					<div class="article_links_block">
 						<a href="index.php?page=blog" class="article_links"><img src="images/blog.svg">Блог</a>
-						<a href="index.php?page=questions" class="article_links"><img src="images/question-sign.svg"> Все вопросы</a>
+						<a href="index.php?page=questions&new" class="article_links"><img src="images/question-sign.svg"> Все вопросы</a>
 						<a href="index.php?page=users" class="article_links"><img src="images/users.svg">Пользователи</a>
 						<a href="index.php?page=tags" class="article_links"><img src="images/tags.svg">Все теги</a>
 						<a href="index.php?page=het" class="article_links"><img src="images/book.svg">Готовые домашние задания</a>
@@ -134,7 +135,7 @@ require 'header_title.php';
 			<div id="article_on_1200">
 			<div class="article_links_block">
 						<a href="index.php?page=blog" class="article_links"><img src="images/blog.svg">Блог</a>
-						<a href="index.php?page=questions" class="article_links"><img src="images/question-sign.svg"> Все вопросы</a>
+						<a href="index.php?page=questions&new" class="article_links"><img src="images/question-sign.svg"> Все вопросы</a>
 						<a href="index.php?page=users" class="article_links"><img src="images/users.svg">Пользователи</a>
 						<a href="index.php?page=tags" class="article_links"><img src="images/tags.svg">Все теги</a>
 						<a href="index.php?page=het" class="article_links"><img src="images/book.svg">Готовые домашние задания</a>
