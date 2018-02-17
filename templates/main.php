@@ -10,14 +10,14 @@
 	</div>
 	<?php
 	if(isset($_GET['new'])){
-		$question_list = R::find('questions','ORDER BY date,time DESC');
+		$question_list = R::find('questions','ORDER BY date DESC,time DESC');
 		echo "
 		<script>
 		$('.question_list_titles').eq(0).attr('id','opened_question_page');
 		</script>
 		";
 	}elseif(isset($_GET['popular'])){
-		$question_list = R::find('questions','ORDER BY views DESC, date,time DESC');
+		$question_list = R::find('questions','ORDER BY views DESC, date DESC,time DESC');
 		echo "
 		<script>
 		$('.question_list_titles').eq(1).attr('id','opened_question_page');
@@ -28,6 +28,13 @@
 		echo "
 		<script>
 		$('.question_list_titles').eq(2).attr('id','opened_question_page');
+		</script>
+		";
+	}else{
+		$question_list = R::find('questions','ORDER BY date DESC,time DESC');
+		echo "
+		<script>
+		$('.question_list_titles').eq(0).attr('id','opened_question_page');
 		</script>
 		";
 	}
@@ -55,10 +62,17 @@
 	<p class="question_information"><?=$question->views?> просмотров &#8226; <?=$question->date.' '.$question->time?></p>
 </div>
 <div class="question_answers">
+	<?php if($question->check_answer > 0):?>
+	<div class="question_answers_wrapper check">
+		<p><?=$question->answers?></p>
+		<p>Ответов</p>
+	</div>
+	<?php else:?>
 	<div class="question_answers_wrapper">
 		<p><?=$question->answers?></p>
 		<p>Ответов</p>
 	</div>
+	<?php endif;?>
 </div>
 		</div>
 			</div>

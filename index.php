@@ -7,6 +7,10 @@ $profile = $_GET['profile'];
 $opened_question = $_GET['question'];
 $accaunt = $_GET['password'];
 $activate_accaunt = $_GET['activate_code'];
+$like_answer = $_GET['like'];
+$unlike_answer = $_GET['unlike'];
+$check_answer = $_GET['check'];
+$uncheck_answer = $_GET['uncheck'];
 require 'db.php';
 require 'header_title.php';
  ?>
@@ -83,7 +87,7 @@ require 'header_title.php';
 		<link rel="shortcut icon" href="images/Logoicon.jpg" type="image/jpg">
 		<meta name="viewport" content="width=device-width"/>
 	</head>
-	<body style='display:none;'>
+	<body style='display:none;' ng-app>
 		<div id='first_time_guide_block'>
 			<div id='first_time_guide'>
 				<div id='first_time_guide_content' >

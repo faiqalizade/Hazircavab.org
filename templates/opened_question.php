@@ -1,9 +1,12 @@
 <?php
 $opened_question_load = R::load('questions',$opened_question);
-$opened_question_load->views = $opened_question_load->views + 1;
-R::store($opened_question_load);
+if($opened_question_load->id != 0){
+	$opened_question_load->views = $opened_question_load->views + 1;
+	R::store($opened_question_load);
+}
 $find_question_added_profile = R::findOne('users','login = ?',[$opened_question_load->user]);
 $find_answers_to_question = R::find('answers','question_id = '.$opened_question);
+$opened_question_tag_array = explode(',',$opened_question_load->tags);
 ?>
 <div class="question_added_user_information">
 	<a href="index.php?page=user&user=<?=$find_question_added_profile->id?>"><img id="question_added_user_information_image" src="usersfiles/<?=$find_question_added_profile->login?>/profil.png"></a>
@@ -13,11 +16,11 @@ $find_answers_to_question = R::find('answers','question_id = '.$opened_question)
 <div class="opened_question">
 	<div class="opened_question_title">
 		<div class="opened_question_tags">
-			<a href="#" id="opened_question_tags_main_tag_block" > <img src="images/js.jpg"> JavaScript</a>
+			<a href="index.php?page=tags&tag=<?=$opened_question_tag_array[0]?>" id="opened_question_tags_main_tag_block" > <img src="tagimages/<?=$opened_question_tag_array[0]?>.png"><?=$opened_question_tag_array[0]?></a>
+			<?php for($i = 1; $i < count($opened_question_tag_array); $i++):?>
 			<p>&#8226;</p>
-			<p><a href="#">PHP</a></p>
-			<p>&#8226;</p>
-			<p><a href="#">MySQL</a> </p>
+			<p><a href="index.php?page=tags&tag=<?=$opened_question_tag_array[$i]?>"><?=$opened_question_tag_array[$i]?></a></p>
+			<?php endfor;?>
 		</div>
 		<p id="opened_question_question_title"><?=$opened_question_load->title?></p>
 	</div>
@@ -25,20 +28,24 @@ $find_answers_to_question = R::find('answers','question_id = '.$opened_question)
 		<?=preg_replace( "#\r?\n#", "<br/>", $opened_question_load->content );?>
 	</div>
 	<div class="opened_question_question_footer">
-		<p id="opened_question_question_footer_time"><?=$opened_question_load->date?> - <?=$opened_question_load->time?></p>
+		<p class="opened_question_question_footer_time"><?=$opened_question_load->views?> &nbsp; просмотров &nbsp; <?=$opened_question_load->date?> - <?=$opened_question_load->time?></p>
 		<div class="opened_question_question_footer_setting_block_wrapper">
 			<div class="opened_question_question_footer_setting_image">
 				<img src="images/3pointsilver.svg" id="opened_question_question_footer_setting_image">
 			</div>
 			<div class="opened_question_question_footer_setting_block">
-				<a href="index.php">Изменить</a>
-				<a href="#" id="opened_question_question_footer_setting_delete">Удалить</a>
+				<?php if($find_question_added_profile->login == $user_infos->login || $user_infos->status == 1): ?>
+					<a href="index.php">Изменить</a>
+					<a href="#" id="opened_question_question_footer_setting_delete">Удалить</a>
+				<?php else:?>
+					<a href="index.php">Пожаловаться</a>
+				<?php endif;?>
 			</div>
 		</div>
 	</div>
-	<p id="text_answers_to_question" >ОТВЕТЫ НА ВОПРОС</p>
 </div>
 <?php if(!empty($find_answers_to_question)):?>
+	<p id="text_answers_to_question" >ОТВЕТЫ НА ВОПРОС</p>
 <?php foreach ($find_answers_to_question as $answer):
 	$find_answer_added_profile = R::findOne('users','login = ?',[$answer->user]);?>
 			<div class="opened_question_question_answers_wrapper">
@@ -56,28 +63,60 @@ $find_answers_to_question = R::find('answers','question_id = '.$opened_question)
 					<div class="opened_question_question_answer_content">
 						<?=preg_replace("#\r?\n#", "<br/>",$answer->answer_content)?>
 					</div>
-					<div class="opened_question_question_answer_like_block">
-						<a href="#" id="opened_question_question_answer_like_button">
-							<p id="opened_question_question_answer_like_button_text">Мне нравиться</p>
-							<p id="opened_question_question_answer_like_button_quantity"><?=$answer->likes?></p>
-						</a>
-					</div>
+					<?php if($cookie_checked):?>
+						<div class="opened_question_question_answer_like_block">
+							<?php
+							$load_user_like_answers = R::find('users','WHERE id = ? AND answer_likes LIKE ?',[$user_infos->id,'%,'.$answer->id.',%']);
+							if(empty($load_user_like_answers)):?>
+							<a href="index.php?page=question&question=<?=$opened_question?>&like=<?=$answer->id?>" id="opened_question_question_answer_like_button">
+								<p id="opened_question_question_answer_like_button_text">Мне нравиться</p>
+								<p id="opened_question_question_answer_like_button_quantity"><?=$answer->likes?></p>
+							<?php else:?>
+							<a href="index.php?page=question&question=<?=$opened_question?>&unlike=<?=$answer->id?>" id="opened_question_question_answer_liked_button">
+								<p id="opened_question_question_answer_liked_button_text">Мне не нравиться</p>
+								<p id="opened_question_question_answer_liked_button_quantity"><?=$answer->likes?></p>
+							<?php endif; ?>
+							</a>
+							<?php if($find_question_added_profile->login == $user_infos->login): ?>
+									<?php if($answer->check_answer == 0): ?>
+									<a href="index.php?page=question&question=<?=$opened_question?>&check=<?=$answer->id?>" id='opened_question_question_answer_check_button' >
+										<p id='opened_question_question_answer_check_button_text' >Правильный ответ</p>
+									<?php else:?>
+										<a href="index.php?page=question&question=<?=$opened_question?>&uncheck=<?=$answer->id?>" id='opened_question_question_answer_checked_button' >
+											<p id='opened_question_question_answer_checked_button_text' >Неправильный ответ</p>
+									<?php endif;?>
+									</a>
+							<?php endif;?>
+						</div>
+					<?php endif;?>
 				</div>
 				<div class="opened_question_question_answer_footer">
-					<p id="opened_question_question_footer_time"><?=$answer->date?> - <?=$answer->time?></p>
+					<p class="opened_question_question_footer_time"><?=$answer->date?> - <?=$answer->time?></p>
 					<div class="opened_question_question_footer_setting_block_wrapper">
 						<div class="opened_question_question_footer_setting_image">
 							<img src="images/3pointsilver.svg" id="opened_question_question_footer_setting_image">
 						</div>
 						<div class="opened_question_question_footer_setting_block">
-							<a href="index.php">Изменить</a>
-							<a href="#" id="opened_question_question_footer_setting_delete">Удалить</a>
+							<?php if($find_answer_added_profile->login == $user_infos->login || $user_infos->status == 1): ?>
+								<a href="index.php">Изменить</a>
+								<a href="#" id="opened_question_question_footer_setting_delete">Удалить</a>
+							<?php else:?>
+								<a href="index.php">Пожаловаться</a>
+							<?php endif;?>
 						</div>
 					</div>
 				</div>
+				
 			</div>
-	<?php endforeach; ?>
-<?php endif;?>
+	<?php endforeach;?>
+<?php endif;
+if($cookie_checked):
+$load_answers_for_user = R::getAll('SELECT * FROM answers WHERE user = :user',
+[':user' => $user_infos->login]
+);
+$isset_asnwer = in_array($opened_question,array_column($load_answers_for_user,'question_id'));
+if(empty($isset_asnwer) && $cookie_checked):
+?>
 <div id="opened_question_question_add_answer">
 	<p id='opened_question_question_add_answer_title' >ВАШ ОТВЕТ НА ВОПРОС</p>
 	<form method="post" id='HCeditorForm'>
@@ -87,9 +126,30 @@ $find_answers_to_question = R::find('answers','question_id = '.$opened_question)
 		Отправить
 	</div>
 </div>
+<?php else:?>
+<div id="opened_question_question_add_answer">
+	<p id='opened_question_question_add_answer_title' >ВАШ ОТВЕТ НА ВОПРОС</p>
+	<div id='opened_question_question_added_answer' >
+	<img src="images/lock.svg">
+	<p>Вы уже ответили на этот вопрос</p>
+	</div>
+</div>
+<?php endif;
+else:
+?>
+<div id="opened_question_question_add_answer">
+	<p id='opened_question_question_add_answer_title' >ВАШ ОТВЕТ НА ВОПРОС</p>
+	<div id='opened_question_question_added_answer' >
+	<img src="images/lock.svg">
+	<p>Чтобы ответить на вопрос вы должны войти</p>
+	</div>
+</div>
+<?php endif;?>
 <script>
+	$('.opened_question_question_content > a').attr('target','blank');
+	$('.opened_question_question_answer_content > a').attr('target','blank');
 var opened_question_question_footer_setting_block = 0,opened_question_opened_setting_id;
-$('.opened_question_question_footer_setting_image').click(function () {
+$('div.opened_question_question_footer_setting_image').click(function () {
 	if (typeof opened_question_opened_setting_id == 'undefined') {
 		opened_question_opened_setting_id = $('.opened_question_question_footer_setting_image').index(this);
 		if (!opened_question_question_footer_setting_block){

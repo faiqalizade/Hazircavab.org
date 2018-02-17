@@ -41,6 +41,7 @@ if(isset($_COOKIE['user_id']) && isset($_COOKIE['user_hash'])){
 }else{
     setcookie('user_hash','', time() - 3600,'/');
     setcookie('user_id','', time() - 3600,'/');
+    $cookie_checked = false;
 }
 if ($page == 'registr') {
     if (isset($_POST['registr_page_submit'])) {
@@ -57,6 +58,7 @@ if ($page == 'registr') {
                         $registry->login = htmlspecialchars($_POST['reg_login']);
                         $registry->password = password_hash($_POST['reg_password'], PASSWORD_DEFAULT);
                         $registry->mail = htmlspecialchars($_POST['reg_mail']);
+                        $registry->answer_likes = ',';
                         $registry->small_desc = '';
                         $registry->desc = '';
                         $registry->verifed = $registry_verification;
@@ -160,25 +162,107 @@ if($page == 'addquestion'){
             $add_question->date = date('d.m.Y');
             $add_question->time = date('H:i');
             R::store($add_question);
+            $add_tag_questions_number_array = explode(',',$_POST['add_question_tags']);
+            foreach ($add_tag_questions_number_array as $find_tag) {
+                $find_tag_to_add = R::findOne('tags','tagname = ?',[$find_tag]);
+                $add_question_numbers = R::dispense('tags');
+                $add_question_numbers->id = $find_tag_to_add->id;
+                $add_question_numbers->questions = $find_tag_to_add->questions + 1;
+                R::store($add_question_numbers);
+            }
+            $to_location_question = R::find('questions');
+            header('Location: index.php?page=question&question='.end($to_location_question)->id);
+            exit();
         }
     }
 }
 if($page == 'question'){
-    if(!empty($_POST)){
-        if(isset($_POST['HCeditorContent'])){
+    if(!isset($like_answer) && !isset($unlike_answer) && !isset($check_answer) && !isset($uncheck_answer)){
+        if(!empty($_POST)){
+            if(isset($_POST['HCeditorContent'])){
+                if($cookie_checked){
+                    $change_question_answered = R::load('questions',$opened_question);
+                    $change_question_answered->answers = $change_question_answered->answers + 1;
+                    R::store($change_question_answered);
+                    $add_answer_to_question = R::dispense('answers');
+                    $add_answer_to_question->question_id = $opened_question;
+                    $add_answer_to_question->answer_content = $_POST['HCeditorContent'];
+                    $add_answer_to_question->date = date('d.m.Y');
+                    $add_answer_to_question->time = date('H:i');
+                    $add_answer_to_question->user = $user_infos->login;
+                    $add_answer_to_question->likes = 0;
+                    $add_answer_to_question->check_answer = 0;
+                    R::store($add_answer_to_question);
+                    header('Refresh:0');
+                    exit();
+                }
+            }
+        }
+    }else{
+        if(isset($like_answer)){
             if($cookie_checked){
-                $change_question_answered = R::load('questions',$opened_question);
-                $change_question_answered->answers = $change_question_answered->answers + 1;
-                R::store($change_question_answered);
-                $add_answer_to_question = R::dispense('answers');
-                $add_answer_to_question->question_id = $opened_question;
-                $add_answer_to_question->answer_content = $_POST['HCeditorContent'];
-                $add_answer_to_question->date = date('d.m.Y');
-                $add_answer_to_question->time = date('H:i');
-                $add_answer_to_question->user = $user_infos->login;
-                $add_answer_to_question->likes = 0;
-                $add_answer_to_question->check_answer = 0;
-                R::store($add_answer_to_question);
+                $load_if_not_liked_answer_user = R::find('users','WHERE id = ? AND answer_likes LIKE ?',[$user_infos->id,'%,'.$like_answer.',%']);
+                if(empty($load_if_not_liked_answer_user)){
+                    $load_liked_answer = R::load('answers',$like_answer);
+                    $load_liked_answer->likes = $load_liked_answer->likes + 1;
+                    R::store($load_liked_answer);
+                    $load_liked_answer_user = R::load('users',$user_infos->id);
+                    $load_liked_answer_user->answer_likes = $load_liked_answer_user->answer_likes.$like_answer.',';
+                    R::store($load_liked_answer_user);
+                    header("Location:".$_SERVER['HTTP_REFERER']);
+                    exit();
+                }else{
+                    header("Location:".$_SERVER['HTTP_REFERER']);
+                    exit();
+                }
+            }
+        }elseif (isset($check_answer)) {
+            if($cookie_checked){
+                $load_clicked_check_answer_question = R::load('questions',$opened_question);
+                if($load_clicked_check_answer_question->user == $user_infos->login){
+                    if($load_clicked_check_answer_question->check_answer == '0'){
+                        $load_clicked_check_answer_question->check_answer = ','.$check_answer.',';
+                        $load_checked_answer = R::load('answers',$check_answer);
+                        $load_checked_answer->check_answer = 1;
+                        R::store($load_checked_answer);
+                        R::store($load_clicked_check_answer_question);
+                        header("Location:".$_SERVER['HTTP_REFERER']);
+                        exit();
+                    }else{
+                        $load_if_not_checked_question_answer = R::find('questions','WHERE id = ? AND check_answer LIKE ?',[$opened_question,'%,'.$check_answer.',%']);
+                        if(empty($load_if_not_checked_question_answer)){
+                            $load_check_answer_to_question = R::load('questions',$opened_question);
+                            $load_check_answer_to_question->check_answer = $load_check_answer_to_question->check_answer.$check_answer.',';
+                            $load_checked_answer = R::load('answers',$check_answer);
+                            $load_checked_answer->check_answer = 1;
+                            R::store($load_checked_answer);
+                            R::store($load_check_answer_to_question);
+                            header("Location:".$_SERVER['HTTP_REFERER']);
+                            exit();
+                        }             
+                    }
+                }else{
+                    header("Location:".$_SERVER['HTTP_REFERER']);
+                    exit();
+                }
+            }
+        }elseif (isset($unlike_answer)) {
+            if($cookie_checked){
+                $load_user_answer_likes = R::load('users',$user_infos->id);
+                $answer_likes_arr = explode(',',$load_user_answer_likes->answer_likes);
+                $new_like_list = [];
+                foreach ($answer_likes_arr as $like) {
+                    if($like != $unlike_answer){
+                        $new_like_list[] = $like;
+                    }
+                }
+                $load_anaswer_likes = R::load('answers',$unlike_answer);
+                $load_anaswer_likes->likes = $load_anaswer_likes->likes - 1;
+                $load_user_answer_likes->answer_likes = implode(',',$new_like_list);
+                R::store($load_user_answer_likes);
+                R::store($load_anaswer_likes);
+                header("Location:".$_SERVER['HTTP_REFERER']);
+                exit();
             }
         }
     }

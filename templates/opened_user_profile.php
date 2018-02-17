@@ -1,5 +1,10 @@
 <?php 
 $opened_user_infos = R::load('users',$opened_user_profile);
+$find_user_questions = R::find('questions','user = ?',[$opened_user_infos->login]);
+$find_user_answers = R::find('answers','user = ?',[$opened_user_infos->login]);
+$find_user_check_answers = R::getAll('SELECT * FROM answers WHERE user = :user AND check_answer = :answer',
+    [':user' => $opened_user_infos->login, ':answer' => 1]
+);
 if($opened_user_infos->id != 0):
     if($_COOKIE['user_id'] == $opened_user_profile && $opened_user_infos->verifed != 1):
 ?>
@@ -9,11 +14,7 @@ if($opened_user_infos->id != 0):
 <?php endif;?>
 <div id='opened_user_profile_header_wrapper' >
     <div id='opened_user_profile_header'>
-    <?php if($_COOKIE['user_id'] == $opened_user_profile):?>
-    <img id='opened_user_profile_image' src="usersfiles/<?=$user_infos->login?>/profil.png">
-    <?php else: ?>
     <img id='opened_user_profile_image' src="usersfiles/<?=$opened_user_infos->login?>/profil.png">
-    <?php endif;?>
     </div>
     <p id='opened_user_profile_name'><?=$opened_user_infos->name.' '.$opened_user_infos->surname?></p>
     <p id='opened_user_profile_job' ><?=$opened_user_infos->small_desc?></p>
@@ -25,15 +26,15 @@ if($opened_user_infos->id != 0):
     <?php endif;?>
     <div id='opened_user_profile_works' >
         <div class='opened_user_profile_work' >
-            <p class='opened_user_profile_work_number' >10</p>
+            <p class='opened_user_profile_work_number' ><?=count($find_user_questions)?></p>
             <p class='opened_user_profile_work_name' >вопросов</p>
         </div>
         <div class='opened_user_profile_work' >
-            <p class='opened_user_profile_work_number'>5</p>
+            <p class='opened_user_profile_work_number'><?=count($find_user_answers)?></p>
             <p class='opened_user_profile_work_name' >ответов</p>
         </div>
         <div class='opened_user_profile_work' >
-            <p class='opened_user_profile_work_number'>50%</p>
+            <p class='opened_user_profile_work_number'><?= (int) ((count($find_user_check_answers) * 100) / count($find_user_answers))?>%</p>
             <p class='opened_user_profile_work_name' >решений</p>
         </div>
     </div>

@@ -498,6 +498,9 @@ footer a{
 	margin-bottom: 15%;
 	font-family: 'Exo 2',sans-serif,'Arial';
 }
+.check{
+	color: #65c178;
+}
 .questions_pages{
 	display: flex;
 	width: 80%;
@@ -981,11 +984,9 @@ footer a{
 	word-break: break-all;
 }
 .opened_question{
-	border-bottom: solid 2px #121417;
 	float: left;
-	padding-bottom: 1%;
+	word-wrap: break-word;
 	width: 96%;
-	margin-bottom: 20px;
 }
 .opened_question_tags{
 	width: 100%;
@@ -1021,6 +1022,14 @@ footer a{
 .opened_question_question_content,#add_question_preview_content{
 	font-family: 'Exo 2';
 	font-weight: 500;
+	list-style-position: inside;
+}
+.opened_question_question_content img, .opened_question_question_answer_content img{
+	display: block;
+	max-width: 100%;
+}
+.opened_question_question_content a,.opened_question_question_answer_content a{
+	color: #2d72d9;
 }
 #add_question_preview_content{
 	margin-top: 15px;
@@ -1031,11 +1040,12 @@ footer a{
 	display: flex;
 	align-items: center;
 }
-#opened_question_question_footer_time{
+.opened_question_question_footer_time{
 	color: #9c9c9d;
 	font-family: 'Signika';
-	font-weight: lighter;
+	font-weight: 100;
 	flex-grow: 1;
+	font-family: 9px;
 }
 .opened_question_question_footer_setting_block{
 	position: absolute;
@@ -1085,6 +1095,9 @@ footer a{
 	color: #c32616;
 }
 #text_answers_to_question{
+	border-bottom: solid 2px #121417;
+	width: 96%;
+	padding: 5px 0;
 	color: #2a2d32;
 	font-family: 'Exo 2';
 	font-weight: 600;
@@ -1139,9 +1152,31 @@ footer a{
 .opened_question_question_answer_like_block{
 	width: 100%;
 	padding: 20px 12px;
+	display: flex;
+	align-items: center;
 	float: left;
 }
-#opened_question_question_answer_like_button{
+#opened_question_question_answer_check_button,#opened_question_question_answer_checked_button{
+	border: 1px solid #4267b2;
+	padding: 8px 5px;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	margin-left: 15px;
+	font-weight: 600;
+}
+#opened_question_question_answer_check_button_text,#opened_question_question_answer_checked_button_text{
+	font-family: 'Exo 2';
+	font-size: 12px;
+	color: #4267b2;
+}
+#opened_question_question_answer_checked_button{
+	background-color: #4267b2;
+}
+#opened_question_question_answer_checked_button_text{
+	color: #fff;
+}
+#opened_question_question_answer_like_button,#opened_question_question_answer_liked_button{
 	float: left;
 	display: flex;
 	align-items: center;
@@ -1150,22 +1185,32 @@ footer a{
 	border-radius: 4px;
 	transition: all .5s;
 }
+#opened_question_question_answer_liked_button{
+	background-color: #65c178;
+}
 #opened_question_question_answer_like_button:hover,#opened_question_question_answer_like_button:hover>p {
 	border-color: #509f60;
 }
 #opened_question_question_answer_like_button:hover p{
 	color: #509f60;
 }
-#opened_question_question_answer_like_button_text,#opened_question_question_answer_like_button_quantity{
+#opened_question_question_answer_like_button_text,#opened_question_question_answer_like_button_quantity,#opened_question_question_answer_liked_button_text,#opened_question_question_answer_liked_button_quantity{
 	transition: all .5s;
 	padding: 0 5px;
 	color: #65c178;
 	font-family: 'Exo 2';
 	font-size: 12px;
 }
-#opened_question_question_answer_like_button_text{
+#opened_question_question_answer_liked_button_quantity{
+	color: #fff;
+}
+#opened_question_question_answer_like_button_text,#opened_question_question_answer_liked_button_text{
 	border-right: solid 1px #65c178;
 	font-weight: 600;
+}
+#opened_question_question_answer_liked_button_text{
+	color: #fff;
+	border-color: #fff;
 }
 #opened_question_question_answer_header_user,#opened_question_question_answer_header_username{
 	margin-right: 7px;
@@ -1185,6 +1230,7 @@ footer a{
 	width: 100%;
 	color: #0e0e17;
 	font-family: 'Montserrat';
+	list-style-position: inside;
 }
 .opened_question_question_answer_footer{
 	margin-top: 10px;
@@ -1194,7 +1240,7 @@ footer a{
 	margin-left: 40px;
 }
 #opened_question_question_add_answer{
-	margin-top: 40px;
+	margin-top: 20px;
 	float: left;
 	width: 96%;
 	margin-bottom: 50px
@@ -2056,4 +2102,33 @@ footer a{
 }
 .question_tags_more_tags:hover{
 	color: #8f8f90;
+}
+#opened_question_not_answered_wrapper{
+	width: 96%;
+	display: flex;
+	justify-content: center;
+	padding:  20px 0;
+}
+#opened_question_not_answered_wrapper p {
+	font-family: 'Montserrat';
+	font-size: 18px;
+}
+#opened_question_question_added_answer{
+	display: flex;
+	justify-content: center;
+	padding: 30px 0;
+	color: #34495E;
+	font-family: 'Montserrat';
+	font-weight: 600;
+	flex-direction: column;
+	align-items: center;
+	font-size: 20px;
+}
+#opened_question_question_added_answer img{
+	width: 100px;
+	height: 100px;
+	margin-bottom: 30px;
+}
+#opened_question_question_added_answer p{
+	text-align: center;
 }
