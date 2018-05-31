@@ -11,6 +11,9 @@ $like_answer = $_GET['like'];
 $unlike_answer = $_GET['unlike'];
 $check_answer = $_GET['check'];
 $uncheck_answer = $_GET['uncheck'];
+$remove_answer = $_GET['remove_answer'];
+$list_page_number = $_GET['pn'];
+$query = $_GET['q'];
 require 'db.php';
 require 'header_title.php';
  ?>
@@ -87,7 +90,7 @@ require 'header_title.php';
 		<link rel="shortcut icon" href="images/Logoicon.jpg" type="image/jpg">
 		<meta name="viewport" content="width=device-width"/>
 	</head>
-	<body style='display:none;' ng-app>
+	<body style='display:none;'>
 		<div id='first_time_guide_block'>
 			<div id='first_time_guide'>
 				<div id='first_time_guide_content' >
@@ -156,7 +159,12 @@ require 'header_title.php';
 							<div class="main_page_header_logo_block">
 								<a href="index.php"><img id="main_page_header_logo" src="images/Logo2.0white.svg"></a>
 							</div>
-							<div class="search_input_block"><input id="search_input" type="text" placeholder="Поиск" name="Search"></div>
+							<div class="search_input_block">
+								<input id="search_input" autocomplete="off" type="text" placeholder="Поиск" name="Search">
+								<div id='find'>
+
+								</div>
+							</div>
 						</div>
 						<div class="header_search">
 							<a href="#"> <img src="images/search.svg"></a>
@@ -174,7 +182,12 @@ require 'header_title.php';
 
 <div class="content_after_header">
 <div class="main_page">
-	<?php require 'templates/page.php'; ?>
+	<?php
+	 require 'templates/page.php';
+	//  R::selectDatabase('DB2');
+	//  $test = R::find('admin');
+	//  var_dump($test);
+	 ?>
 </div>
 <?php 
 if ($page != 'adminKabinet') {
@@ -193,14 +206,41 @@ if ($page != 'adminKabinet') {
 			</div>
 	</body>
 </html>
-<!-- <script>
-CKEDITOR.replace( 'test', {
-    filebrowserBrowseUrl: 'ckfinder/ckfinder.html',
-    filebrowserImageBrowseUrl: 'ckfinder/ckfinder.html?type=Images',
-    filebrowserFlashBrowseUrl: 'ckfinder/ckfinder.html?type=Flash',
-    filebrowserUploadUrl: 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-    filebrowserImageUploadUrl: 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
-    filebrowserFlashUploadUrl: 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
-} );
-</script> -->
+<script>
+	$('#search_input').on('keydown',function (e) {
+		if(e.which == 13){
+			setTimeout(() => {
+				if($('#search_input').val().length > 0){
+					document.location = 'index.php?page=q&q='+$('#search_input').val();
+				}
+			}, 100);
+		}
+		setTimeout(() => {
+			if($('#search_input').val().length > 0){
+				$('#find').css('display','block');
+				$('#findQuestions').remove();
+				$('#findTags').remove();
+				$('#findUsers').remove();
+				var typedText = $('#search_input').val();
+				$.ajax({
+					url: 'templates/find.php',
+					type: 'post',
+					cache: false,
+					dataType: 'html',
+					data: ({findText:typedText}),
+					success: function (data) {
+						$('#notFound').remove();
+						$('#find').append(data);
+					}
+				});
+			}else{
+				$('#findQuestions').remove();
+				$('#findTags').remove();
+				$('#findUsers').remove();
+				$('#notFound').remove();
+				$('#find').css('display','none');
+			}
+		}, 3000);
+	});
+</script>
 <script src="main.js" defer></script>

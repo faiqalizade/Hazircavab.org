@@ -1,5 +1,5 @@
 	<div class="blog_page">
-		<p class="blog_page_header">Блог - Новые статьи <a href="#" class="blog_page_header_link">Все статьи</a> </p>
+		<p class="blog_page_header">Блог - Новые статьи <a href="index.php?page=blog" class="blog_page_header_link">Все статьи</a> </p>
 		<div class="blog_page_newblogs">
 			<?php for($i=0;$i < 3; $i++): ?>
 				<div class="blog_article">

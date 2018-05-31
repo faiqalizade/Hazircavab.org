@@ -58,12 +58,12 @@ function getcookie ( cookie_name ){
     else
       return null;
   }
-  function setcookie ( name, value, path, exp_y, exp_m, exp_d, exp_h , exp_m , domain, secure ){
+  function setcookie ( name, value, path, exp_y, exp_m, exp_d, exp_h ,domain, secure ){
    	 var cookie_string = name + "=" + escape ( value );
 
     if ( exp_y )
     {
-      var expires = new Date ( exp_y, exp_m, exp_d, exp_h , exp_m );
+      var expires = new Date (exp_y,exp_m);
       cookie_string += "; expires=" + expires.toGMTString();
     }
 
@@ -87,7 +87,7 @@ function getcookie ( cookie_name ){
       if($('.my_profil_change_lang').index(this) == 1){
           setcookie('language','az','/',2030,0);
       }else{
-          setcookie('language','ru','/',2030,0);
+        setcookie('language','ru','/',2030,0);
       }
       location.reload();
   });

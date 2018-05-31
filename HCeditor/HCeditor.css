@@ -1,7 +1,7 @@
 #editor_wrapper{
     width: 100%;
 }
-#HCeditorcopy{
+.HCeditorcopy{
     display: none;
 }
 #HCeditor_error{
@@ -10,7 +10,7 @@
     font-family: 'Montserrat';
     border: none;
 }
-#editor_buttons_block{
+.editor_buttons_block{
     width: 100%;
     border: 1px solid #eee;
     border-radius: 5px 5px 0 0;
@@ -52,8 +52,8 @@
     width: 100%;
     padding: 0;
 }
-#editor_textarea{
-    width: calc(100.07% - 10px);
+.editor_textarea{
+    width: calc(100.03% - 10px);
     resize: vertical;
     height: 180px;
     border: 1px solid #eee;

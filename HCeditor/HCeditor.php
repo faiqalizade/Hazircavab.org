@@ -1,6 +1,7 @@
+
 <link rel="stylesheet" href="HCeditor/HCeditor.css">
 <div id='editor_wrapper' >
-        <div id='editor_buttons_block' >
+        <div class='editor_buttons_block' >
             <div id='editor_buttons_wrapper'>
                 <div class='editor_button' id='bold' title='Жирный' >
                     <img class='editor_button_img' src="HCeditor/HCeditorimg/bold.svg" alt="Жирный">
@@ -37,9 +38,9 @@
                 </div>
             </div>
         </div>
-            <textarea name='HCeditor' id="editor_textarea"></textarea>
+            <textarea name='HCeditor' class="editor_textarea"><?=$content?></textarea>
             <p id='HCeditor_error'></p>
-            <textarea name="HCeditorContent" id="HCeditorcopy" ></textarea>
+            <textarea name="HCeditorContent" class="HCeditorcopy"></textarea>
             <input type="file" id="file">
     </div>
     <?php

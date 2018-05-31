@@ -259,13 +259,11 @@ header{
 	flex: 1;
 	background-color: #fafafa;
 	height: 100%;
-	width: 100%;
+	padding-left: 3%;
 	display: flex;
 }
 .main_page{
 	width: 800px;
-	padding: 0 3%;
-	padding-right: 0;
 }
 #main_page_title{
 	font-size: 1.5em;
@@ -361,7 +359,6 @@ footer a{
 	align-items: center;
 	width: 88%;
 	font-size: .8em;
-	font-weight: 600;
 	transition: all .2s;
 }
 .article_links img{
@@ -440,12 +437,13 @@ footer a{
 .questions{
 	float: left;
 	width: 100%;
+	margin-bottom: 20px;
 }
 .question2{
 	float: left;
 	width: 100%;
 	border-bottom: 1px solid #f0f0f0;
-	height: 100px;
+	height: 125px;
 	padding: 1.5% 0;
 }
 #add_question_button{
@@ -503,19 +501,19 @@ footer a{
 }
 .questions_pages{
 	display: flex;
-	width: 80%;
-	padding: 0 10%;
-	justify-content: space-between;
-	font-size: 1.1em;
+	width: 97%;
+	justify-content: center;
+	font-size: 15px;
 	margin-bottom: 3%;
 }
 .questions_pages a{
 	color: #185eaf;
 	font-family: 'Comfortaa',sans-serif,'Arial';
 	font-weight: 600;
+	margin-right: 10px;
 }
-.questions_pages a:first-child{
-	color: #0b2542;
+.questions_pages a:last-child{
+	margin: 0;
 }
 .article_footer_about_button{
 	display: block;
@@ -529,12 +527,15 @@ footer a{
 }
 .blog_page_header{
 	float: left;
-	width: 100%;
+	width: 97%;
 	border-bottom: 3px solid;
 	padding: 1% 0;
 	color: #2c2e33;
 	font-family: 'Signika',sans-serif,'Arial';
 	font-size: 1.2em;
+}
+.opened_question_question_footer_setting_edit{
+	cursor: pointer;
 }
 .blog_page{
 	display: flex;
@@ -1139,6 +1140,7 @@ footer a{
 .opened_question_question_answer{
 	float: left;
 	width: calc(100% - 30px);
+	transition: all .5s;
 }
 .opened_question_question_answer_header{
 	width: 100%;
@@ -1227,7 +1229,7 @@ footer a{
 .opened_question_question_answer_content{
 	padding: 0 12px;
 	float: left;
-	width: 100%;
+	width: 97%;
 	color: #0e0e17;
 	font-family: 'Montserrat';
 	list-style-position: inside;
@@ -1259,9 +1261,12 @@ footer a{
 }
 .users_list_wrapper,.tags_list_wrapper{
 	display: flex;
-	width: 96%;
+	width: 100%;
 	flex-wrap: wrap;
 	justify-content: space-between;
+}
+#user_list{
+	width: 97%;
 }
 .user_list_block,.tag_list_block{
 	float: left;
@@ -1385,9 +1390,7 @@ footer a{
 	color: #2c2e33;
 	padding: 10px 15px;
 }
-.opened_user_profile_list:first-child,.opened_tag_tag_list:first-child{
-	border-bottom: solid 2px;
-}
+
 .tag_list_tag_subscribe_wrapper{
 	width: 100%;
 	margin-top: 15px;
@@ -1416,6 +1419,25 @@ footer a{
 .tag_list_tag_subscribe:hover{
 	border-color: #122166;
 	color: #122166;
+}
+.tag_list_tag_subscribed{
+	padding: 4px 6px;
+	border: solid 1px #2d72d9;
+	color: #fff;
+	font-size: 13px;
+	font-family: 'Exo 2';
+	background-color: #2d72d9;
+	display: flex;
+	align-items: center;
+	border-radius: 2px;
+	cursor: pointer;
+	float: left;
+}
+
+.tag_list_tag_subscribed span{
+	border-left: solid 1px;
+	padding-left: 5px;
+	margin-left: 5px;
 }
 #opened_tag_header{
 	width: 100%;
@@ -1468,13 +1490,24 @@ footer a{
 	font-size: 12px;
 	font-weight: lighter;
 }
-#opened_tag_header_subscribe_button{
+#opened_tag_header_subscribed_button{
 	margin-top: 20px;
 	padding: 4px 10px;
 	border: solid 1px #2d72d9;
 	color: #fff;
 	font-size: 13px;
 	background-color: #2d72d9;
+	cursor: pointer;
+	font-family: 'Exo 2';
+	border-radius: 2px;
+}
+#opened_tag_header_subscribe_button{
+	margin-top: 20px;
+	padding: 4px 10px;
+	border: solid 1px #1f3491;
+	color: #1f3491;
+	font-size: 13px;
+	background-color: #fff;
 	cursor: pointer;
 	font-family: 'Exo 2';
 	border-radius: 2px;
@@ -1953,6 +1986,7 @@ footer a{
 	width: 100%;
 	display: flex;
 	margin-top: 10px;
+	align-items: center;
 }
 .add_question_send_button,#add_question_preview_edit{
 	padding: 8px 13px;
@@ -1978,6 +2012,10 @@ footer a{
 	display: block;
 	max-width: 100%;
 	height: auto;
+}
+#edit_question_send_button_cancel{
+	color: #c32616;
+	font-family: 'Montserrat';
 }
 #question_title_error,#question_tags_error{
 	color: #e34961;
@@ -2130,5 +2168,140 @@ footer a{
 	margin-bottom: 30px;
 }
 #opened_question_question_added_answer p{
+	text-align: center;
+}
+#edit_answer_buttons_wrapper{
+	display: flex;
+	width: 100%;
+	margin-top: 10px;
+}
+#edit_answer_cancel{
+	margin-left: 15px;
+	color: #c32616;
+	cursor: pointer;
+	padding: 5px 10px;
+	border: 1px solid;
+	border-radius: 3px;
+}
+#edit_answer_button{
+	border: 1px solid;
+	border-radius: 3px;
+	padding: 5px 10px;
+	cursor: pointer;
+	color: #4f5a6e;
+	font-weight: 500;
+}
+#opened_user_desc{
+	font-family: 'Montserrat';
+	font-size: 16px;
+	list-style-position: inside;
+	padding: 10px;
+	float: left;
+	width: calc(100% - 20px);
+	font-weight: 300;
+}
+.opened_user_answer_list_wrapper{
+	border-bottom: solid 1px #eee;
+	padding: 20px 10px;
+	width: calc(97% - 20px);
+	word-wrap: break-word;
+	float: left;
+}
+#no_subscribe_tag{
+	text-align: center;
+	font-weight: 600;
+	color: #e34961;
+}
+.opened_user_answer_list_wrapper:last-child{
+	border: none;
+}
+.opened_user_answer_list_wrapper a{
+	color: #2c2e33;
+	font-size: 18px;
+	font-weight: 900;
+}
+.opened_user_answer_list_content a{
+	color: #2d72d9;
+	font-size: 14px;
+}
+.opened_user_answer_list_content img{
+	display: block;
+	max-width: 100%;
+}
+.opened_user_answer_list_content{
+	margin-left: 40px;
+	font-weight: 300;
+	float: left;
+	width: calc(100% - 50px);
+	margin-top: 10px;
+	font-size: 14px;
+}
+.opened_user_answer_list_content p{
+	color: #9c9c9d;
+	font-size: 13px;
+	margin-top: 10px;
+}
+.opened_user_answer_img{
+	float: left;
+	width: 30px;
+	height: 30px;
+	border-radius: 15px;
+}
+.opened_user_answer_user_infos_wrapper{
+	float: left;
+	margin-top: 10px;
+	width: 97%;
+	display: flex;
+	align-items: center;
+}
+.opened_user_aswer_user_name{
+	font-weight: 700;
+	font-size: 16px;
+	margin-left: 10px;
+}
+.opened_user_aswer_user_login{
+	font-size: 13px;
+	margin-left: 5px;
+	color: #9c9c9d;
+}
+#find{
+	position: absolute;
+	top: 33px;
+	left: 0;
+	background-color: #fff;
+	width: calc(95% - 2px);
+	border: 1px solid #eee;
+	border-top: none;
+	outline: none;
+	display: none;
+}
+#opened_tag_after_list_wrapper{
+	width: 97%;
+	float: left;
+	padding: 10px 0;
+}
+.findList{
+	height: 40px;
+	border-bottom: 1px solid #f3f3f3;
+	display: flex;
+	align-items: center;
+	width: calc(100% - 20px);
+	font-size: 15px;
+	color:#2c2e33;
+	font-family: 'Signika';
+	transition: all 0.3s;
+	padding: 5px 10px;
+}
+.findList:hover{
+	background-color: #f3f2f2;
+}
+.findTagImage{
+	width: 35px;
+	height: 35px;
+	float: left;
+	margin-right: 10px;
+	border-radius: 5px;
+}
+#notFound{
 	text-align: center;
 }

@@ -31,5 +31,15 @@ if ($page == '' || $page == 'questions') {
 	require 'templates/accaunt_activation.php';
 }elseif ($page == 'addquestion') {
 	require 'templates/addquestion.php';
+}elseif ($page == 'edit_question') {
+	require 'templates/edit_question.php';
+}elseif ($page == 'AFgroup') {
+	require "templates/AFgroup.php";
+}elseif ($page == 'aboutsite') {
+	require "templates/aboutsite.php";
+}elseif ($page == 'contacts') {
+	require "templates/contacts.php";
+}elseif($page == 'q'){
+	require 'templates/findPage.php';
 }
  ?>

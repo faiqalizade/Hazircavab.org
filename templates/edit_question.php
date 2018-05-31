@@ -1,23 +1,27 @@
 <?php 
+$load_question_for_edit = R::load('questions',$opened_question);
 if($cookie_checked):
-    if($user_infos->verifed != 1): ?>
-    <a href='index.php?page=myprofile&profile' id='opened_user_profile_not_verifed' >
-        Подтвердите, пожалуйста, эл.Почту: <?=$user_infos->mail?>
-    </a>
-    <?php endif; ?>
-    <div class="main_page_header">
-        <p id="main_page_title">Задать вопрос</p>
+    if($load_question_for_edit->user == $user_infos->login || $user_infos->status):
+?>
+        <div class="main_page_header">
+        <p id="main_page_title">Изменить вопрос</p>
     </div>
     <div id='add_question_form_wrapper' >
         <form id='add_question_form' method="post" novalidate>
             <p class='add_question_input_titles' >Заголовок вопроса</p>
-            <input class='add_question_inputs' AUTOCOMPLETE='off' maxlength='125' name='add_question_title' id='question_title' type="text">
+            <input class='add_question_inputs' AUTOCOMPLETE='off' maxlength='125' name='add_question_title' id='question_title' value='<?=$load_question_for_edit->title?>' type="text">
             <p id='question_title_error' ></p>
             <p class='add_question_input_titles' >Теги:</p>
             <p></p>
-            <input class='add_question_inputs' id='question_tags' type="text" name='add_question_tags'>
+            <input class='add_question_inputs' id='question_tags' type="text" value='<?=$load_question_for_edit->tags?>' name='add_question_tags'>
             <div id='question_tags_alternative_input_block' >
             <div id='question_tags_alternative_input_wrapper' >
+                <?php
+                $tag_list_arr = explode(',',$load_question_for_edit->tags);
+                foreach ($tag_list_arr as $tag):
+                ?>
+                <div class="add_question_tag" ><?=strtoupper($tag);?> <span class="tag_remove_span" >&#10005;</span> </div>
+                <?php endforeach; ?>
                 <div id='question_tags_alternative_input_wrapper_2' >
                 <input type="text" AUTOCOMPLETE='off' id='question_tags_alternative_input'>
                 </div>
@@ -25,11 +29,14 @@ if($cookie_checked):
             </div>
             <p id='question_tags_error' ></p>
             <p class='add_question_input_titles' >Детальнее:</p>
-            <?php require 'HCeditor/HCeditor.php';?>
+            <?php
+            $content = $load_question_for_edit->content;
+            require 'HCeditor/HCeditor.php';?>
         </form>
         <div id='add_question_send_buttons_wrapper' >
         <div class='add_question_send_button'  id='add_question_send_button'>Опубликовать</div>
         <div class='add_question_send_button' id='add_question_preview_button' >Предпромотр</div>
+        <a id='edit_question_send_button_cancel' href="<?=$_SERVER['HTTP_REFERER']?>">Отменить</a>
         </div>
     </div>
     <div id='add_question_preview_wrapper'>
@@ -44,9 +51,11 @@ if($cookie_checked):
             <div class='add_question_send_button'  id='add_question_preview_edit'>Редактировать</div>
         </div>
     </div>
+
     <script>
-    $(document).ready(function () {
-        var tagInputArr,tagsInput;
+    HCeditor();
+    var tagInputArr,tagsInput;
+    tagInputArr = $('#question_tags').val().split(',');
     var questionTitle = false,questionTags = false,questionContent = false,questionTitleVal;
     $('#question_tags_alternative_input').focus(function () {
         $('#question_tags_alternative_input_wrapper').css('border-color','#077fcc');
@@ -199,7 +208,7 @@ if($cookie_checked):
     $('.editor_textarea').on('keyup',function () {
         checkInputsToEmpty();
     });
-    
+
     $('#add_question_preview_edit').click(function () {
             $('#add_question_form_wrapper').css('display','block');
             $('#add_question_preview_wrapper').css('display','none');
@@ -209,6 +218,7 @@ if($cookie_checked):
             }
         });
     $('#add_question_preview_button').click(function () {
+            console.log(readyText);
             if($('.add_question_send_button').css('cursor') == 'pointer'){
                 tagLength = 0;
                 if(endTextLength <= 30){
@@ -249,6 +259,12 @@ if($cookie_checked):
         $('#add_question_send_button,#add_question_send_button2').click(function () {
             $('#add_question_form').submit(); 
         });
-    });
     </script>
-<?php endif;?>
+    <?php else:?>
+    <script>
+    window.location = 'index.php';
+    </script>
+<?php
+    endif;
+endif;
+?>

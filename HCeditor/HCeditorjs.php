@@ -1,5 +1,14 @@
 <script>
-$(document).ready(function () {
+    var endTextLength,readyText;
+    function HCeditor() {
+        tagLength = 0;
+        setTimeout(() => {
+            var sendToFunText = $('.editor_textarea').val();
+            readyText = selectionTagsInText(sendToFunText);
+            $('.HCeditorcopy').val(readyText);
+            endTextLength = readyText.length - tagLength;
+        }, 100);
+    }
     var tagLength = 0;
     //Начало функции htmlspecialchars
     function htmlspecialchars(text) {
@@ -41,7 +50,6 @@ $(document).ready(function () {
             if(tag[2] != 'm'){
                 tag = '<i>';
             }else if(tag[3] =='g'){
-                console.log('salan');
                 var imageSrc = '',closedSrc = false;
                 for(var i = 0; i < tag.length; i++){
                 if(tag[i] == '"' || tag[i] == '\''){
@@ -127,100 +135,11 @@ $(document).ready(function () {
         tagLength += tag.length;
         return tag;
     }
+
     //Конец функции для обработки тегов
-
-    <?php if($page == 'addquestion'): ?>
-        $('#add_question_send_button,#add_question_send_button2').click(function () {
-            if($('.add_question_send_button').css('cursor') == 'pointer'){
-                tagLength = 0;
-                var sendToFunText = $('#editor_textarea').val();
-                var readyText = selectionTagsInText(sendToFunText);
-                if(readyText.length - tagLength <= 30){
-                    //Здесь должны вывести ошибку
-                    $('#HCeditor_error').text('Минимальная длина текста: 30, максимальная: 10 000');
-                }else{
-                    $.ajax({
-                            url: 'templates/check_sent_tags.php',
-                            type: 'post',
-                            cache: false,
-                            dataType: 'html',
-                            data: ({checkTag:tagInputArr}),
-                            success: function (data) {
-                                if(data.length > 0){
-                                    tagInputArr = data.split(',');
-                                    if(tagInputArr.length <= 5){
-                                        $('#question_tags_error').text('');
-                                        $('#question_tags').val(tagInputArr.join(','));
-                                        $('#HCeditor_error').text('');
-                                        $('#HCeditorcopy').val(readyText);
-                                        $('#add_question_form').submit();
-                                    }else{
-                                        $('#question_tags_error').text('Невозможно указать более пяти тегов');
-                                    }
-                                }else{
-                                    $('#question_tags_error').text('Необходимо указать один из существующих тегов');
-                                }
-                            }
-                    });
-                }
-            }
-        });
-
-        $('#add_question_preview_edit').click(function () {
-            $('#add_question_form_wrapper').css('display','block');
-            $('#add_question_preview_wrapper').css('display','none');
-        });
-        $('#add_question_preview_button').click(function () {
-            if($('.add_question_send_button').css('cursor') == 'pointer'){
-                tagLength = 0;
-                var sendToFunText = $('#editor_textarea').val();
-                var readyText = selectionTagsInText(sendToFunText);
-                if(readyText.length - tagLength <= 30){
-                    //Здесь должны вывести ошибку
-                    $('#HCeditor_error').text('Минимальная длина текста: 30, максимальная: 10 000');
-                }else{
-                    $.ajax({
-                            url: 'templates/check_sent_tags.php',
-                            type: 'post',
-                            cache: false,
-                            dataType: 'html',
-                            data: ({checkTag:tagInputArr}),
-                            success: function (data) {
-                                if(data.length > 0){
-                                    tagInputArr = data.split(',');
-                                    if(tagInputArr.length <= 5){
-                                        $('#question_tags_error').text('');
-                                        $('#question_tags').val(tagInputArr.join(','));
-                                        $('#HCeditor_error').text('');
-                                        $('#HCeditorcopy').val(readyText);
-                                        $('#add_question_form_wrapper').css('display','none');
-                                        $('#add_question_preview_wrapper').css('display','block');
-                                        $('#add_question_preview_tags_img').attr('src','tagimages/'+tagInputArr[0].toLowerCase()+'.png');
-                                        $('#add_question_preview_tags').html(tagInputArr.join("  &#8226;  "));
-                                        $('#add_question_preview_title').text($('#question_title').val());
-                                        $('#add_question_preview_content').html(readyText.replace(/(?:\r\n|\r|\n)/g, '<br/>'));
-                                    }else{
-                                        $('#question_tags_error').text('Невозможно указать более пяти тегов');
-                                    }
-                                }else{
-                                    $('#question_tags_error').text('Необходимо указать один из существующих тегов');
-                                }
-                            }
-                    });
-                }
-            }
-        });
-    <?php else:?>
-    $('#add_question_send_button,#add_question_send_button2,#opened_question_question_add_answer_submit').click(function () {
-                var sendToFunText = $('#editor_textarea').val();
-                var readyText = selectionTagsInText(sendToFunText);
-                if(readyText.length - tagLength > 0){
-                    $('#HCeditor_error').text('');
-                    $('#HCeditorcopy').val(readyText);
-                    $('#add_question_form,#HCeditorForm').submit();
-                }
-        });
-    <?php endif;?>
+    $('.editor_textarea').on('keydown',function () {
+        HCeditor();
+    });
     //Начало функции для отбора тегов с текста
     function selectionTagsInText(text) {
         var textReturn = '',openedTagNum,closedTagNum,openedTag = false,openedTagNumfor,closedTag = false,tag = '',closedTagReverse = false;
@@ -293,8 +212,8 @@ $(document).ready(function () {
 
 
     $('#bold').click(function(){
-        var caretpos,oldText = $('#editor_textarea').val(),newText = '';
-        caretpos = $('#editor_textarea').prop("selectionStart");
+        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
+        caretpos = $('.editor_textarea').prop("selectionStart");
         for(i = 0; i < caretpos; i++){
             newText += oldText[i];
         }
@@ -302,15 +221,15 @@ $(document).ready(function () {
         for(i; i < oldText.length; i++){
             newText += oldText[i];
         }
-        $('#editor_textarea').val(newText);
-        setCaretToPos($('#editor_textarea')[0],caretpos+3);
+        $('.editor_textarea').val(newText);
+        setCaretToPos($('.editor_textarea')[0],caretpos+3);
     });
 
     $('#image_internet').click(function(){
         var link = prompt('Введите URL картины:','http://');
         if(link != '' && link != null){
-        var caretpos,oldText = $('#editor_textarea').val(),newText = '';
-        caretpos = $('#editor_textarea').prop("selectionStart");
+        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
+        caretpos = $('.editor_textarea').prop("selectionStart");
         for(i = 0; i < caretpos; i++){
             newText += oldText[i];
         }
@@ -318,13 +237,13 @@ $(document).ready(function () {
         for(i; i < oldText.length; i++){
             newText += oldText[i];
         }
-        $('#editor_textarea').val(newText);
-        setCaretToPos($('#editor_textarea')[0],caretpos+12+link.length);
+        $('.editor_textarea').val(newText);
+        setCaretToPos($('.editor_textarea')[0],caretpos+12+link.length);
         }
     });
 
     $('#file').change(function () {
-        $('#editor_textarea').attr('disabled');
+        $('.editor_textarea').attr('disabled');
         var file_name = randomHash();
         var file_data = $('#file').prop('files')[0];
         var form_data = new FormData();
@@ -341,12 +260,12 @@ $(document).ready(function () {
                 data: form_data,                    
                 type: 'post',
                 success: function () {
-                    $('#editor_textarea').removeAttr('disabled');
+                    $('.editor_textarea').removeAttr('disabled');
                 }
         });
         link = 'usersfiles/'+profil+'/images/'+file_name+'.png';
-        var caretpos,oldText = $('#editor_textarea').val(),newText = '';
-        caretpos = $('#editor_textarea').prop("selectionStart");
+        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
+        caretpos = $('.editor_textarea').prop("selectionStart");
         for(i = 0; i < caretpos; i++){
             newText += oldText[i];
         }
@@ -354,13 +273,14 @@ $(document).ready(function () {
         for(i; i < oldText.length; i++){
             newText += oldText[i];
         }
-        $('#editor_textarea').val(newText);
-        setCaretToPos($('#editor_textarea')[0],caretpos+19+link.length);
+        $('.editor_textarea').val(newText);
+        setCaretToPos($('.editor_textarea')[0],caretpos+19+link.length);
+        HCeditor();
     });
 
     $('#italic').click(function(){
-        var caretpos,oldText = $('#editor_textarea').val(),newText = '';
-        caretpos = $('#editor_textarea').prop("selectionStart");
+        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
+        caretpos = $('.editor_textarea').prop("selectionStart");
         for(i = 0; i < caretpos; i++){
             newText += oldText[i];
         }
@@ -368,12 +288,12 @@ $(document).ready(function () {
         for(i; i < oldText.length; i++){
             newText += oldText[i];
         }
-        $('#editor_textarea').val(newText);
-        setCaretToPos($('#editor_textarea')[0],caretpos+3);
+        $('.editor_textarea').val(newText);
+        setCaretToPos($('.editor_textarea')[0],caretpos+3);
     });
     $('#superscript').click(function(){
-        var caretpos,oldText = $('#editor_textarea').val(),newText = '';
-        caretpos = $('#editor_textarea').prop("selectionStart");
+        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
+        caretpos = $('.editor_textarea').prop("selectionStart");
         for(i = 0; i < caretpos; i++){
             newText += oldText[i];
         }
@@ -381,13 +301,13 @@ $(document).ready(function () {
         for(i; i < oldText.length; i++){
             newText += oldText[i];
         }
-        $('#editor_textarea').val(newText);
-        setCaretToPos($('#editor_textarea')[0],caretpos+5);
+        $('.editor_textarea').val(newText);
+        setCaretToPos($('.editor_textarea')[0],caretpos+5);
     });
 
     $('#subscript').click(function(){
-        var caretpos,oldText = $('#editor_textarea').val(),newText = '';
-        caretpos = $('#editor_textarea').prop("selectionStart");
+        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
+        caretpos = $('.editor_textarea').prop("selectionStart");
         for(i = 0; i < caretpos; i++){
             newText += oldText[i];
         }
@@ -395,14 +315,14 @@ $(document).ready(function () {
         for(i; i < oldText.length; i++){
             newText += oldText[i];
         }
-        $('#editor_textarea').val(newText);
-        setCaretToPos($('#editor_textarea')[0],caretpos+5);
+        $('.editor_textarea').val(newText);
+        setCaretToPos($('.editor_textarea')[0],caretpos+5);
     });
     $('#link').click(function(){
         var link = prompt('Введите URL ссылки:','http://');
         if(link != ''){
-            var caretpos,oldText = $('#editor_textarea').val(),newText = '';
-        caretpos = $('#editor_textarea').prop("selectionStart");
+            var caretpos,oldText = $('.editor_textarea').val(),newText = '';
+        caretpos = $('.editor_textarea').prop("selectionStart");
         for(i = 0; i < caretpos; i++){
             newText += oldText[i];
         }
@@ -410,10 +330,10 @@ $(document).ready(function () {
         for(i; i < oldText.length; i++){
             newText += oldText[i];
         }
-        $('#editor_textarea').val(newText);
-        setCaretToPos($('#editor_textarea')[0],caretpos+11+link.length);
+        $('.editor_textarea').val(newText);
+        setCaretToPos($('.editor_textarea')[0],caretpos+11+link.length);
         }else{
-            $('#editor_textarea').focus();
+            $('.editor_textarea').focus(this);
         }
     });
 
@@ -453,8 +373,8 @@ $(document).ready(function () {
     });
 
     $('#ol').click(function(){
-        var caretpos,oldText = $('#editor_textarea').val(),newText = '';
-        caretpos = $('#editor_textarea').prop("selectionStart");
+        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
+        caretpos = $('.editor_textarea').prop("selectionStart");
         for(i = 0; i < caretpos; i++){
             newText += oldText[i];
         }
@@ -462,13 +382,13 @@ $(document).ready(function () {
         for(i; i < oldText.length; i++){
             newText += oldText[i];
         }
-        $('#editor_textarea').val(newText);
-        setCaretToPos($('#editor_textarea')[0],caretpos+10);
+        $('.editor_textarea').val(newText);
+        setCaretToPos($('.editor_textarea')[0],caretpos+10);
     });
 
     $('#ul').click(function(){
-        var caretpos,oldText = $('#editor_textarea').val(),newText = '';
-        caretpos = $('#editor_textarea').prop("selectionStart");
+        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
+        caretpos = $('.editor_textarea').prop("selectionStart");
         for(i = 0; i < caretpos; i++){
             newText += oldText[i];
         }
@@ -476,13 +396,15 @@ $(document).ready(function () {
         for(i; i < oldText.length; i++){
             newText += oldText[i];
         }
-        $('#editor_textarea').val(newText);
-        setCaretToPos($('#editor_textarea')[0],caretpos+10);
+        $('.editor_textarea').val(newText);
+        setCaretToPos($('.editor_textarea')[0],caretpos+10);
     });
 
-    $('#editor_textarea').focus(function () { 
-       $('#editor_textarea').css('border-color','#077fcc');
-       $('#editor_buttons_block').css('border-bottom-color','#077fcc');
+    $('.editor_textarea').focus(function () { 
+        var indexForBorder = ($('.editor_textarea').index(this));
+        $(this).css('border-color','#077fcc');
+        $('.editor_buttons_block').css('border-bottom-color','#eee');
+       $('.editor_buttons_block').eq(indexForBorder).css('border-bottom-color','#077fcc');
        if(openedListImg){
             $('#image_button_list').hide();
             openedListImg = false;
@@ -494,9 +416,9 @@ $(document).ready(function () {
             openedListList = false;
         }
     });
-    $('#editor_textarea').focusout(function () {
-       $('#editor_textarea').css('border-color','#eee');
-       $('#editor_buttons_block').css('border-bottom-color','#eee');
+    $('.editor_textarea').focusout(function () {
+       $('.editor_textarea').css('border-color','#eee');
+       $('.editor_buttons_block').css('border-bottom-color','#eee');
     });
 
     $('.editor_button').mouseover(function () {
@@ -525,5 +447,4 @@ $(document).ready(function () {
             openedListList = false;
         }
     });
-});
 </script>
