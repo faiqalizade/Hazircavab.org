@@ -33,7 +33,7 @@ require 'header_title.php';
 				$('#article_on_1200').css({'transition':'margin .5s'});
 				$('.content').css({'transition':'margin .5s'});
 			});
-			$('.stylecss').attr('href','style1200-1024.css');
+			$('.stylecss').attr('href','style1200-1024.css');	
 		}else if ($(window).width() <= 1022 && $(window).width() > 765 ) {
 			$(document).ready(function () {
 				$('#article_on_1200').css({'transition':'margin .5s'});
@@ -91,6 +91,19 @@ require 'header_title.php';
 		<meta name="viewport" content="width=device-width"/>
 	</head>
 	<body style='display:none;'>
+		<!-- ********** -->
+		<div class='mobileModeFind' >
+			<div>
+                <div id='mobileModeFindWrapper' >
+                    <input id='mobileModeFindInput' placeholder='Поиск' autocomplete="off" type="text">
+                    <p id='mobileModeFindClose' >Закрыть</p>
+                </div>
+            </div>
+            <div id="mobileModeFoundWrapper">
+
+            </div>
+		</div>
+		<!-- ********** -->
 		<div id='first_time_guide_block'>
 			<div id='first_time_guide'>
 				<div id='first_time_guide_content' >
@@ -119,6 +132,7 @@ require 'header_title.php';
 			</div>
 			</div>
 		</div>
+		<!-- ********** -->
 			<article>
 				<div class="article_content">
 					<div class="sidebar_logo_block">
@@ -139,6 +153,7 @@ require 'header_title.php';
 					<a href="#" class="article_footer_about_button">Далее &#8594;</a>
 				</div>
 			</article>
+			<!-- ********** -->
 			<div id="article_on_1200">
 			<div class="article_links_block">
 						<a href="index.php?page=blog" class="article_links"><img src="images/blog.svg">Блог</a>
@@ -149,6 +164,7 @@ require 'header_title.php';
 						<a href="index.php?page=services" class="article_links"><img src="images/calculator.svg">Сервисы</a>
 					</div>
 			</div>
+			<!-- ********** -->
 			<div class="wrapper">
 				<div class="content">
 					<header>
@@ -242,5 +258,55 @@ if ($page != 'adminKabinet') {
 			}
 		}, 3000);
 	});
+	$('#search_input').focusout(function () {
+		setTimeout(() => {
+			$('#findQuestions').remove();
+		$('#findTags').remove();
+		$('#findUsers').remove();
+		$('#notFound').remove();
+		$('#find').css('display','none');
+		}, 200);
+	});
+	$('.header_search').click(function () {
+		$('.mobileModeFind').css('display','flex');	
+		$('.wrapper').css('display','none');
+	});
+	$('#mobileModeFindClose').click(function () {
+		$('.wrapper').css('display','flex');
+		$('.mobileModeFind').css('display','none');	
+	});
+	$('#mobileModeFindInput').on('keydown',function (e) {
+        if(e.which == 13){
+            setTimeout(() => {
+                if($('#mobileModeFindInput').val().length > 0){
+                    document.location = 'index.php?page=q&q='+$('#mobileModeFindInput').val();
+                }
+            }, 100);
+        }
+	    setTimeout(function () {
+	        if($('#mobileModeFindInput').val().length > 0){
+                var  typedText = $('#mobileModeFindInput').val();
+                $.ajax({
+                    url: 'templates/find.php',
+                    type: 'post',
+                    cache: false,
+                    dataType: 'html',
+                    data: ({findText:typedText}),
+                    success: function (data) {
+                        $('#notFound').remove();
+                        $('#findQuestions').remove();
+                        $('#findTags').remove();
+                        $('#findUsers').remove();
+                        $('#mobileModeFoundWrapper').append(data);
+                    }
+                });
+            }else{
+                $('#findQuestions').remove();
+                $('#findTags').remove();
+                $('#findUsers').remove();
+                $('#notFound').remove();
+            }
+        },3000);
+    });
 </script>
 <script src="main.js" defer></script>

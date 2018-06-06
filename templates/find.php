@@ -21,7 +21,7 @@ if(!empty($findquestion) || !empty($findtags) || !empty($findprofiles)):
     <?php endforeach;?>
 </div>
 <?php else:?>
-<p id='notFound' >
-Ничего не найдено по запросу "<?=$_POST['findText']?>"
-</p>
+<a href='index.php?page=q&q=<?=$_POST['findText']?>' id='notFound' >
+Поиск по запросу "<?=$_POST['findText']?>"
+</a>
 <?php endif;?>

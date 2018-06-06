@@ -273,3 +273,51 @@ header{
 .opened_user_profile_list{
 	font-size: 10px;
 }
+#mobileModeFindWrapper{
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+.mobileModeFind{
+	position: fixed;
+    overflow-y: scroll;
+	top: 0;
+	left: 0;
+	z-index: 5;
+	flex-direction: column;
+	background: #fff;
+	width: calc(100% - 20px);
+	height: calc(100% - 20px);
+	padding: 10px;
+}
+#mobileModeFindClose,#mobileModeFindInput{
+	float: left;
+}
+#mobileModeFindInput{
+	outline: none;
+	border-radius: 5px;
+	border: solid 1px #cfcfcf;
+	padding: 5px;
+	flex-grow: 1;
+	margin-right: 10px;
+	font-size: 13px;
+	color: #424b5f;
+}
+#mobileModeFindClose{
+	color: #a0a0a0;
+	cursor: pointer;
+	font-family: 'Exo 2';
+	border-bottom: dotted 1px;
+}
+#mobileModeFoundWrapper{
+    margin-top: 8px;
+}
+.findList{
+    padding: 5px;
+    width: calc(100% - 10px);
+    height: 25px;
+}
+.findTagImage{
+    height: 20px;
+    width: 20px;
+}

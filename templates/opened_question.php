@@ -94,6 +94,7 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 									<?php endif;?>
 									</a>
 							<?php endif;?>
+							<p id='opened_question_question_answer_comment_button' >Комментарии (5) </p>
 						</div>
 					<?php endif;?>
 				</div>
