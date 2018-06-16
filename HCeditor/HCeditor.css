@@ -22,10 +22,10 @@
     border-radius: 4px 0 0 0 ;
     background-color: #2a2f4205;
 }
-#file{
+#uploadFile{
     display: none;
 }
-#image_local{
+.image_local{
     cursor: pointer;
     border-bottom: 1px solid #eee;
 }
@@ -63,7 +63,7 @@
     padding: 5px;
     font-size: 14px;
 }
-#image_button_list,#ol_button_list{
+.image_button_list,.ol_button_list{
     position: absolute;
     left: -2px;
     background-color: #fff;
@@ -75,30 +75,30 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, .2);
     border-radius: 3px;
 }
-#image_button_list p,#ol_button_list p{
+.image_button_list p,.ol_button_list p{
     padding: 8px 0;
     font-size: 14px;
     font-family: tahoma;
     margin: 0;
     text-align: center;
 }
-#ol_button_list p{
+.ol_button_list p{
     border-bottom: 1px solid #eee;
 }
-#image_button_list p:hover, #ol_button_list p:hover{
+.image_button_list p:hover, .ol_button_list p:hover{
     color: #077fcc;
 }
-#ol_button_list p:last-child{
+.ol_button_list p:last-child{
     border: none;
 }
-#list_after,#image_after{
+.list_after,#image_after{
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 13px;
 }
-#image,#list{
+.image,.list{
     position: relative;
     padding: 0;
 }

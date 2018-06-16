@@ -930,7 +930,7 @@ footer a{
 	font-size: 12px;
 	font-family: 'Montserrat';
 }
-#blog_comment_add_submit,#opened_question_question_add_answer_submit{
+#blog_comment_add_submit,#opened_question_question_add_answer_submit,.opened_question_answer_comment_send_button{
 	border: solid 2px;
 	background-color: #3157cb;
 	padding: 8px 12px;
@@ -940,6 +940,9 @@ footer a{
 	color: #fff;
 	cursor: pointer;
 	font-family: 'Signika';
+}
+.opened_question_answer_comment_send_button{
+	border: none;
 }
 #blog_add_comment_form{
 	float: left;
@@ -1029,13 +1032,23 @@ footer a{
 	display: block;
 	max-width: 100%;
 }
-#opened_question_question_answer_comment_button{
+.opened_question_question_answer_comment_button{
 	font-family: 'Exo 2';
 	color: #a0a0a0;
 	border-bottom: dotted 1px;
 	cursor: pointer;
 	font-size: 14px;
 	margin-left: 13px;
+}
+.opened_question_answer_comment_wrapper{
+	padding: 15px 12px 15px 42px;
+	width: calc(100% - 54px);
+	background-color: rgba(238, 241, 245, 0.5);
+	float: left;
+	font-family: 'Montserrat';
+	list-style-position: inside;
+	font-size: 14px;
+	display: none;
 }
 .opened_question_question_content a,.opened_question_question_answer_content a{
 	color: #2d72d9;
@@ -1054,7 +1067,6 @@ footer a{
 	font-family: 'Signika';
 	font-weight: 100;
 	flex-grow: 1;
-	font-size: 9px;
 }
 .opened_question_question_footer_setting_block{
 	position: absolute;
@@ -2215,7 +2227,7 @@ footer a{
 	word-wrap: break-word;
 	float: left;
 }
-#no_subscribe_tag{
+.no_subscribe_tag{
 	text-align: center;
 	font-weight: 600;
 	color: #e34961;

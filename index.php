@@ -22,7 +22,7 @@ require 'header_title.php';
 	<head>
 		<meta charset="utf-8">
 		<title>Hazir Cavab</title>
-		<script src="jquery-3.2.1.js"></script>
+		<script src="js/jquery-3.2.1.js"></script>
 		<link rel="stylesheet" class='style' href="">
 		<link class="stylecss" rel="stylesheet" href="">
 		<script>
@@ -89,6 +89,9 @@ require 'header_title.php';
 		</script>
 		<link rel="shortcut icon" href="images/Logoicon.jpg" type="image/jpg">
 		<meta name="viewport" content="width=device-width"/>
+		<script src="js/react.js"></script>
+		<script src="js/react-dom.js"></script>
+		<script src="js/babel.min.js"></script>
 	</head>
 	<body style='display:none;'>
 		<!-- ********** -->
@@ -200,6 +203,7 @@ require 'header_title.php';
 <div class="main_page">
 	<?php
 	 require 'templates/page.php';
+	 require 'HCeditor/HCeditorjs.php';
 	//  R::selectDatabase('DB2');
 	//  $test = R::find('admin');
 	//  var_dump($test);
@@ -309,4 +313,4 @@ if ($page != 'adminKabinet') {
         },3000);
     });
 </script>
-<script src="main.js" defer></script>
+<script src="js/main.js" type='text/babel' defer></script>

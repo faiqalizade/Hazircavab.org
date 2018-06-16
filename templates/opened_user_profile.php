@@ -58,116 +58,127 @@ if($opened_user_infos->id != 0):
 <div id='opened_user_desc' >
     <?php
     if(isset($_GET['infos'])):
-        echo preg_replace( "#\r?\n#", "<br/>", $opened_user_infos->desc);
+        if(!empty($opened_user_infos->desc)){
+            echo preg_replace( "#\r?\n#", "<br/>", $opened_user_infos->desc);
+        }else{
+            echo "<p class='no_subscribe_tag' >Пусто</p>";
+        }
         echo "
         <script>
         $('.opened_user_profile_list').eq(0).css('border-bottom','solid 2px');
         </script>
         ";?>
-
     <?php elseif(isset($_GET['questions'])):
-        $opened_profile_title = 'questions';
-        $list_item_count = count($find_user_questions);
-        echo "
-        <script>
-        $('.opened_user_profile_list').eq(1).css('border-bottom','solid 2px');
-        </script>
-        ";
-        $page_count = count($find_user_questions) / 15;
-        if(is_float($page_count)){
-            $page_count++;
-        }
-        settype($page_count,'int');
-        if($page_number > $page_count && $page_count > 0 || $page_number <= 0){
             echo "
             <script>
-            window.location = 'index.php?page=user&user=$opened_user_profile';
+            $('.opened_user_profile_list').eq(1).css('border-bottom','solid 2px');
             </script>
             ";
-        }
-        foreach ($find_user_questions as $question):
-            $tagsarray = explode(',',$question->tags);
-            if($cycle_number >= $list_limit_last && $cycle_number < $list_limit):
-        ?>
-            <div class="question2">
-                <div class="question_information_block">
-                    <div class='question_tags_wrapper' >
-                        <a href="index.php?page=question&question=<?=$question->id?>"><img src="tagimages/<?=$tagsarray[0]?>.png"></a>
-                        <a href="index.php?page=question&question=<?=$question->id?>" class='question_tags' ><?=$tagsarray[0]?></a>
-                        <?php if(count($tagsarray) > 1):?>
-                            <a href="index.php?page=question&question=<?=$question->id?>" class='question_tags_more_tags'> &nbsp; и ещё <?=count($tagsarray) - 1?></a>
-                        <?php endif;?>
+            if(!empty($find_user_questions)):
+                $opened_profile_title = 'questions';
+                $list_item_count = count($find_user_questions);
+                $page_count = count($find_user_questions) / 15;
+                if(is_float($page_count)){
+                    $page_count++;
+                }
+                settype($page_count,'int');
+                if($page_number > $page_count && $page_count > 0 || $page_number <= 0){
+                    echo "
+                    <script>
+                    window.location = 'index.php?page=user&user=$opened_user_profile';
+                    </script>
+                    ";
+                }
+                foreach ($find_user_questions as $question):
+                    $tagsarray = explode(',',$question->tags);
+                    if($cycle_number >= $list_limit_last && $cycle_number < $list_limit):
+                ?>
+                    <div class="question2">
+                        <div class="question_information_block">
+                            <div class='question_tags_wrapper' >
+                                <a href="index.php?page=question&question=<?=$question->id?>"><img src="tagimages/<?=$tagsarray[0]?>.png"></a>
+                                <a href="index.php?page=question&question=<?=$question->id?>" class='question_tags' ><?=$tagsarray[0]?></a>
+                                <?php if(count($tagsarray) > 1):?>
+                                    <a href="index.php?page=question&question=<?=$question->id?>" class='question_tags_more_tags'> &nbsp; и ещё <?=count($tagsarray) - 1?></a>
+                                <?php endif;?>
+                            </div>
+                            <a href="index.php?page=question&question=<?=$question->id?>" class="question_title"><?=$question->title?></a>
+                            <p class="question_information"><?=$question->views?> просмотров &#8226; <?=$question->date.' '.$question->time?></p>
+                        </div>
+                        <div class="question_answers">
+                            <?php
+                            if($question->check_answer != ','):?>
+                            <div class="question_answers_wrapper check">
+                                <p><?=$question->answers?></p>
+                                <p>Ответов</p>
+                            </div>
+                            <?php else:?>
+                            <div class="question_answers_wrapper">
+                                <p><?=$question->answers?></p>
+                                <p>Ответов</p>
+                            </div>
+                            <?php endif;?>
+                        </div>
                     </div>
-                    <a href="index.php?page=question&question=<?=$question->id?>" class="question_title"><?=$question->title?></a>
-                    <p class="question_information"><?=$question->views?> просмотров &#8226; <?=$question->date.' '.$question->time?></p>
-                </div>
-                <div class="question_answers">
-                    <?php
-                    if($question->check_answer != ','):?>
-                    <div class="question_answers_wrapper check">
-                        <p><?=$question->answers?></p>
-                        <p>Ответов</p>
-                    </div>
-                    <?php else:?>
-                    <div class="question_answers_wrapper">
-                        <p><?=$question->answers?></p>
-                        <p>Ответов</p>
-                    </div>
-                    <?php endif;?>
-                </div>
-            </div>
-    <?php
+            <?php
+                endif;
+                if($cycle_number == $list_limit){
+                    break;
+                }
+                $cycle_number++;
+            endforeach;
+        else:
+            echo "<p class='no_subscribe_tag' >Пусто</p>";
         endif;
-        if($cycle_number == $list_limit){
-            break;
-        }
-        $cycle_number++;
-    endforeach;
     elseif (isset($_GET['answers'])):
-        $opened_profile_title = 'answers';
-        $list_item_count = count($find_user_answers);
         echo "
         <script>
         $('.opened_user_profile_list').eq(2).css('border-bottom','solid 2px');
         </script>
         ";
-        $page_count = count($find_user_questions) / 15;
-        if(is_float($page_count)){
-            $page_count++;
-        }
-        settype($page_count,'int');
-        if($page_number > $page_count && $page_count > 0 || $page_number <= 0){
-            echo "
-            <script>
-            window.location = 'index.php?page=user&user=$opened_user_profile';
-            </script>
-            ";
-        }
-        foreach($find_user_answers as $answer):
-            $load_answered_question = R::load('questions',$answer->question_id);
-            if($cycle_number >= $list_limit_last && $cycle_number < $list_limit):
-        ?>
-        <div class='opened_user_answer_list_wrapper' >
-            <a href='index.php?page=question&question=<?=$answer->question_id?>' ><?=$load_answered_question->title?></a>
-            <div class='opened_user_answer_user_infos_wrapper' >
-                    <img class='opened_user_answer_img'  src="usersfiles/<?=$opened_user_infos->login?>/profil.png">
-                    <p class='opened_user_aswer_user_name' ><?=$opened_user_infos->name.' '.$opened_user_infos->surname?></p>
-                    <p class='opened_user_aswer_user_login'>@<?=$opened_user_infos->login?></p>
-                </div>
-            <div style='float:left;width:100%;' >
-                <div class='opened_user_answer_list_content' >
-                    <?=preg_replace( "#\r?\n#", "<br/>", $answer->answer_content);?>
-                    <p>Ответ написан: <?=$answer->date.' &nbsp; '.$answer->time?></p>
+        if(!empty($find_user_answers)):
+            $opened_profile_title = 'answers';
+            $list_item_count = count($find_user_answers);
+            $page_count = count($find_user_questions) / 15;
+            if(is_float($page_count)){
+                $page_count++;
+            }
+            settype($page_count,'int');
+            if($page_number > $page_count && $page_count > 0 || $page_number <= 0){
+                echo "
+                <script>
+                window.location = 'index.php?page=user&user=$opened_user_profile';
+                </script>
+                ";
+            }
+            foreach($find_user_answers as $answer):
+                $load_answered_question = R::load('questions',$answer->question_id);
+                if($cycle_number >= $list_limit_last && $cycle_number < $list_limit):
+            ?>
+            <div class='opened_user_answer_list_wrapper' >
+                <a href='index.php?page=question&question=<?=$answer->question_id?>' ><?=$load_answered_question->title?></a>
+                <div class='opened_user_answer_user_infos_wrapper' >
+                        <img class='opened_user_answer_img'  src="usersfiles/<?=$opened_user_infos->login?>/profil.png">
+                        <p class='opened_user_aswer_user_name' ><?=$opened_user_infos->name.' '.$opened_user_infos->surname?></p>
+                        <p class='opened_user_aswer_user_login'>@<?=$opened_user_infos->login?></p>
+                    </div>
+                <div style='float:left;width:100%;' >
+                    <div class='opened_user_answer_list_content' >
+                        <?=preg_replace( "#\r?\n#", "<br/>", $answer->answer_content);?>
+                        <p>Ответ написан: <?=$answer->date.' &nbsp; '.$answer->time?></p>
+                    </div>
                 </div>
             </div>
-        </div>
-    <?php
+        <?php
+                endif;
+                if($cycle_number == $list_limit){
+                    break;
+                }
+                $cycle_number++;
+            endforeach;
+        else:
+            echo "<p class='no_subscribe_tag' >Пусто</p>";
         endif;
-        if($cycle_number == $list_limit){
-            break;
-        }
-        $cycle_number++;
-    endforeach;
     elseif (isset($_GET['likes'])):
         echo "
         <script>
@@ -238,7 +249,7 @@ if($opened_user_infos->id != 0):
             endforeach;
             echo "</div>";
         else:?>
-        <p id='no_subscribe_tag' >Пусто</p>
+        <p class='no_subscribe_tag' >Пусто</p>
     <?php
     endif;
     else:

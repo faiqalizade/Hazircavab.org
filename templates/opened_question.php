@@ -63,7 +63,7 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 					<div class="opened_question_question_answer_content">
 						<p style='display:none;' class='for_edit_copy_content_no_br'><?=$answer->answer_content?></p>
 						<p style='display:none;' class='for_edit_copy_content_id'><?=$answer->id?></p>
-						<div class='block_for_switch_edit_answer' >
+						<div class='block_for_switch_edit_answer'>
 							<?=preg_replace("#\r?\n#", "<br/>",$answer->answer_content)?>
 						</div>
 						<div class='block_for_edit_answer'>
@@ -93,10 +93,21 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 											<p id='opened_question_question_answer_checked_button_text' >Неправильный ответ</p>
 									<?php endif;?>
 									</a>
-							<?php endif;?>
-							<p id='opened_question_question_answer_comment_button' >Комментарии (5) </p>
+							<?php endif;
+							$load_answer_comments = R::find('answer_comments','answer_id = '.$answer->id);
+							?>
+							<p class='opened_question_question_answer_comment_button' >Комментарии (<?=count($load_answer_comments)?>) </p>
 						</div>
 					<?php endif;?>
+					<div class='opened_question_answer_comment_wrapper' >
+						asd
+						<div>
+							<?php require 'HCeditor/HCeditor.php';?>
+							<div class='opened_question_answer_comment_send_button' >
+								Комментировать
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="opened_question_question_answer_footer">
 					<p class="opened_question_question_footer_time"><?=$answer->date?> - <?=$answer->time?></p>
@@ -157,13 +168,100 @@ else:
 <?php endif;?>
 
 <template id='test' >
-	<?php require 'HCeditor/HCeditor.php' ?>
+	<?php require 'HCeditor/HCeditor.php'?>
 	<div id='edit_answer_buttons_wrapper' >
 		<p id='edit_answer_button' >Изменить</p>
 		<p id='edit_answer_cancel' >Отменить</p>
 	</div>
 </template>
-<script>
+
+<!-- Start ReactJS -->
+
+<script type='text/babel' >
+$('.opened_question_question_footer_setting_edit').click(function () {
+	$('.block_for_switch_edit_answer').css('display','block');
+	$('.opened_question_question_footer_setting_block').hide();
+	var editAnswerIndex = $('.opened_question_question_footer_setting_edit').index(this);
+	var Element = $('.block_for_edit_answer').get(editAnswerIndex);
+	$('.block_for_switch_edit_answer').eq(editAnswerIndex).css('display','none');
+	var answerContent = $('.for_edit_copy_content_no_br').eq(editAnswerIndex).html();
+	ReactDOM.render(<HCeditor redactorIndex={editAnswerIndex}   redactorValue={answerContent} />,Element);
+});
+var clickedCancelButton = false,openedEditor;
+class HCeditor extends React.Component {
+	constructor(props) {
+    	super(props);
+		this.state = {editable: true};
+	  }
+	getIndex(){
+		$('.editor_button').mouseover(function () {
+			var e = $('.editor_button').index(this);
+			editorButtonMouseOver(e);
+		});
+	}
+	returnEdit(){
+		return( <div id='editAnswerWrapper' heczad={this.Edit} >
+		<div id='editor_wrapper' >
+        <div className='editor_buttons_block' >
+            <div id='editor_buttons_wrapper'>
+                <div className='editor_button bold'  onMouseOut={editorButtonMouseOut} onClick={(e)=>bold(this.props.redactorIndex)} title='Жирный' >
+                    <img className='editor_button_img' src="HCeditor/HCeditorimg/bold.svg" alt="Жирный" />
+                </div>
+                <div className='editor_button italic'  onMouseOut={editorButtonMouseOut} title='Курсивный'  >
+                    <img className='editor_button_img' onClick={(e)=>italic(this.props.redactorIndex)} src="HCeditor/HCeditorimg/italic.svg" alt="Курсивный" />
+                </div>
+                <div className='editor_button link'  onMouseOut={editorButtonMouseOut} title='Ссылка' >
+                    <img className='editor_button_img' onClick={(e)=>link(this.props.redactorIndex)} src="HCeditor/HCeditorimg/link.svg" alt="Ссылка" />
+                </div>
+                <div className='editor_button superscript'  onMouseOut={editorButtonMouseOut} title='Степень' >
+                    <img className='editor_button_img' onClick={(e)=>superscript(this.props.redactorIndex)} src="HCeditor/HCeditorimg/superscript.svg" alt="Степень" />
+                </div>
+                <div className='editor_button subscript'  onMouseOut={editorButtonMouseOut} title='Индекс' >
+                    <img className='editor_button_img' onClick={(e)=>subscript(this.props.redactorIndex)} src="HCeditor/HCeditorimg/subscript.svg" alt="Индекс" />
+                </div>
+                <div className='editor_button image'  onMouseOut={editorButtonMouseOut}  onClick={(e)=>image(this.props.redactorIndex)} title='Изображение' >
+                    <div id='image_after' >
+                        <img className='editor_button_img' src="HCeditor/HCeditorimg/picture.svg" alt="Изображение" />
+                    </div>
+                    <div className='image_button_list' >
+                        <label htmlFor="uploadFile"><p className='image_local' >С компьютера </p></label>
+                        <p className='image_internet' >Из интернета</p>
+                    </div>
+                </div>
+                <div className='editor_button list' onMouseOut={editorButtonMouseOut} onClick={(e)=>list(this.props.redactorIndex)} title='Список' >
+                    <div className='list_after' >
+                        <img className='editor_button_img' src="HCeditor/HCeditorimg/list.svg" alt="Список" />
+                    </div>
+                    <div className='ol_button_list' >
+                        <p className ='ol' onClick={(e)=>ol(this.props.redactorIndex)}>Нумерованный</p>
+                        <p className='ul' onClick={(e)=>ul(this.props.redactorIndex)}>Маркированный</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <textarea name='HCeditor' defaultValue={this.props.redactorValue} onFocus={(e)=>editorFocus(this.props.redactorIndex)} className="editor_textarea"></textarea>
+            <p id='HCeditor_error'></p>
+            <textarea name="HCeditorContent" className="HCeditorcopy"></textarea>
+            <input type="file" onChange={(e)=>file(this.props.redactorIndex)} className='file' id="uploadFile" />
+ </div>
+			<div id='edit_answer_buttons_wrapper'>
+				<p id='edit_answer_button' >Изменить</p>
+				<p id='edit_answer_cancel' >Отменить</p>
+			</div>
+			</div>);
+	}
+    render() {
+		if(this.state.editable){
+			return  this.returnEdit();
+		}else{
+			return null;
+		}
+		}
+}
+</script>
+
+<!-- End ReactJS-->
+<script>	
 	$('.opened_question_question_content > a').attr('target','blank');
 	$('.opened_question_question_answer_content > a').attr('target','blank');
 var opened_question_question_footer_setting_block = 0,opened_question_opened_setting_id;
@@ -219,40 +317,19 @@ $('#opened_question_question_add_answer_submit').click(function () {
 });
 var test = $('<template></template>');
 var el = $('#test');
-$('.opened_question_question_footer_setting_block').click(function () {
-	$('.opened_question_question_footer_setting_block').hide();
-	var editAnswerIndex = $('.opened_question_question_footer_setting_block').index(this);
-	editAnswerIndex -= 1;
-	var editAnswerId = $('.for_edit_copy_content_id').eq(editAnswerIndex).text();
-	$('.block_for_switch_edit_answer').css('display','block');
-	$('.block_for_switch_edit_answer').eq(editAnswerIndex).css('display','none');
-	$('.block_for_edit_answer').children().remove();
-	$('.block_for_edit_answer').eq(editAnswerIndex).html(el.html());
-	$('.block_for_edit_answer .editor_textarea').html($('.for_edit_copy_content_no_br').eq(editAnswerIndex).html());
-	$('#edit_answer_cancel').click(function () {
-		$('.block_for_edit_answer').children().remove();
-		$('.block_for_switch_edit_answer').css('display','block');
-	});
-	$('#edit_answer_button').click(function () {
-		if (endTextLength > 5) {
-			var editAnswerNewContent = $('.block_for_edit_answer .HCeditorcopy').val();
-			$.ajax({
-				url: 'templates/edit_answer.php',
-				dataType: 'html',
-				data: ({answerId: editAnswerId,editAnswerContent: editAnswerNewContent}),
-				type: 'post',
-				success: function (data) {
-					$('.block_for_edit_answer').children().remove();
-					$('.block_for_switch_edit_answer').eq(editAnswerIndex).html(editAnswerNewContent.replace(/(?:\r\n|\r|\n)/g, '<br/>'));
-					$('.block_for_switch_edit_answer').css('display','block');
-					$('.for_edit_copy_content_no_br').eq(editAnswerIndex).text(editAnswerNewContent.replace(/<br\s*[\/]?>/gi,"\n"));
-				}
-			});	
-		}
-	});
-	$('#opened_question_question_add_answer .editor_textarea').focus(function () {
-		$('.block_for_edit_answer').children().remove();
-		$('.block_for_switch_edit_answer').css('display','block');
-	});
+
+var openedAnswerCommenting = 0;
+$('.opened_question_question_answer_comment_button').click(function () {
+	var indexComment = $('.opened_question_question_answer_comment_button').index(this);
+	if(!openedAnswerCommenting){
+		$('.opened_question_answer_comment_wrapper').eq(indexComment).fadeIn();
+		openedAnswerCommenting = 1;
+	}else{
+		$('.opened_question_answer_comment_wrapper').eq(indexComment).fadeOut();
+		openedAnswerCommenting = 0;
+	}
+});
+$('.opened_question_answer_comment_send_button').click(function () {
+	console.log($('.opened_question_answer_comment_send_button').index(this));
 });
 </script>

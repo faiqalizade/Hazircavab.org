@@ -1,11 +1,12 @@
+<link rel="stylesheet" href="HCeditor/HCeditor.css">
 <script>
-    var endTextLength,readyText;
-    function HCeditor() {
+    var endTextLength,readyText,e;
+    function HCeditor(index) {
         tagLength = 0;
         setTimeout(() => {
-            var sendToFunText = $('.editor_textarea').val();
+            var sendToFunText = $('.editor_textarea').eq(index).val();
             readyText = selectionTagsInText(sendToFunText);
-            $('.HCeditorcopy').val(readyText);
+            $('.HCeditorcopy').eq(index).val(readyText);
             endTextLength = readyText.length - tagLength;
         }, 100);
     }
@@ -138,7 +139,8 @@
 
     //Конец функции для обработки тегов
     $('.editor_textarea').on('keydown',function () {
-        HCeditor();
+        e = $('.editor_textarea').index(this)
+        HCeditor(e);
     });
     //Начало функции для отбора тегов с текста
     function selectionTagsInText(text) {
@@ -209,11 +211,96 @@
         // End set caret position
 
         // setCaretToPos($("#test")[0], 5);  Сама функция смены позиции
+        
+    $('.bold').click(function () {
+        e = $('.bold').index(this);
+        bold(e);
+    });
 
+    $('.image_internet').click(function(){
+        e = $('.image_internet').index(this);
+        image_internet(e);
+    });
+    $('.file').change(function () {
+        e = $('.file').index(this);
+        file(e);
+    });
 
-    $('#bold').click(function(){
-        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
-        caretpos = $('.editor_textarea').prop("selectionStart");
+    $('.italic').click(function(){
+        e = $('.italic').index(this);
+        italic(e);
+    });
+    $('.superscript').click(function(){
+        e = $('.superscript').index(this);
+        superscript(e);
+        });
+
+    $('.subscript').click(function(){
+        e = $('.subscript').index(this);
+        subscript(e);
+    });
+    $('.link').click(function(){
+        e = $('.link').index(this);
+        link(e);
+    });
+
+    var openedListImg = false,openedListList = false;
+    $('.image').click(function () {
+        e = $('.image').index(this);
+        image(e);
+    });
+    $('.list_after').click(function () {
+        e = $('.list_after').index(this);
+        list(e);
+    });
+
+    $('.ol').click(function(){
+        e = $('.ol').index(this);
+        ol(e);
+    });
+
+    $('.ul').click(function(){
+        e = $('.ul').index(this);
+        ul(e);
+    });
+
+    $('.editor_textarea').focus(function () {
+        e = $('.editor_textarea').index(this);
+        editorFocus(e);
+    });
+
+    $('.editor_textarea').focusout(function () {
+       e = $('.editor_textarea').index(this);
+       editorFocusOut(e);
+    });
+
+    $('.editor_button').mouseover(function () {
+        var e = $('.editor_button').index(this);
+        editorButtonMouseOver(e);
+    });
+    $('.editor_button').mouseout(function () {
+        editorButtonMouseOut();
+    });
+
+    $(document).click(function (event) {
+        if(event.target.className != 'image' && event.target.className != 'editor_button_img'){
+            $('.image').css('background-color','transparent');
+            $('.image_button_list').hide();
+            openedListImg = false;
+        }
+        if(event.target.className != 'list_after' && event.target.className != 'editor_button_img'){
+            $('.list').css('background-color','transparent');
+            $('.ol_button_list').hide();
+            openedListList = false;
+        }
+    });
+
+    // Start Functions for Edit
+
+    //---- Bold
+    function bold(e) {
+        var caretpos,oldText = $('.editor_textarea').eq(e).val(),newText = '';
+        caretpos = $('.editor_textarea').eq(e).prop("selectionStart");
         for(i = 0; i < caretpos; i++){
             newText += oldText[i];
         }
@@ -221,15 +308,151 @@
         for(i; i < oldText.length; i++){
             newText += oldText[i];
         }
-        $('.editor_textarea').val(newText);
-        setCaretToPos($('.editor_textarea')[0],caretpos+3);
-    });
+        $('.editor_textarea').eq(e).val(newText);
+        setCaretToPos($('.editor_textarea').eq(e)[0],caretpos+3);
+    }
 
-    $('#image_internet').click(function(){
+    // ---- Italic
+    function italic(e) {
+        var caretpos,oldText = $('.editor_textarea').eq(e).val(),newText = '';
+        caretpos = $('.editor_textarea').eq(e).prop("selectionStart");
+        for(i = 0; i < caretpos; i++){
+            newText += oldText[i];
+        }
+        newText += '<i></i>';
+        for(i; i < oldText.length; i++){
+            newText += oldText[i];
+        }
+        $('.editor_textarea').eq(e).val(newText);
+        setCaretToPos($('.editor_textarea').eq(e)[0],caretpos+3);
+    }
+    //---- Link
+    function link(e) {
+        var link = prompt('Введите URL ссылки:','http://');
+        if(link != ''){
+            var caretpos,oldText = $('.editor_textarea').eq(e).val(),newText = '';
+        caretpos = $('.editor_textarea').eq(e).prop("selectionStart");
+        for(i = 0; i < caretpos; i++){
+            newText += oldText[i];
+        }
+        newText += '<a href="'+link+'"></a>';
+        for(i; i < oldText.length; i++){
+            newText += oldText[i];
+        }
+        $('.editor_textarea').eq(e).val(newText);
+        setCaretToPos($('.editor_textarea').eq(e)[0],caretpos+11+link.length);
+        }else{
+            $('.editor_textarea').eq(e).focus(this);
+        }
+    }
+    //---- Superscript
+    function superscript(e) {
+        var caretpos,oldText = $('.editor_textarea').eq(e).val(),newText = '';
+        caretpos = $('.editor_textarea').eq(e).prop("selectionStart");
+        for(i = 0; i < caretpos; i++){
+            newText += oldText[i];
+        }
+        newText += '<sup></sup>';
+        for(i; i < oldText.length; i++){
+            newText += oldText[i];
+        }
+        $('.editor_textarea').eq(e).val(newText);
+        setCaretToPos($('.editor_textarea').eq(e)[0],caretpos+5);
+    }
+
+    //---- Subscript
+    function subscript(e) {
+        var caretpos,oldText = $('.editor_textarea').eq(e).val(),newText = '';
+        caretpos = $('.editor_textarea').eq(e).prop("selectionStart");
+        for(i = 0; i < caretpos; i++){
+            newText += oldText[i];
+        }
+        newText += '<sub></sub>';
+        for(i; i < oldText.length; i++){
+            newText += oldText[i];
+        }
+        $('.editor_textarea').eq(e).val(newText);
+        setCaretToPos($('.editor_textarea').eq(e)[0],caretpos+5);
+    }
+
+    //---- List
+    function list(e) {
+        if(openedListImg){
+            $('.image_button_list').hide();
+            $('.image').css('background-color','transparent');
+            openedListImg = false;
+        }
+        $('.ol_button_list').hide();
+            $('.list').css('background-color','transparent');
+            openedListList = false;
+        if(!openedListList){
+            $('.list').eq(e).css('background-color','#2a2f4213');
+            $('.ol_button_list').eq(e).fadeIn(500);
+            openedListList = true;
+        }else{
+            $('.list').eq(e).css('background-color','transparent');
+            $('.ol_button_list').eq(e).fadeOut();
+            openedListList = false;
+        }
+    }
+
+    //---- Ol
+    function ol(e){
+        var caretpos,oldText = $('.editor_textarea').eq(e).val(),newText = '';
+        caretpos = $('.editor_textarea').eq(e).prop("selectionStart");
+        for(i = 0; i < caretpos; i++){
+            newText += oldText[i];
+        }
+        newText += '<ol>\n\t<li></li>\n</ol>';
+        for(i; i < oldText.length; i++){
+            newText += oldText[i];
+        }
+        $('.editor_textarea').eq(e).val(newText);
+        setCaretToPos($('.editor_textarea').eq(e)[0],caretpos+10);
+    }
+
+    //--- Ul
+    function ul(e) {
+        var caretpos,oldText = $('.editor_textarea').eq(e).val(),newText = '';
+        caretpos = $('.editor_textarea').eq(e).prop("selectionStart");
+        for(i = 0; i < caretpos; i++){
+            newText += oldText[i];
+        }
+        newText += '<ul>\n\t<li></li>\n</ul>';
+        for(i; i < oldText.length; i++){
+            newText += oldText[i];
+        }
+        $('.editor_textarea').eq(e).val(newText);
+        setCaretToPos($('.editor_textarea').eq(e)[0],caretpos+10);
+    }
+    
+    //---- Image
+    function image(e) {
+        if(openedListList){
+            $('.ol_button_list').hide();
+            $('.list').css('background-color','transparent');
+            openedListList = false;
+        }
+        $('.image_button_list').hide();
+            $('.image').css('background-color','transparent');
+            openedListImg = false;
+        //----------------
+        if(!openedListImg){
+            $('.image').eq(e).css('background-color','#2a2f4213');
+            $('.image_button_list').eq(e).fadeIn(500);
+            openedListImg = true;
+        }else{
+            $('.image').eq(e).css('background-color','transparent');
+            $('.image_button_list').eq(e).fadeOut();
+            openedListImg = false;
+        }
+    }
+    //---- Image from internet
+    function image_internet(e) {
         var link = prompt('Введите URL картины:','http://');
         if(link != '' && link != null){
-        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
-        caretpos = $('.editor_textarea').prop("selectionStart");
+        var caretpos,oldText = $('.editor_textarea').eq(e).val(),newText = '';
+        caretpos = $('.editor_textarea').eq(e).prop("selectionStart");
         for(i = 0; i < caretpos; i++){
             newText += oldText[i];
         }
@@ -237,15 +460,16 @@
         for(i; i < oldText.length; i++){
             newText += oldText[i];
         }
-        $('.editor_textarea').val(newText);
-        setCaretToPos($('.editor_textarea')[0],caretpos+12+link.length);
+        $('.editor_textarea').eq(e).val(newText);
+        setCaretToPos($('.editor_textarea').eq(e)[0],caretpos+12+link.length);
         }
-    });
+    }
 
-    $('#file').change(function () {
-        $('.editor_textarea').attr('disabled');
+    //---- File
+    function file(e) {
+        $('.editor_textarea').eq(e).attr('disabled');
         var file_name = randomHash();
-        var file_data = $('#file').prop('files')[0];
+        var file_data = $('.file').prop('files')[0];
         var form_data = new FormData();
         var profil = '<?=$user_infos->login?>';
         form_data.append('file', file_data);
@@ -260,12 +484,12 @@
                 data: form_data,                    
                 type: 'post',
                 success: function () {
-                    $('.editor_textarea').removeAttr('disabled');
+                    $('.editor_textarea').eq(e).removeAttr('disabled');
                 }
         });
         link = 'usersfiles/'+profil+'/images/'+file_name+'.png';
-        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
-        caretpos = $('.editor_textarea').prop("selectionStart");
+        var caretpos,oldText = $('.editor_textarea').eq(e).val(),newText = '';
+        caretpos = $('.editor_textarea').eq(e).prop("selectionStart");
         for(i = 0; i < caretpos; i++){
             newText += oldText[i];
         }
@@ -273,138 +497,16 @@
         for(i; i < oldText.length; i++){
             newText += oldText[i];
         }
-        $('.editor_textarea').val(newText);
-        setCaretToPos($('.editor_textarea')[0],caretpos+19+link.length);
-        HCeditor();
-    });
+        $('.editor_textarea').eq(e).val(newText);
+        setCaretToPos($('.editor_textarea').eq(e)[0],caretpos+19+link.length);
+        HCeditor(e);
+    }
 
-    $('#italic').click(function(){
-        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
-        caretpos = $('.editor_textarea').prop("selectionStart");
-        for(i = 0; i < caretpos; i++){
-            newText += oldText[i];
-        }
-        newText += '<i></i>';
-        for(i; i < oldText.length; i++){
-            newText += oldText[i];
-        }
-        $('.editor_textarea').val(newText);
-        setCaretToPos($('.editor_textarea')[0],caretpos+3);
-    });
-    $('#superscript').click(function(){
-        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
-        caretpos = $('.editor_textarea').prop("selectionStart");
-        for(i = 0; i < caretpos; i++){
-            newText += oldText[i];
-        }
-        newText += '<sup></sup>';
-        for(i; i < oldText.length; i++){
-            newText += oldText[i];
-        }
-        $('.editor_textarea').val(newText);
-        setCaretToPos($('.editor_textarea')[0],caretpos+5);
-    });
-
-    $('#subscript').click(function(){
-        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
-        caretpos = $('.editor_textarea').prop("selectionStart");
-        for(i = 0; i < caretpos; i++){
-            newText += oldText[i];
-        }
-        newText += '<sub></sub>';
-        for(i; i < oldText.length; i++){
-            newText += oldText[i];
-        }
-        $('.editor_textarea').val(newText);
-        setCaretToPos($('.editor_textarea')[0],caretpos+5);
-    });
-    $('#link').click(function(){
-        var link = prompt('Введите URL ссылки:','http://');
-        if(link != ''){
-            var caretpos,oldText = $('.editor_textarea').val(),newText = '';
-        caretpos = $('.editor_textarea').prop("selectionStart");
-        for(i = 0; i < caretpos; i++){
-            newText += oldText[i];
-        }
-        newText += '<a href="'+link+'"></a>';
-        for(i; i < oldText.length; i++){
-            newText += oldText[i];
-        }
-        $('.editor_textarea').val(newText);
-        setCaretToPos($('.editor_textarea')[0],caretpos+11+link.length);
-        }else{
-            $('.editor_textarea').focus(this);
-        }
-    });
-
-    var openedListImg = false,openedListList = false;
-    $('#image').click(function () {
-        
-        if(openedListList){
-            $('#ol_button_list').hide();
-            openedListList = false;
-            $('#list').css('background-color','transparent');
-        }
-        if(!openedListImg){
-            $('#image').css('background-color','#2a2f4213');
-            $('#image_button_list').fadeIn(500);
-            openedListImg = true;
-        }else{
-            $('#image').css('background-color','transparent');
-            $('#image_button_list').fadeOut();
-            openedListImg = false;
-        }
-    });
-    $('#list_after').click(function () {
-        if(openedListImg){
-            $('#image_button_list').hide();
-            openedListImg = false;
-            $('#image').css('background-color','transparent');
-        }
-        if(!openedListList){
-            $('#list').css('background-color','#2a2f4213');
-            $('#ol_button_list').fadeIn(500);
-            openedListList = true;
-        }else{
-            $('#list').css('background-color','transparent');
-            $('#ol_button_list').fadeOut();
-            openedListList = false;
-        }
-    });
-
-    $('#ol').click(function(){
-        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
-        caretpos = $('.editor_textarea').prop("selectionStart");
-        for(i = 0; i < caretpos; i++){
-            newText += oldText[i];
-        }
-        newText += '<ol>\n\t<li></li>\n</ol>';
-        for(i; i < oldText.length; i++){
-            newText += oldText[i];
-        }
-        $('.editor_textarea').val(newText);
-        setCaretToPos($('.editor_textarea')[0],caretpos+10);
-    });
-
-    $('#ul').click(function(){
-        var caretpos,oldText = $('.editor_textarea').val(),newText = '';
-        caretpos = $('.editor_textarea').prop("selectionStart");
-        for(i = 0; i < caretpos; i++){
-            newText += oldText[i];
-        }
-        newText += '<ul>\n\t<li></li>\n</ul>';
-        for(i; i < oldText.length; i++){
-            newText += oldText[i];
-        }
-        $('.editor_textarea').val(newText);
-        setCaretToPos($('.editor_textarea')[0],caretpos+10);
-    });
-
-    $('.editor_textarea').focus(function () { 
-        var indexForBorder = ($('.editor_textarea').index(this));
-        $(this).css('border-color','#077fcc');
+    //---- Editor Focus
+    function editorFocus(e){
+        $('.editor_textarea').eq(e).css('border-color','#077fcc');
         $('.editor_buttons_block').css('border-bottom-color','#eee');
-       $('.editor_buttons_block').eq(indexForBorder).css('border-bottom-color','#077fcc');
+       $('.editor_buttons_block').eq(e).css('border-bottom-color','#077fcc');
        if(openedListImg){
             $('#image_button_list').hide();
             openedListImg = false;
@@ -415,36 +517,24 @@
             $('#ol_button_list').hide();
             openedListList = false;
         }
-    });
-    $('.editor_textarea').focusout(function () {
-       $('.editor_textarea').css('border-color','#eee');
+    }
+    //---- Editor Focusout
+    function editorFocusOut(e){
+        $('.editor_textarea').eq(e).css('border-color','#eee');
        $('.editor_buttons_block').css('border-bottom-color','#eee');
-    });
-
-    $('.editor_button').mouseover(function () {
-        if(openedListList || openedListImg){
-        }else{
+    }
+    //--- Editor Buttons Mouse Over
+    function   editorButtonMouseOver(e){
+        if(!openedListList && !openedListImg){
             $('.editor_button').css('background-color','transparent');
-            $(this).css('background-color','#2a2f4213');
+            $('.editor_button').eq(e).css('background-color','#2a2f4213');
         }
-    });
-    $('.editor_button').mouseout(function () {
-        if(openedListList || openedListImg){
-        }else{
+    }
+    //---- Editor Buttons Mouse Out
+    function editorButtonMouseOut(){
+        if(!openedListList && !openedListImg){
             $('.editor_button').css('background-color','transparent');
         }
-    });
-
-    $(document).click(function (event) {
-        if(event.target.id != 'image_after' && event.target.className != 'editor_button_img'){
-            $('#image').css('background-color','transparent');
-            $('#image_button_list').hide();
-            openedListImg = false;
-        }
-        if(event.target.id != 'list_after' && event.target.className != 'editor_button_img'){
-            $('#list').css('background-color','transparent');
-            $('#ol_button_list').hide();
-            openedListList = false;
-        }
-    });
+    }
+    //End Functions for Edit
 </script>
