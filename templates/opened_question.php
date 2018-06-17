@@ -191,7 +191,10 @@ var clickedCancelButton = false,openedEditor;
 class HCeditor extends React.Component {
 	constructor(props) {
     	super(props);
-		this.state = {editable: true};
+		this.state = {editable: false};
+	  }
+	  cancelEdit(){
+		  this.setState({editable:false});
 	  }
 	getIndex(){
 		$('.editor_button').mouseover(function () {
@@ -246,11 +249,14 @@ class HCeditor extends React.Component {
  </div>
 			<div id='edit_answer_buttons_wrapper'>
 				<p id='edit_answer_button' >Изменить</p>
-				<p id='edit_answer_cancel' >Отменить</p>
+				<p id='edit_answer_cancel' onClick={this.cancelEdit.bind(this)} >Отменить</p>
 			</div>
 			</div>);
 	}
     render() {
+		setTimeout(() => {
+			this.getIndex();
+		}, 10);
 		if(this.state.editable){
 			return  this.returnEdit();
 		}else{
