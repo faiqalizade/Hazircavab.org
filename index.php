@@ -27,25 +27,25 @@ require 'header_title.php';
 		<link class="stylecss" rel="stylesheet" href="">
 		<script>
 		$(document).ready(function() {
-			$('.style').attr('href','style.css');
+			$('.style').attr('href','css/style.css');
 			if ($(window).width() < 1200 && $(window).width() > 1022) {
 			$(document).ready(function () {
 				$('#article_on_1200').css({'transition':'margin .5s'});
 				$('.content').css({'transition':'margin .5s'});
 			});
-			$('.stylecss').attr('href','style1200-1024.css');	
+			$('.stylecss').attr('href','css/style1200-1024.css');	
 		}else if ($(window).width() <= 1022 && $(window).width() > 765 ) {
 			$(document).ready(function () {
 				$('#article_on_1200').css({'transition':'margin .5s'});
 				$('.content').css({'transition':'margin .5s'});
 			});
-			$('.stylecss').attr('href','style1024_765.css');
+			$('.stylecss').attr('href','css/style1024_765.css');
 		}else if ($(window).width() <= 765) {
 			$(document).ready(function () {
 				$('#article_on_1200').css({'transition':'margin .5s'});
 				$('.content').css({'transition':'margin .5s'});
 			});
-			$('.stylecss').attr('href','style765-0.css');
+			$('.stylecss').attr('href','css/style765-0.css');
 		}
 		$('body').css('display','block');
 		$('#article_on_1200').height($('.wrapper').height());
