@@ -1,4 +1,4 @@
-<div id='editor_wrapper' >
+<div id='editor_wrapper'>
         <div class='editor_buttons_block' >
             <div id='editor_buttons_wrapper'>
                 <div class='editor_button bold' title='Жирный' >

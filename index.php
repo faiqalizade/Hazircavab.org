@@ -89,6 +89,7 @@ require 'header_title.php';
 		</script>
 		<link rel="shortcut icon" href="images/Logoicon.jpg" type="image/jpg">
 		<meta name="viewport" content="width=device-width"/>
+		<link rel="stylesheet" href="HCeditor/HCeditor.css">
 		<script src="js/vue.js"></script>
 	</head>
 	<body style='display:none;'>
@@ -201,13 +202,12 @@ require 'header_title.php';
 <div class="main_page">
 	<?php
 	 require 'templates/page.php';
-	 require 'HCeditor/HCeditorjs.php';
 	//  R::selectDatabase('DB2');
 	//  $test = R::find('admin');
 	//  var_dump($test);
 	 ?>
 </div>
-<?php 
+<?php
 if ($page != 'adminKabinet') {
 	require 'templates/ads.php'; 
 }else {
@@ -311,4 +311,5 @@ if ($page != 'adminKabinet') {
         },3000);
     });
 </script>
+<script src="HCeditor/HCeditorjs.js"></script>
 <script src="js/main.js" defer></script>

@@ -91,7 +91,7 @@
 .ol_button_list p:last-child{
     border: none;
 }
-.list_after,#image_after{
+.list_after,.image_after{
     width: 100%;
     display: flex;
     align-items: center;

@@ -136,3 +136,184 @@ function first_time() {
 	});
 }
 }
+
+//Opened question page script start
+
+
+$('.opened_question_question_content > a').attr('target','blank');
+	$('.opened_question_question_answer_content > a').attr('target','blank');
+var opened_question_question_footer_setting_block = 0,opened_question_opened_setting_id;
+$('div.opened_question_question_footer_setting_image').click(function () {
+	if (typeof opened_question_opened_setting_id == 'undefined') {
+		opened_question_opened_setting_id = $('.opened_question_question_footer_setting_image').index(this);
+		if (!opened_question_question_footer_setting_block){
+			$(this).next('.opened_question_question_footer_setting_block').fadeIn(500);
+			opened_question_question_footer_setting_block = 1;
+		}else {
+			$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
+			opened_question_question_footer_setting_block = 0;
+		}
+	}else if ($('.opened_question_question_footer_setting_image').index(this) == opened_question_opened_setting_id) {
+			$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
+			opened_question_question_footer_setting_block = 0;
+			opened_question_opened_setting_id = undefined;
+	}else {
+			opened_question_opened_setting_id = $('.opened_question_question_footer_setting_image').index(this);
+			$('.opened_question_question_footer_setting_block').hide();
+			opened_question_question_footer_setting_block = 0;
+			if (!opened_question_question_footer_setting_block){
+				$(this).next('.opened_question_question_footer_setting_block').fadeIn(500);
+				opened_question_question_footer_setting_block = 1;
+			}else {
+				$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
+				opened_question_question_footer_setting_block = 0;
+			}
+	}
+});
+$('body').click(function (event) {
+	if (event.target.id != 'opened_question_question_footer_setting_image' && event.target.className != 'opened_question_question_footer_setting_image') {
+		if (opened_question_question_footer_setting_block) {
+			$('.opened_question_question_footer_setting_block').fadeOut(200);
+			opened_question_question_footer_setting_block = 0;
+			opened_question_opened_setting_id = undefined;
+		}
+	}
+});
+$(document).on('touchstart',function (event) {
+	if (event.target.id != 'opened_question_question_footer_setting_image' && event.target.className != 'opened_question_question_footer_setting_image') {
+		if (opened_question_question_footer_setting_block) {
+			$('.opened_question_question_footer_setting_block').fadeOut(200);
+			opened_question_question_footer_setting_block = 0;
+			opened_question_opened_setting_id = undefined;
+		}
+	}
+});
+$('#opened_question_question_add_answer_submit').click(function () {
+	if(endTextLength > 5){
+    	$('#add_answer_form').submit(); 
+	}
+});
+var openedAnswerCommenting = 0;
+$('.opened_question_question_answer_comment_button').click(function () {
+	var indexComment = $('.opened_question_question_answer_comment_button').index(this);
+	if(!openedAnswerCommenting){
+		$('.opened_question_answer_comment_wrapper').eq(indexComment).fadeIn();
+		openedAnswerCommenting = 1;
+	}else{
+		$('.opened_question_answer_comment_wrapper').eq(indexComment).fadeOut();
+		openedAnswerCommenting = 0;
+	}
+});
+$('.opened_question_answer_comment_send_button').click(function () {
+	console.log($('.opened_question_answer_comment_send_button').index(this));
+});
+
+
+//Opened question page script end not Vue
+
+
+Vue.component('hc-editor',{
+    props: ['i'],
+    data: function () {
+      return{
+          Content:'',
+          index: this.i,
+      }  
+    },
+    template: `<div id='editor_wrapper' >
+    <div class='editor_buttons_block' >
+        <div id='editor_buttons_wrapper'>
+            <div @mouseout='mouseOut' @mouseover='mouseOver'  @click='bold' class='editor_button bold' title='Жирный' >
+                <img class='editor_button_img' src="HCeditor/HCeditorimg/bold.svg" alt="Жирный" />
+            </div>
+            <div @mouseout='mouseOut' @mouseover='mouseOver' @click='italic' class='editor_button italic' title='Курсивный'  >
+                <img class='editor_button_img' src="HCeditor/HCeditorimg/italic.svg" alt="Курсивный" />
+            </div>
+            <div @mouseout='mouseOut' @mouseover='mouseOver' @click='link' class='editor_button link' title='Ссылка' >
+                <img class='editor_button_img' src="HCeditor/HCeditorimg/link.svg" alt="Ссылка" />
+            </div>
+            <div @mouseout='mouseOut' @mouseover='mouseOver' @click='superscript' class='editor_button superscript' title='Степень' >
+                <img class='editor_button_img' src="HCeditor/HCeditorimg/superscript.svg" alt="Степень" />
+            </div>
+            <div @mouseout='mouseOut' @mouseover='mouseOver' @click='subscript' class='editor_button subscript' title='Индекс' >
+                <img class='editor_button_img' src="HCeditor/HCeditorimg/subscript.svg" alt="Индекс" />
+            </div>
+            <!--***********-->
+            <div @mouseout='mouseOut' @mouseover='mouseOver' @click='img' class='editor_button image' title='Изображение' >
+                <div class='image_after' >
+                    <img class='editor_button_img' src="HCeditor/HCeditorimg/picture.svg" alt="Изображение" />
+                </div>
+                <div class='image_button_list' >
+                    <label for="uploadFile"><p class='image_local' >С компьютера </p></label>
+                    <p class='image_internet' >Из интернета</p>
+                </div>
+            </div>
+            <!--***********-->
+            <div @mouseout='mouseOut' @mouseover='mouseOver' @click='list' class='editor_button list' title='Список' >
+                <div class='list_after' >
+                    <img class='editor_button_img' src="HCeditor/HCeditorimg/list.svg" alt="Список" />
+                </div>
+                <div class='ol_button_list'>
+                    <p class ='ol'>Нумерованный</p>
+                    <p class='ul'>Маркированный</p>
+                </div>
+            </div>
+        </div>
+    </div>
+        <textarea name='HCeditor' @keydown='HCeditor' class="editor_textarea" @focus='focus' @focusout='focusOut' ><?=$content?></textarea>
+        <p id='HCeditor_error'></p>
+        <textarea name="HCeditorContent" class="HCeditorcopy"></textarea>
+        <input type="file"  class='file' id="uploadFile" />
+</div>`,
+methods:{
+    bold(){
+        bold(this.index);
+    },
+    italic(){
+        italic(this.index);
+    },
+    link(){
+        link(this.index);
+    },
+    superscript(){
+        superscript(this.index);
+    },
+    subscript(){
+        subscript(this.index);
+    },
+    img(){
+        image(this.index);
+    },
+    list(){
+        list(this.index);
+    },
+    focus(){
+        editorFocus(this.index);
+    },
+    focusOut(){
+        editorFocusOut(this.index);
+    },
+    mouseOver(){
+        $('.editor_button').mouseover(function () {
+            var e = $('.editor_button').index(this);
+            editorButtonMouseOver(e); 
+        });
+	},
+	mouseOut(){
+        if(!openedListList && !openedListImg){
+            $('.editor_button').css('background-color','transparent');
+        }
+	},
+	HCeditor(){
+		HCeditor(this.index);
+	}
+}
+});
+// const vues = document.querySelectorAll(".block_for_edit_answer");
+// const each = Array.prototype.forEach;
+// each.call(vues, (el) => new Vue({el}));
+new Vue({
+	el: '.main_page'
+});
+
+//Opened question page script end with Vue

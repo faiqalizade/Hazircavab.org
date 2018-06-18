@@ -46,7 +46,9 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 </div>
 <?php if(!empty($find_answers_to_question)):?>
 	<p id="text_answers_to_question" >ОТВЕТЫ НА ВОПРОС</p>
-<?php foreach ($find_answers_to_question as $answer):
+<?php
+$indexforeditor=0;
+foreach ($find_answers_to_question as $answer):
 	$find_answer_added_profile = R::findOne('users','login = ?',[$answer->user]);?>
 			<div class="opened_question_question_answers_wrapper">
 				<div class="opened_question_answer_imgs">
@@ -67,7 +69,7 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 							<?=preg_replace("#\r?\n#", "<br/>",$answer->answer_content)?>
 						</div>
 						<div class='block_for_edit_answer' >
-
+						<hc-editor i='<?=$indexforeditor?>'></hc-editor>
 						</div>
 					</div>
 					<?php if($cookie_checked):?>
@@ -102,7 +104,6 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 					<div class='opened_question_answer_comment_wrapper' >
 						asd
 						<div>
-							<?php require 'HCeditor/HCeditor.php';?>
 							<div class='opened_question_answer_comment_send_button' >
 								Комментировать
 							</div>
@@ -126,7 +127,9 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 					</div>
 				</div>
 			</div>
-	<?php endforeach;
+	<?php 
+	$indexforeditor++;
+	endforeach;
 	$content = '';
 	?>
 <?php endif;
@@ -139,9 +142,11 @@ if(empty($isset_asnwer) && $cookie_checked):
 ?>
 <div id="opened_question_question_add_answer">
 	<p id='opened_question_question_add_answer_title' >ВАШ ОТВЕТ НА ВОПРОС</p>
+	<div class="editorBlock">
 	<form method="post" id='add_answer_form'>
-		<?php require 'HCeditor/HCeditor.php';?>
+		<hc-editor i=<?=$indexforeditor?>></hc-editor>
 	</form>
+	</div>
 	<div id='opened_question_question_add_answer_submit' >
 		Отправить
 	</div>
@@ -165,81 +170,3 @@ else:
 	</div>
 </div>
 <?php endif;?>
-
-<!-- Start VueJS -->
-
-
-
-<!-- End VueJS-->
-<script>	
-	$('.opened_question_question_content > a').attr('target','blank');
-	$('.opened_question_question_answer_content > a').attr('target','blank');
-var opened_question_question_footer_setting_block = 0,opened_question_opened_setting_id;
-$('div.opened_question_question_footer_setting_image').click(function () {
-	if (typeof opened_question_opened_setting_id == 'undefined') {
-		opened_question_opened_setting_id = $('.opened_question_question_footer_setting_image').index(this);
-		if (!opened_question_question_footer_setting_block){
-			$(this).next('.opened_question_question_footer_setting_block').fadeIn(500);
-			opened_question_question_footer_setting_block = 1;
-		}else {
-			$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
-			opened_question_question_footer_setting_block = 0;
-		}
-	}else if ($('.opened_question_question_footer_setting_image').index(this) == opened_question_opened_setting_id) {
-			$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
-			opened_question_question_footer_setting_block = 0;
-			opened_question_opened_setting_id = undefined;
-	}else {
-			opened_question_opened_setting_id = $('.opened_question_question_footer_setting_image').index(this);
-			$('.opened_question_question_footer_setting_block').hide();
-			opened_question_question_footer_setting_block = 0;
-			if (!opened_question_question_footer_setting_block){
-				$(this).next('.opened_question_question_footer_setting_block').fadeIn(500);
-				opened_question_question_footer_setting_block = 1;
-			}else {
-				$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
-				opened_question_question_footer_setting_block = 0;
-			}
-	}
-});
-$('body').click(function (event) {
-	if (event.target.id != 'opened_question_question_footer_setting_image' && event.target.className != 'opened_question_question_footer_setting_image') {
-		if (opened_question_question_footer_setting_block) {
-			$('.opened_question_question_footer_setting_block').fadeOut(200);
-			opened_question_question_footer_setting_block = 0;
-			opened_question_opened_setting_id = undefined;
-		}
-	}
-});
-$(document).on('touchstart',function (event) {
-	if (event.target.id != 'opened_question_question_footer_setting_image' && event.target.className != 'opened_question_question_footer_setting_image') {
-		if (opened_question_question_footer_setting_block) {
-			$('.opened_question_question_footer_setting_block').fadeOut(200);
-			opened_question_question_footer_setting_block = 0;
-			opened_question_opened_setting_id = undefined;
-		}
-	}
-});
-$('#opened_question_question_add_answer_submit').click(function () {
-	if(endTextLength > 5){
-    	$('#add_answer_form').submit(); 
-	}
-});
-var test = $('<template></template>');
-var el = $('#test');
-
-var openedAnswerCommenting = 0;
-$('.opened_question_question_answer_comment_button').click(function () {
-	var indexComment = $('.opened_question_question_answer_comment_button').index(this);
-	if(!openedAnswerCommenting){
-		$('.opened_question_answer_comment_wrapper').eq(indexComment).fadeIn();
-		openedAnswerCommenting = 1;
-	}else{
-		$('.opened_question_answer_comment_wrapper').eq(indexComment).fadeOut();
-		openedAnswerCommenting = 0;
-	}
-});
-$('.opened_question_answer_comment_send_button').click(function () {
-	console.log($('.opened_question_answer_comment_send_button').index(this));
-});
-</script>

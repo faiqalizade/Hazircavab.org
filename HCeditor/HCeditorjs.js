@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="HCeditor/HCeditor.css">
-<script>
     var endTextLength,readyText,e;
     function HCeditor(index) {
         tagLength = 0;
@@ -139,8 +137,8 @@
 
     //Конец функции для обработки тегов
     $('.editor_textarea').on('keydown',function () {
-        HCeditor(e);
         e = $('.editor_textarea').index(this);
+        HCeditor(e);
     });
     //Начало функции для отбора тегов с текста
     function selectionTagsInText(text) {
@@ -471,7 +469,7 @@
         var file_name = randomHash();
         var file_data = $('.file').prop('files')[0];
         var form_data = new FormData();
-        var profil = '<?=$user_infos->login?>';
+        var profil = 'test';
         form_data.append('file', file_data);
         form_data.append('imgName',file_name);
         form_data.append('profil',profil);
@@ -537,4 +535,3 @@
         }
     }
     //End Functions for Edit
-</script>
