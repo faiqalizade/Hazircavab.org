@@ -66,7 +66,7 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 						<div class='block_for_switch_edit_answer'>
 							<?=preg_replace("#\r?\n#", "<br/>",$answer->answer_content)?>
 						</div>
-						<div class='block_for_edit_answer'>
+						<div class='block_for_edit_answer' >
 
 						</div>
 					</div>
@@ -125,7 +125,6 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 						</div>
 					</div>
 				</div>
-				
 			</div>
 	<?php endforeach;
 	$content = '';
@@ -167,106 +166,11 @@ else:
 </div>
 <?php endif;?>
 
-<template id='test' >
-	<?php require 'HCeditor/HCeditor.php'?>
-	<div id='edit_answer_buttons_wrapper' >
-		<p id='edit_answer_button' >Изменить</p>
-		<p id='edit_answer_cancel' >Отменить</p>
-	</div>
-</template>
+<!-- Start VueJS -->
 
-<!-- Start ReactJS -->
 
-<script type='text/babel' >
-$('.opened_question_question_footer_setting_edit').click(function () {
-	$('.block_for_switch_edit_answer').css('display','block');
-	$('.opened_question_question_footer_setting_block').hide();
-	var editAnswerIndex = $('.opened_question_question_footer_setting_edit').index(this);
-	var Element = $('.block_for_edit_answer').get(editAnswerIndex);
-	$('.block_for_switch_edit_answer').eq(editAnswerIndex).css('display','none');
-	var answerContent = $('.for_edit_copy_content_no_br').eq(editAnswerIndex).html();
-	ReactDOM.render(<HCeditor redactorIndex={editAnswerIndex}   redactorValue={answerContent} />,Element);
-});
-var clickedCancelButton = false,openedEditor;
-class HCeditor extends React.Component {
-	constructor(props) {
-    	super(props);
-		this.state = {editable: false};
-	  }
-	  cancelEdit(){
-		  this.setState({editable:false});
-	  }
-	getIndex(){
-		$('.editor_button').mouseover(function () {
-			var e = $('.editor_button').index(this);
-			editorButtonMouseOver(e);
-		});
-	}
-	returnEdit(){
-		return( <div id='editAnswerWrapper' heczad={this.Edit} >
-		<div id='editor_wrapper' >
-        <div className='editor_buttons_block' >
-            <div id='editor_buttons_wrapper'>
-                <div className='editor_button bold'  onMouseOut={editorButtonMouseOut} onClick={(e)=>bold(this.props.redactorIndex)} title='Жирный' >
-                    <img className='editor_button_img' src="HCeditor/HCeditorimg/bold.svg" alt="Жирный" />
-                </div>
-                <div className='editor_button italic'  onMouseOut={editorButtonMouseOut} title='Курсивный'  >
-                    <img className='editor_button_img' onClick={(e)=>italic(this.props.redactorIndex)} src="HCeditor/HCeditorimg/italic.svg" alt="Курсивный" />
-                </div>
-                <div className='editor_button link'  onMouseOut={editorButtonMouseOut} title='Ссылка' >
-                    <img className='editor_button_img' onClick={(e)=>link(this.props.redactorIndex)} src="HCeditor/HCeditorimg/link.svg" alt="Ссылка" />
-                </div>
-                <div className='editor_button superscript'  onMouseOut={editorButtonMouseOut} title='Степень' >
-                    <img className='editor_button_img' onClick={(e)=>superscript(this.props.redactorIndex)} src="HCeditor/HCeditorimg/superscript.svg" alt="Степень" />
-                </div>
-                <div className='editor_button subscript'  onMouseOut={editorButtonMouseOut} title='Индекс' >
-                    <img className='editor_button_img' onClick={(e)=>subscript(this.props.redactorIndex)} src="HCeditor/HCeditorimg/subscript.svg" alt="Индекс" />
-                </div>
-                <div className='editor_button image'  onMouseOut={editorButtonMouseOut}  onClick={(e)=>image(this.props.redactorIndex)} title='Изображение' >
-                    <div id='image_after' >
-                        <img className='editor_button_img' src="HCeditor/HCeditorimg/picture.svg" alt="Изображение" />
-                    </div>
-                    <div className='image_button_list' >
-                        <label htmlFor="uploadFile"><p className='image_local' >С компьютера </p></label>
-                        <p className='image_internet' >Из интернета</p>
-                    </div>
-                </div>
-                <div className='editor_button list' onMouseOut={editorButtonMouseOut} onClick={(e)=>list(this.props.redactorIndex)} title='Список' >
-                    <div className='list_after' >
-                        <img className='editor_button_img' src="HCeditor/HCeditorimg/list.svg" alt="Список" />
-                    </div>
-                    <div className='ol_button_list' >
-                        <p className ='ol' onClick={(e)=>ol(this.props.redactorIndex)}>Нумерованный</p>
-                        <p className='ul' onClick={(e)=>ul(this.props.redactorIndex)}>Маркированный</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-            <textarea name='HCeditor' defaultValue={this.props.redactorValue} onFocus={(e)=>editorFocus(this.props.redactorIndex)} className="editor_textarea"></textarea>
-            <p id='HCeditor_error'></p>
-            <textarea name="HCeditorContent" className="HCeditorcopy"></textarea>
-            <input type="file" onChange={(e)=>file(this.props.redactorIndex)} className='file' id="uploadFile" />
- </div>
-			<div id='edit_answer_buttons_wrapper'>
-				<p id='edit_answer_button' >Изменить</p>
-				<p id='edit_answer_cancel' onClick={this.cancelEdit.bind(this)} >Отменить</p>
-			</div>
-			</div>);
-	}
-    render() {
-		setTimeout(() => {
-			this.getIndex();
-		}, 10);
-		if(this.state.editable){
-			return  this.returnEdit();
-		}else{
-			return null;
-		}
-		}
-}
-</script>
 
-<!-- End ReactJS-->
+<!-- End VueJS-->
 <script>	
 	$('.opened_question_question_content > a').attr('target','blank');
 	$('.opened_question_question_answer_content > a').attr('target','blank');

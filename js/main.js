@@ -27,21 +27,21 @@ $('.main_page_header_menu_block').mouseout(function () {
 var window_width = $(window).width();
 $(window).resize(function () {
 	if ($(window).width() < 1200 && $(window).width() > 1022) {
-		$('.stylecss').attr('href','style1200-1024.css');
+		$('.stylecss').attr('href','css/style1200-1024.css');
 		setTimeout(function () {
 			$('.content').css('transition','margin .5s');
         }, 600);
         $('.wrapper').css('display','flex');
 		$('.mobileModeFind').css('display','none');	
 	}else if ($(window).width() <= 1022 && $(window).width() > 765 ) {
-		$('.stylecss').attr('href','style1024_765.css');
+		$('.stylecss').attr('href','css/style1024_765.css');
 		setTimeout(function () {
 			$('.content').css('transition','margin .5s');
         }, 600);
         $('.wrapper').css('display','flex');
 		$('.mobileModeFind').css('display','none');	
 	}else if ($(window).width() <= 765) {
-		$('.stylecss').attr('href','style765-0.css');
+		$('.stylecss').attr('href','css/style765-0.css');
 		setTimeout(function () {
 			$('.content').css('transition','margin .5s');
         }, 600);

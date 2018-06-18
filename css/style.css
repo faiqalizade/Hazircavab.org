@@ -1160,7 +1160,6 @@ footer a{
 .opened_question_question_answer{
 	float: left;
 	width: calc(100% - 30px);
-	transition: all .5s;
 }
 .opened_question_question_answer_header{
 	width: 100%;

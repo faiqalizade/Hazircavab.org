@@ -89,9 +89,7 @@ require 'header_title.php';
 		</script>
 		<link rel="shortcut icon" href="images/Logoicon.jpg" type="image/jpg">
 		<meta name="viewport" content="width=device-width"/>
-		<script src="js/react.js"></script>
-		<script src="js/react-dom.js"></script>
-		<script src="js/babel.min.js"></script>
+		<script src="js/vue.js"></script>
 	</head>
 	<body style='display:none;'>
 		<!-- ********** -->
@@ -313,4 +311,4 @@ if ($page != 'adminKabinet') {
         },3000);
     });
 </script>
-<script src="js/main.js" type='text/babel' defer></script>
+<script src="js/main.js" defer></script>

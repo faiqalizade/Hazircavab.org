@@ -139,8 +139,8 @@
 
     //Конец функции для обработки тегов
     $('.editor_textarea').on('keydown',function () {
-        e = $('.editor_textarea').index(this)
         HCeditor(e);
+        e = $('.editor_textarea').index(this);
     });
     //Начало функции для отбора тегов с текста
     function selectionTagsInText(text) {

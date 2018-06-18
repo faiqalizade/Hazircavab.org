@@ -53,7 +53,6 @@ if($cookie_checked):
     </div>
 
     <script>
-    HCeditor();
     var tagInputArr,tagsInput;
     tagInputArr = $('#question_tags').val().split(',');
     var questionTitle = false,questionTags = false,questionContent = false,questionTitleVal;
