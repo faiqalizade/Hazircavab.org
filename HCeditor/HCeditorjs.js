@@ -209,79 +209,9 @@
         // End set caret position
 
         // setCaretToPos($("#test")[0], 5);  Сама функция смены позиции
-        
-    $('.bold').click(function () {
-        e = $('.bold').index(this);
-        bold(e);
-    });
-
-    $('.image_internet').click(function(){
-        e = $('.image_internet').index(this);
-        image_internet(e);
-    });
-    $('.file').change(function () {
-        e = $('.file').index(this);
-        file(e);
-    });
-
-    $('.italic').click(function(){
-        e = $('.italic').index(this);
-        italic(e);
-    });
-    $('.superscript').click(function(){
-        e = $('.superscript').index(this);
-        superscript(e);
-        });
-
-    $('.subscript').click(function(){
-        e = $('.subscript').index(this);
-        subscript(e);
-    });
-    $('.link').click(function(){
-        e = $('.link').index(this);
-        link(e);
-    });
-
     var openedListImg = false,openedListList = false;
-    $('.image').click(function () {
-        e = $('.image').index(this);
-        image(e);
-    });
-    $('.list_after').click(function () {
-        e = $('.list_after').index(this);
-        list(e);
-    });
-
-    $('.ol').click(function(){
-        e = $('.ol').index(this);
-        ol(e);
-    });
-
-    $('.ul').click(function(){
-        e = $('.ul').index(this);
-        ul(e);
-    });
-
-    $('.editor_textarea').focus(function () {
-        e = $('.editor_textarea').index(this);
-        editorFocus(e);
-    });
-
-    $('.editor_textarea').focusout(function () {
-       e = $('.editor_textarea').index(this);
-       editorFocusOut(e);
-    });
-
-    $('.editor_button').mouseover(function () {
-        var e = $('.editor_button').index(this);
-        editorButtonMouseOver(e);
-    });
-    $('.editor_button').mouseout(function () {
-        editorButtonMouseOut();
-    });
-
     $(document).click(function (event) {
-        if(event.target.className != 'image' && event.target.className != 'editor_button_img'){
+        if(event.target.className != 'image_after' && event.target.className != 'editor_button_img'){
             $('.image').css('background-color','transparent');
             $('.image_button_list').hide();
             openedListImg = false;
@@ -465,6 +395,7 @@
 
     //---- File
     function file(e) {
+        console.log('salam');
         $('.editor_textarea').eq(e).attr('disabled');
         var file_name = randomHash();
         var file_data = $('.file').prop('files')[0];

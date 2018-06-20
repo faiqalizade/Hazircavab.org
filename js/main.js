@@ -141,26 +141,12 @@ function first_time() {
 
 
 $('.opened_question_question_content > a').attr('target','blank');
-	$('.opened_question_question_answer_content > a').attr('target','blank');
+$('.opened_question_question_answer_content > a').attr('target','blank');
 var opened_question_question_footer_setting_block = 0,opened_question_opened_setting_id;
-$('div.opened_question_question_footer_setting_image').click(function () {
-	if (typeof opened_question_opened_setting_id == 'undefined') {
-		opened_question_opened_setting_id = $('.opened_question_question_footer_setting_image').index(this);
-		if (!opened_question_question_footer_setting_block){
-			$(this).next('.opened_question_question_footer_setting_block').fadeIn(500);
-			opened_question_question_footer_setting_block = 1;
-		}else {
-			$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
-			opened_question_question_footer_setting_block = 0;
-		}
-	}else if ($('.opened_question_question_footer_setting_image').index(this) == opened_question_opened_setting_id) {
-			$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
-			opened_question_question_footer_setting_block = 0;
-			opened_question_opened_setting_id = undefined;
-	}else {
+setTimeout(() => {
+	$('div.opened_question_question_footer_setting_image').click(function () {
+		if (typeof opened_question_opened_setting_id == 'undefined') {
 			opened_question_opened_setting_id = $('.opened_question_question_footer_setting_image').index(this);
-			$('.opened_question_question_footer_setting_block').hide();
-			opened_question_question_footer_setting_block = 0;
 			if (!opened_question_question_footer_setting_block){
 				$(this).next('.opened_question_question_footer_setting_block').fadeIn(500);
 				opened_question_question_footer_setting_block = 1;
@@ -168,8 +154,24 @@ $('div.opened_question_question_footer_setting_image').click(function () {
 				$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
 				opened_question_question_footer_setting_block = 0;
 			}
-	}
-});
+		}else if ($('.opened_question_question_footer_setting_image').index(this) == opened_question_opened_setting_id) {
+				$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
+				opened_question_question_footer_setting_block = 0;
+				opened_question_opened_setting_id = undefined;
+		}else {
+				opened_question_opened_setting_id = $('.opened_question_question_footer_setting_image').index(this);
+				$('.opened_question_question_footer_setting_block').hide();
+				opened_question_question_footer_setting_block = 0;
+				if (!opened_question_question_footer_setting_block){
+					$(this).next('.opened_question_question_footer_setting_block').fadeIn(500);
+					opened_question_question_footer_setting_block = 1;
+				}else {
+					$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
+					opened_question_question_footer_setting_block = 0;
+				}
+		}
+	});
+}, 100);
 $('body').click(function (event) {
 	if (event.target.id != 'opened_question_question_footer_setting_image' && event.target.className != 'opened_question_question_footer_setting_image') {
 		if (opened_question_question_footer_setting_block) {
@@ -213,14 +215,17 @@ $('.opened_question_answer_comment_send_button').click(function () {
 
 
 Vue.component('hc-editor',{
-    props: ['i'],
+	props:{
+		i: String,
+		changer:Boolean,
+		content: String,
+	},
     data: function () {
       return{
-          Content:'',
-          index: this.i,
+		  index: this.i,
       }  
     },
-    template: `<div id='editor_wrapper' >
+    template: `<div id='editor_wrapper'>
     <div class='editor_buttons_block' >
         <div id='editor_buttons_wrapper'>
             <div @mouseout='mouseOut' @mouseover='mouseOver'  @click='bold' class='editor_button bold' title='Жирный' >
@@ -260,10 +265,14 @@ Vue.component('hc-editor',{
             </div>
         </div>
     </div>
-        <textarea name='HCeditor' @keydown='HCeditor' class="editor_textarea" @focus='focus' @focusout='focusOut' ><?=$content?></textarea>
-        <p id='HCeditor_error'></p>
-        <textarea name="HCeditorContent" class="HCeditorcopy"></textarea>
-        <input type="file"  class='file' id="uploadFile" />
+		<textarea name='HCeditor' @keydown='HCeditor' class="editor_textarea" @focus='focus' @focusout='focusOut' >{{content}}</textarea>
+		<p id='HCeditor_error'></p>
+        <textarea name="HCeditorContent" class="HCeditorcopy">{{content}}</textarea>
+		<input @change='file' type="file"  class='file' id="uploadFile" />
+		<div v-if='changer' id='edit_answer_buttons_wrapper'>
+		<p id='edit_answer_button' >Изменить</p>
+		<p id='edit_answer_cancel' @click='close' >Отменить</p>
+		</div>
 </div>`,
 methods:{
     bold(){
@@ -306,14 +315,26 @@ methods:{
 	},
 	HCeditor(){
 		HCeditor(this.index);
+	},
+	close(){
+		this.$emit('changer');
+	},
+	file(){
+		file(this.index);
 	}
 }
 });
-// const vues = document.querySelectorAll(".block_for_edit_answer");
-// const each = Array.prototype.forEach;
-// each.call(vues, (el) => new Vue({el}));
+const vues = document.querySelectorAll(".hc-editor");
+const each = Array.prototype.forEach;
+each.call(vues, (el) => new Vue({
+	el,
+	data:{
+		show:false
+	}
+}));
+
 new Vue({
-	el: '.main_page'
+	el:'#opened_question_question_add_answer',
 });
 
 //Opened question page script end with Vue

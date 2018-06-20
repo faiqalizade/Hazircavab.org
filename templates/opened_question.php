@@ -50,7 +50,7 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 $indexforeditor=0;
 foreach ($find_answers_to_question as $answer):
 	$find_answer_added_profile = R::findOne('users','login = ?',[$answer->user]);?>
-			<div class="opened_question_question_answers_wrapper">
+			<div class="opened_question_question_answers_wrapper hc-editor" >
 				<div class="opened_question_answer_imgs">
 					<a href="index.php?page=user&user=<?=$find_answer_added_profile->id?>" id="opened_question_question_answer_added_user_image" ><img src="usersfiles/<?=$find_answer_added_profile->login?>/profil.png"></a>
 					<?php if($answer->check_answer):?>
@@ -68,8 +68,8 @@ foreach ($find_answers_to_question as $answer):
 						<div class='block_for_switch_edit_answer'>
 							<?=preg_replace("#\r?\n#", "<br/>",$answer->answer_content)?>
 						</div>
-						<div class='block_for_edit_answer' >
-						<hc-editor i='<?=$indexforeditor?>'></hc-editor>
+						<div class='block_for_edit_answer'>
+						<hc-editor v-show='show' @changer='show = false' content='<?=$answer->answer_content?>' :changer='true' i='<?=$indexforeditor?>'></hc-editor>
 						</div>
 					</div>
 					<?php if($cookie_checked):?>
@@ -118,7 +118,7 @@ foreach ($find_answers_to_question as $answer):
 						</div>
 						<div class="opened_question_question_footer_setting_block">
 							<?php if($find_answer_added_profile->login == $user_infos->login || $user_infos->status == 1): ?>
-								<a class='opened_question_question_footer_setting_edit' >Изменить</a>
+								<a @click='show=true' class='opened_question_question_footer_setting_edit' >Изменить</a>
 								<a href="index.php?page=question&question=<?=$opened_question?>&remove_answer=<?=$answer->id?>" id="opened_question_question_footer_setting_delete">Удалить</a>
 							<?php else:?>
 								<a href="index.php">Пожаловаться</a>
@@ -144,7 +144,7 @@ if(empty($isset_asnwer) && $cookie_checked):
 	<p id='opened_question_question_add_answer_title' >ВАШ ОТВЕТ НА ВОПРОС</p>
 	<div class="editorBlock">
 	<form method="post" id='add_answer_form'>
-		<hc-editor i=<?=$indexforeditor?>></hc-editor>
+	<hc-editor i='<?=$indexforeditor?>' ></hc-editor>
 	</form>
 	</div>
 	<div id='opened_question_question_add_answer_submit' >

@@ -18,7 +18,7 @@
                 </div>
                 <!--***********-->
                 <div class='editor_button image' title='Изображение' >
-                    <div id='image_after' >
+                    <div class='image_after' >
                         <img class='editor_button_img' src="HCeditor/HCeditorimg/picture.svg" alt="Изображение" />
                     </div>
                     <div class='image_button_list' >
