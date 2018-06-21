@@ -341,7 +341,7 @@ methods:{
 			dataType: "html",
 			cache: false,
 			success: function () {
-				$('.block_for_switch_edit_answer').eq(Index).text(answerContent);
+				$('.block_for_switch_edit_answer').eq(Index).html(answerContent.replace(/\n/g, "<br />"));
 				element.$emit('changer');
 			}
 		});
