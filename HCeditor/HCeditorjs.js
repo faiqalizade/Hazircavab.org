@@ -400,7 +400,7 @@
         var file_name = randomHash();
         var file_data = $('.file').prop('files')[0];
         var form_data = new FormData();
-        var profil = 'test';
+        var profil = authLogin;
         form_data.append('file', file_data);
         form_data.append('imgName',file_name);
         form_data.append('profil',profil);

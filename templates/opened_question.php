@@ -63,13 +63,11 @@ foreach ($find_answers_to_question as $answer):
 						<a id="opened_question_question_answer_header_username" href="index.php?page=user&user=<?=$find_answer_added_profile->id?>">@<?=$find_answer_added_profile->login?></a>
 					</div>
 					<div class="opened_question_question_answer_content">
-						<p style='display:none;' class='for_edit_copy_content_no_br'><?=$answer->answer_content?></p>
-						<p style='display:none;' class='for_edit_copy_content_id'><?=$answer->id?></p>
-						<div class='block_for_switch_edit_answer'>
+						<div v-show='!show' class='block_for_switch_edit_answer'>
 							<?=preg_replace("#\r?\n#", "<br/>",$answer->answer_content)?>
 						</div>
 						<div class='block_for_edit_answer'>
-						<hc-editor v-show='show' @changer='show = false' content='<?=$answer->answer_content?>' :changer='true' i='<?=$indexforeditor?>'></hc-editor>
+						<hc-editor v-show='show' :answerid='<?=$answer->id?>' @changer='show = false' content='<?=$answer->answer_content?>' :changer='true' i='<?=$indexforeditor?>'></hc-editor>
 						</div>
 					</div>
 					<?php if($cookie_checked):?>

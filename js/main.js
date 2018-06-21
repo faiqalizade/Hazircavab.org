@@ -190,11 +190,13 @@ $(document).on('touchstart',function (event) {
 		}
 	}
 });
-$('#opened_question_question_add_answer_submit').click(function () {
-	if(endTextLength > 5){
-    	$('#add_answer_form').submit(); 
-	}
-});
+setTimeout(() => {
+	$('#opened_question_question_add_answer_submit').click(function () {
+		if(endTextLength > 5){
+			$('#add_answer_form').submit(); 
+		}
+	});
+}, 100);
 var openedAnswerCommenting = 0;
 $('.opened_question_question_answer_comment_button').click(function () {
 	var indexComment = $('.opened_question_question_answer_comment_button').index(this);
@@ -212,13 +214,12 @@ $('.opened_question_answer_comment_send_button').click(function () {
 
 
 //Opened question page script end not Vue
-
-
 Vue.component('hc-editor',{
 	props:{
 		i: String,
 		changer:Boolean,
 		content: String,
+		answerid: Number
 	},
     data: function () {
       return{
@@ -250,7 +251,7 @@ Vue.component('hc-editor',{
                 </div>
                 <div class='image_button_list' >
                     <label for="uploadFile"><p class='image_local' >С компьютера </p></label>
-                    <p class='image_internet' >Из интернета</p>
+                    <p @click='from_internet' class='image_internet' >Из интернета</p>
                 </div>
             </div>
             <!--***********-->
@@ -259,8 +260,8 @@ Vue.component('hc-editor',{
                     <img class='editor_button_img' src="HCeditor/HCeditorimg/list.svg" alt="Список" />
                 </div>
                 <div class='ol_button_list'>
-                    <p class ='ol'>Нумерованный</p>
-                    <p class='ul'>Маркированный</p>
+                    <p @click='ol' class ='ol'>Нумерованный</p>
+                    <p @click='ul' class='ul'>Маркированный</p>
                 </div>
             </div>
         </div>
@@ -270,7 +271,7 @@ Vue.component('hc-editor',{
         <textarea name="HCeditorContent" class="HCeditorcopy">{{content}}</textarea>
 		<input @change='file' type="file"  class='file' id="uploadFile" />
 		<div v-if='changer' id='edit_answer_buttons_wrapper'>
-		<p id='edit_answer_button' >Изменить</p>
+		<p @click='save' id='edit_answer_button' >Изменить</p>
 		<p id='edit_answer_cancel' @click='close' >Отменить</p>
 		</div>
 </div>`,
@@ -321,6 +322,29 @@ methods:{
 	},
 	file(){
 		file(this.index);
+	},
+	from_internet(){
+		image_internet(this.index);
+	},
+	ol(){
+		ol(this.index);
+	},
+	ul(){
+		ul(this.index);
+	},
+	save(){
+		var answerId = this.answerid,answerContent=$('.HCeditorcopy').eq(this.index).val(),Index=this.index,element=this;
+		$.ajax({
+			type: "post",
+			url: "templates/edit_answer.php",
+			data: {answerId:answerId,editAnswerContent:answerContent},
+			dataType: "html",
+			cache: false,
+			success: function () {
+				$('.block_for_switch_edit_answer').eq(Index).text(answerContent);
+				element.$emit('changer');
+			}
+		});
 	}
 }
 });
@@ -336,5 +360,4 @@ each.call(vues, (el) => new Vue({
 new Vue({
 	el:'#opened_question_question_add_answer',
 });
-
 //Opened question page script end with Vue

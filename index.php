@@ -200,6 +200,9 @@ require 'header_title.php';
 
 <div class="content_after_header">
 <div class="main_page">
+<script>
+    var authLogin = '<?=$user_infos->login?>';
+</script>
 	<?php
 	 require 'templates/page.php';
 	//  R::selectDatabase('DB2');
