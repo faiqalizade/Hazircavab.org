@@ -149,23 +149,30 @@ setTimeout(() => {
 			opened_question_opened_setting_id = $('.opened_question_question_footer_setting_image').index(this);
 			if (!opened_question_question_footer_setting_block){
 				$(this).next('.opened_question_question_footer_setting_block').fadeIn(500);
+				$('.opened_question_question_footer_setting_image').css('background-color','#fff');
+				$(this).css('background-color','#e8e8e8');
 				opened_question_question_footer_setting_block = 1;
 			}else {
 				$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
+				$('.opened_question_question_footer_setting_image').css('background-color','#fff');
 				opened_question_question_footer_setting_block = 0;
 			}
 		}else if ($('.opened_question_question_footer_setting_image').index(this) == opened_question_opened_setting_id) {
 				$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
+				$('.opened_question_question_footer_setting_image').css('background-color','#fff');
 				opened_question_question_footer_setting_block = 0;
 				opened_question_opened_setting_id = undefined;
 		}else {
 				opened_question_opened_setting_id = $('.opened_question_question_footer_setting_image').index(this);
 				$('.opened_question_question_footer_setting_block').hide();
+				$('.opened_question_question_footer_setting_image').css('background-color','#fff');
 				opened_question_question_footer_setting_block = 0;
 				if (!opened_question_question_footer_setting_block){
 					$(this).next('.opened_question_question_footer_setting_block').fadeIn(500);
+					$(this).css('background-color','#e8e8e8');
 					opened_question_question_footer_setting_block = 1;
 				}else {
+					$('.opened_question_question_footer_setting_image').css('background-color','#fff');
 					$(this).next('.opened_question_question_footer_setting_block').fadeOut(200);
 					opened_question_question_footer_setting_block = 0;
 				}
@@ -176,6 +183,7 @@ $('body').click(function (event) {
 	if (event.target.id != 'opened_question_question_footer_setting_image' && event.target.className != 'opened_question_question_footer_setting_image') {
 		if (opened_question_question_footer_setting_block) {
 			$('.opened_question_question_footer_setting_block').fadeOut(200);
+			$('.opened_question_question_footer_setting_image').css('background-color','#fff');
 			opened_question_question_footer_setting_block = 0;
 			opened_question_opened_setting_id = undefined;
 		}
@@ -185,6 +193,7 @@ $(document).on('touchstart',function (event) {
 	if (event.target.id != 'opened_question_question_footer_setting_image' && event.target.className != 'opened_question_question_footer_setting_image') {
 		if (opened_question_question_footer_setting_block) {
 			$('.opened_question_question_footer_setting_block').fadeOut(200);
+			$('.opened_question_question_footer_setting_image').css('background-color','#fff');
 			opened_question_question_footer_setting_block = 0;
 			opened_question_opened_setting_id = undefined;
 		}
@@ -196,21 +205,122 @@ setTimeout(() => {
 			$('#add_answer_form').submit(); 
 		}
 	});
-}, 100);
-var openedAnswerCommenting = 0;
+	var openedAnswerCommenting = 0,indexOpenedAnswerComment;
 $('.opened_question_question_answer_comment_button').click(function () {
 	var indexComment = $('.opened_question_question_answer_comment_button').index(this);
-	if(!openedAnswerCommenting){
-		$('.opened_question_answer_comment_wrapper').eq(indexComment).fadeIn();
-		openedAnswerCommenting = 1;
-	}else{
-		$('.opened_question_answer_comment_wrapper').eq(indexComment).fadeOut();
+	if(indexComment == indexOpenedAnswerComment){
+		$('.opened_question_answer_comment_wrapper').eq(indexComment).slideUp(500);
 		openedAnswerCommenting = 0;
+		indexOpenedAnswerComment = undefined;
+	}else{
+		$('.opened_question_answer_comment_wrapper').hide();
+		$('.opened_question_answer_comment_wrapper').eq(indexComment).slideDown(500);
+		indexOpenedAnswerComment = indexComment;
 	}
 });
-$('.opened_question_answer_comment_send_button').click(function () {
-	console.log($('.opened_question_answer_comment_send_button').index(this));
+$('.opened_question_comment_to_answer_reply_bttn').click(function () {  
+		var 
+		indexEditor 			= $(this).attr('answerEditorIndex'),
+		userName				= $(this).attr('user');
+		userName 				= '@'+userName+',';
+		$('.editor_textarea').eq(indexEditor).val(userName);
+		$('.HCeditorcopy').eq(indexEditor).val(userName);
+		setCaretToPos($('.editor_textarea').eq(indexEditor)[0],userName.length);
 });
+$('.opened_question_answer_comment_send_button').click(function () {
+	var
+	indexToAddComment		= $(this).attr('indexEditorComment'),
+	contentToAddComment		= $('.HCeditorcopy').eq(indexToAddComment).val()
+	answerIdToComment 		= $(this).attr('answerId'),
+	indexCommentsWrapper	= $('.opened_question_answer_comment_send_button').index(this)  ;
+	contentToAddComment = contentToAddComment.trim();
+	var replyToUserComment = '';
+		if(contentToAddComment[0] == '@'){
+			for(var i=1; i < contentToAddComment.length; i++){
+				if(contentToAddComment[i] != ',' ){
+					replyToUserComment += contentToAddComment[i];
+				}else{
+					break;
+				}
+			}
+			$.ajax({
+				type: "post",
+				url: "templates/answerCommentUserfind.php",
+				data: {user:replyToUserComment},
+				dataType: "html",
+				success: function (data) {
+					var arr = data.split(',');
+					if(arr[0] == 'true'){
+						contentToAddComment = "<a href='index.php?page=user&user="+arr[1]+"' class='answer_comment_reply'>"+replyToUserComment+"</a>"+contentToAddComment.substring(i);
+					}else{
+						replyToUserComment = '';
+					}
+				}
+			});
+		}
+		setTimeout(() => {
+			if(contentToAddComment.length - replyToUserComment.length > 5){
+				$.ajax({
+					type: "post",
+					url: "templates/addCommentToAnswer.php",
+					data: {answer:answerIdToComment,comment:contentToAddComment,user:authLogin,replyto:replyToUserComment},
+					dataType: "html",
+					success: function () {
+						$('.editor_textarea').eq(indexToAddComment).val('');
+						var commentsCount = $('.answers_comments_count').eq(indexCommentsWrapper).text();
+						commentsCount = parseInt(commentsCount);
+						commentsCount++;
+						$('.answers_comments_count').eq(indexCommentsWrapper).text(commentsCount);
+						var 
+						today				= new Date(),
+						day					= today.getDate(),
+						mounth				= today.getMonth()+1,
+						year				= today.getFullYear(),
+						hours				= today.getHours(),
+						minutes				= today.getMinutes(),
+						seconds				= today.getSeconds();
+						if(day < 10) {
+							day = '0'+day;
+						} 
+						if(mounth < 10) {
+							mounth = '0'+mounth;
+						}
+						if(seconds < 10) {
+							seconds = '0'+seconds;
+						}
+						if(hours < 10) {
+							hours = '0'+hours;
+						}
+						if(minutes < 10) {
+							minutes = '0'+minutes;
+						}
+						today = day+'.'+mounth+'.'+year+' - '+hours+':'+minutes+':'+seconds;
+						var commentAddBlock = `
+						<div class='opened_question_comment_to_answer_wrapper'>
+						<div class='opened_question_comment_to_answer_image_user'>
+							<a href='index.php?page=user&user`+authId+`'><img src='usersfiles/`+authLogin+`/profil.png' class='opened_question_comment_to_answer_image'></a>
+						</div>
+						<div class='opened_question_comment_to_answer_content_wrapper'>
+							<div class='opened_question_comment_to_answer_user_infos'>
+								<a href='index.php?page=user&user`+authId+`' class='opened_question_comment_to_answer_user' >`+authName+`</a> <a href='index.php?page=user&user`+authId+`' class='opened_question_comment_to_answer_username' >@`+authLogin+`</a>
+							</div>
+							<div class='opened_question_comment_to_answer_content'>
+							`+contentToAddComment.replace(/\n/g, "<br />")+`
+							</div>
+							<div class='opened_question_comment_to_answer_footer'> 
+								<p class='opened_question_comment_to_answer_date'>`+ today +`</p>
+								<p class='opened_question_comment_to_answer_like_bttn'>Нравиться (0)</p>
+								<p class='opened_question_comment_to_answer_reply_bttn'>Ответить</p>
+							</div>
+						</div>
+					</div>`;
+						$('.opened_question_answer_comments').eq(indexCommentsWrapper).append(commentAddBlock);
+					}
+				});
+			}
+		}, 100);
+});
+}, 100);
 
 
 //Opened question page script end not Vue
@@ -277,18 +387,23 @@ Vue.component('hc-editor',{
 </div>`,
 methods:{
     bold(){
+		closeDropdown();
         bold(this.index);
     },
     italic(){
+		closeDropdown();
         italic(this.index);
     },
     link(){
+		closeDropdown();
         link(this.index);
     },
     superscript(){
+		closeDropdown();
         superscript(this.index);
     },
     subscript(){
+		closeDropdown();
         subscript(this.index);
     },
     img(){

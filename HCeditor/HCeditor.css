@@ -53,7 +53,7 @@
     padding: 0;
 }
 .editor_textarea{
-    width: calc(100.03% - 10px);
+    width: calc(100% - 10px);
     resize: vertical;
     height: 180px;
     border: 1px solid #eee;

@@ -59,8 +59,8 @@ foreach ($find_answers_to_question as $answer):
 				</div>
 				<div class="opened_question_question_answer">
 					<div class="opened_question_question_answer_header">
-						<a id="opened_question_question_answer_header_user" href="index.php?page=user&user=<?=$find_answer_added_profile->id?>"><?=$find_answer_added_profile->name.' '.$find_answer_added_profile->surname?></a>
-						<a id="opened_question_question_answer_header_username" href="index.php?page=user&user=<?=$find_answer_added_profile->id?>">@<?=$find_answer_added_profile->login?></a>
+						<a class="opened_question_question_answer_header_user" href="index.php?page=user&user=<?=$find_answer_added_profile->id?>"><?=$find_answer_added_profile->name.' '.$find_answer_added_profile->surname?></a>
+						<a class="opened_question_question_answer_header_username" href="index.php?page=user&user=<?=$find_answer_added_profile->id?>">@<?=$find_answer_added_profile->login?></a>
 					</div>
 					<div class="opened_question_question_answer_content">
 						<div v-show='!show' class='block_for_switch_edit_answer'>
@@ -94,15 +94,44 @@ foreach ($find_answers_to_question as $answer):
 									<?php endif;?>
 									</a>
 							<?php endif;
-							$load_answer_comments = R::find('answer_comments','answer_id = '.$answer->id);
+							$indexforeditor++;
+							$commentsToAnswer = R::find('commentstoanswer','WHERE answer_id = ? ORDER BY date,time',[$answer->id]);
 							?>
-							<p class='opened_question_question_answer_comment_button' >Комментарии (<?=count($load_answer_comments)?>) </p>
+							<p class='opened_question_question_answer_comment_button' >Комментарии (<span class="answers_comments_count"><?=count($commentsToAnswer)?></span>) </p>
 						</div>
 					<?php endif;?>
-					<div class='opened_question_answer_comment_wrapper' >
-						asd
+					<div class='opened_question_answer_comment_wrapper'>
+						<div class="opened_question_answer_comments">
+							<!--*******************-->
+							<?php foreach($commentsToAnswer as $comment):
+								$commentAddedUser = R::findOne('users','login = ?',[$comment->user]);
+								?>
+								<div class='opened_question_comment_to_answer_wrapper'>
+									<div class='opened_question_comment_to_answer_image_user'>
+										<a href='index.php?page=user&user=<?=$commentAddedUser->id?>'><img src='usersfiles/<?=$comment->user?>/profil.png' class='opened_question_comment_to_answer_image'></a>
+									</div>
+									<div class='opened_question_comment_to_answer_content_wrapper'>
+										<div class='opened_question_comment_to_answer_user_infos'>
+											<a href='index.php?page=user&user=<?=$commentAddedUser->id?>' class='opened_question_comment_to_answer_user' ><?=$commentAddedUser->name?> <?=$commentAddedUser->surname?></a> <a href='index.php?page=user&user=<?=$commentAddedUser->id?>'class='opened_question_comment_to_answer_username' >@faiqalizade</a>
+										</div>
+										<div class='opened_question_comment_to_answer_content'>
+										<?=preg_replace('#\r?\n#', '<br/>',$comment->content)?>
+										</div>
+										<div class='opened_question_comment_to_answer_footer'> 
+											<p class='opened_question_comment_to_answer_date'><?=$comment->date?> - <?=$comment->time?></p>
+											<p class='opened_question_comment_to_answer_like_bttn'>Нравиться (<?=$comment->likes?>)</p>
+											<p class='opened_question_comment_to_answer_reply_bttn' user='<?=$comment->user?>' answerEditorIndex='<?=$indexforeditor?>' >Ответить</p>
+										</div>
+									</div>
+								</div>
+							<?php endforeach;?>
+							<!--*******************-->
+						</div>
+						<div class="comment_to_answer_editor_wrapper">
+							<hc-editor i='<?=$indexforeditor?>'></hc-editor>
+						</div>
 						<div>
-							<div class='opened_question_answer_comment_send_button' >
+							<div answerId='<?=$answer->id?>' indexEditorComment='<?=$indexforeditor?>' class='opened_question_answer_comment_send_button' >
 								Комментировать
 							</div>
 						</div>

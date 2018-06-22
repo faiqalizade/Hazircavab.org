@@ -222,7 +222,14 @@
             openedListList = false;
         }
     });
-
+    function closeDropdown() {
+        $('.image').css('background-color','transparent');
+        $('.image_button_list').hide();
+        openedListImg = false;
+        $('.list').css('background-color','transparent');
+        $('.ol_button_list').hide();
+        openedListList = false;
+    }
     // Start Functions for Edit
 
     //---- Bold

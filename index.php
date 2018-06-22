@@ -47,7 +47,9 @@ require 'header_title.php';
 			});
 			$('.stylecss').attr('href','css/style765-0.css');
 		}
-		$('body').css('display','block');
+		setTimeout(() => {
+			$('body').css('display','block');
+		}, 100);
 		$('#article_on_1200').height($('.wrapper').height());
 		function setcookie ( name, value, path, exp_y, exp_m, exp_d, exp_h , exp_m , domain, secure ){
    	 var cookie_string = name + "=" + escape ( value );
@@ -147,13 +149,18 @@ require 'header_title.php';
 						<a href="index.php?page=tags" class="article_links"><img src="images/tags.svg">Все теги</a>
 						<a href="index.php?page=het" class="article_links"><img src="images/book.svg">Готовые домашние задания</a>
 						<a href="index.php?page=services" class="article_links"><img src="images/calculator.svg">Сервисы</a>
+						<?php if($cookie_checked):?>
+							<p class="article_links"> <img src="images/bell.svg">Уведомления</p>
+						<?php endif;?>
 					</div>
 				</div>
+				<?php if(!$cookie_checked): ?>
 				<div class="article_footer">
 					<p style="text-align:center; font-size:1.1em; margin-bottom: 7%;">Hazırcavab - Вопросы и ответы</p>
 					<p style="text-align:center; font-size:.8em; color:#b9b4b4">Здесь вы можете найти ответы на вопросы по любой теме из любых областей.</p>
 					<a href="#" class="article_footer_about_button">Далее &#8594;</a>
 				</div>
+				<?php endif;?>
 			</article>
 			<!-- ********** -->
 			<div id="article_on_1200">
@@ -164,6 +171,9 @@ require 'header_title.php';
 						<a href="index.php?page=tags" class="article_links"><img src="images/tags.svg">Все теги</a>
 						<a href="index.php?page=het" class="article_links"><img src="images/book.svg">Готовые домашние задания</a>
 						<a href="index.php?page=services" class="article_links"><img src="images/calculator.svg">Сервисы</a>
+						<?php if($cookie_checked):?>
+							<p class="article_links"> <img src="images/bell.svg">Уведомления</p>
+						<?php endif;?>
 					</div>
 			</div>
 			<!-- ********** -->
@@ -201,7 +211,10 @@ require 'header_title.php';
 <div class="content_after_header">
 <div class="main_page">
 <script>
-    var authLogin = '<?=$user_infos->login?>';
+	var 
+	authLogin 			= '<?=$user_infos->login?>',
+	authName			= '<?=$user_infos->name?> <?=$user_infos->surname?>',
+	authId				= <?=$user_infos->id?> ;
 </script>
 	<?php
 	 require 'templates/page.php';

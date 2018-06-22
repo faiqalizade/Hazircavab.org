@@ -360,7 +360,9 @@ footer a{
 	width: 88%;
 	font-size: .8em;
 	transition: all .2s;
+	cursor: pointer;
 }
+
 .article_links img{
 	width: 18px;
 	margin-right: 5%;
@@ -1032,7 +1034,7 @@ footer a{
 	display: block;
 	max-width: 100%;
 }
-.opened_question_question_answer_comment_button{
+.opened_question_question_answer_comment_button,.opened_question_comment_to_answer_reply_bttn,.opened_question_comment_to_answer_like_bttn{
 	font-family: 'Exo 2';
 	color: #a0a0a0;
 	border-bottom: dotted 1px;
@@ -1041,14 +1043,19 @@ footer a{
 	margin-left: 13px;
 }
 .opened_question_answer_comment_wrapper{
-	padding: 15px 12px 15px 42px;
+	padding: 30px 12px 15px 42px;
 	width: calc(100% - 54px);
-	background-color: rgba(238, 241, 245, 0.5);
+	background-color: #fafafa;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 	float: left;
 	font-family: 'Montserrat';
 	list-style-position: inside;
 	font-size: 14px;
 	display: none;
+}
+.opened_question_answer_comments{
+	float: left;
+	width: 100%;
 }
 .opened_question_question_content a,.opened_question_question_answer_content a{
 	color: #2d72d9;
@@ -1062,11 +1069,27 @@ footer a{
 	display: flex;
 	align-items: center;
 }
-.opened_question_question_footer_time{
+.opened_question_question_footer_time,.opened_question_comment_to_answer_date{
 	color: #9c9c9d;
 	font-family: 'Signika';
 	font-weight: 100;
 	flex-grow: 1;
+}
+.opened_question_comment_to_answer_date{
+	float: left;
+	font-size: 15px;
+}
+.opened_question_comment_to_answer_reply_bttn{
+	float: left;
+	color: #077fcc;
+	font-size: 15px;
+	border: none;
+}
+.opened_question_comment_to_answer_like_bttn{
+	color: #65c178;
+	float: left;
+	font-size: 15px;
+	border: none;
 }
 .opened_question_question_footer_setting_block{
 	position: absolute;
@@ -1233,14 +1256,14 @@ footer a{
 	color: #fff;
 	border-color: #fff;
 }
-#opened_question_question_answer_header_user,#opened_question_question_answer_header_username{
+.opened_question_question_answer_header_user,.opened_question_comment_to_answer_user,.opened_question_comment_to_answer_username,.opened_question_question_answer_header_username{
 	margin-right: 7px;
 	font-family: 'Signika';
 }
-#opened_question_question_answer_header_user{
+.opened_question_question_answer_header_user,.opened_question_comment_to_answer_user{
 	color: #000;
 }
-#opened_question_question_answer_header_username{
+.opened_question_question_answer_header_username,.opened_question_comment_to_answer_username{
 	color: #9c9c9d;
 	font-size: .8em;
 	font-weight: lighter;
@@ -2342,4 +2365,44 @@ footer a{
 	width: 100%;
 	height: 100%;
 	display: none;
+}
+.opened_question_comment_to_answer_image_user{
+	width: 30px;
+	height: 30px;
+	float: left;
+}
+.opened_question_comment_to_answer_image{
+	height: 30px;
+	width: 30px;
+	border-radius: 15px;
+}
+.opened_question_comment_to_answer_wrapper{
+	padding: 10px 0;
+	float: left;
+	width: 100%;
+	border-bottom: solid 2px #eeeeee;
+}
+.comment_to_answer_editor_wrapper{
+	float: left;
+	width: 100%;
+}
+.opened_question_comment_to_answer_content_wrapper{
+	float: left;
+	width: calc(100% - 50px);
+	padding: 0 10px;
+}
+.opened_question_comment_to_answer_user_infos{
+	display: flex;
+	height: 30px;
+	align-items: center;
+}
+.opened_question_comment_to_answer_content{
+	padding: 10px 0;
+}
+.opened_question_comment_to_answer_footer{
+	display: flex;
+}
+.answer_comment_reply{
+	color: #185eaf;
+	font-weight: 700;
 }
