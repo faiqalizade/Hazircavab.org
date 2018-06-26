@@ -36,7 +36,7 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 			<div class="opened_question_question_footer_setting_block">
 				<?php if($find_question_added_profile->login == $user_infos->login || $user_infos->status == 1): ?>
 					<a href="index.php?page=edit_question&question=<?=$opened_question_load->id?>">Изменить</a>
-					<a href="index.php?page=remove_question&question=<?=$opened_question_load->id?>" id="opened_question_question_footer_setting_delete">Удалить</a>
+					<a href="index.php?page=remove_question&question=<?=$opened_question_load->id?>" class="opened_question_question_footer_setting_delete">Удалить</a>
 				<?php else:?>
 					<a href="index.php">Пожаловаться</a>
 				<?php endif;?>
@@ -105,6 +105,7 @@ foreach ($find_answers_to_question as $answer):
 							<!--*******************-->
 							<?php foreach($commentsToAnswer as $comment):
 								$commentAddedUser = R::findOne('users','login = ?',[$comment->user]);
+								$commentsLikesArray = explode(',',$commentAddedUser->comments_likes);
 								?>
 								<div class='opened_question_comment_to_answer_wrapper'>
 									<div class='opened_question_comment_to_answer_image_user'>
@@ -112,15 +113,31 @@ foreach ($find_answers_to_question as $answer):
 									</div>
 									<div class='opened_question_comment_to_answer_content_wrapper'>
 										<div class='opened_question_comment_to_answer_user_infos'>
-											<a href='index.php?page=user&user=<?=$commentAddedUser->id?>' class='opened_question_comment_to_answer_user' ><?=$commentAddedUser->name?> <?=$commentAddedUser->surname?></a> <a href='index.php?page=user&user=<?=$commentAddedUser->id?>'class='opened_question_comment_to_answer_username' >@faiqalizade</a>
+											<a href='index.php?page=user&user=<?=$commentAddedUser->id?>' class='opened_question_comment_to_answer_user' ><?=$commentAddedUser->name?> <?=$commentAddedUser->surname?></a> <a href='index.php?page=user&user=<?=$commentAddedUser->id?>'class='opened_question_comment_to_answer_username' >@<?=$comment->user?></a>
 										</div>
 										<div class='opened_question_comment_to_answer_content'>
 										<?=preg_replace('#\r?\n#', '<br/>',$comment->content)?>
 										</div>
 										<div class='opened_question_comment_to_answer_footer'> 
 											<p class='opened_question_comment_to_answer_date'><?=$comment->date?> - <?=$comment->time?></p>
-											<p class='opened_question_comment_to_answer_like_bttn'>Нравиться (<?=$comment->likes?>)</p>
+											<?php if(in_array($comment->id,$commentsLikesArray)): ?>
+												<p class='opened_question_comment_to_answer_like_bttn' commentId='<?=$comment->id?>' liked='true'> <span class="comments_to_answer_like_text">Не нравиться</span> (<span class="comments_to_answer_count"><?=$comment->likes?></span>)</p>
+											<?php else:?>
+												<p class='opened_question_comment_to_answer_like_bttn' commentId='<?=$comment->id?>' liked='false'> <span class="comments_to_answer_like_text">Нравиться</span> (<span class="comments_to_answer_count"><?=$comment->likes?></span>)</p>
+											<?php endif;?>
 											<p class='opened_question_comment_to_answer_reply_bttn' user='<?=$comment->user?>' answerEditorIndex='<?=$indexforeditor?>' >Ответить</p>
+											<div class="opened_question_question_footer_setting_block_wrapper">
+												<div class="opened_question_question_footer_setting_image">
+													<img src="images/3pointsilver.svg" id="opened_question_question_footer_setting_image">
+												</div>
+												<div class="opened_question_question_footer_setting_block">
+												<?php if($comment->user == $user_infos->login || $user_infos->status == 1): ?>
+													<a commentId='<?=$comment->id?>' class="opened_question_question_footer_setting_delete remove_button_comment">Удалить</a>
+												<?php else:?>
+													<a href="index.php">Пожаловаться</a>
+												<?php endif;?>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -146,7 +163,7 @@ foreach ($find_answers_to_question as $answer):
 						<div class="opened_question_question_footer_setting_block">
 							<?php if($find_answer_added_profile->login == $user_infos->login || $user_infos->status == 1): ?>
 								<a @click='show=true' class='opened_question_question_footer_setting_edit' >Изменить</a>
-								<a href="index.php?page=question&question=<?=$opened_question?>&remove_answer=<?=$answer->id?>" id="opened_question_question_footer_setting_delete">Удалить</a>
+								<a href="index.php?page=question&question=<?=$opened_question?>&remove_answer=<?=$answer->id?>" class="opened_question_question_footer_setting_delete">Удалить</a>
 							<?php else:?>
 								<a href="index.php">Пожаловаться</a>
 							<?php endif;?>

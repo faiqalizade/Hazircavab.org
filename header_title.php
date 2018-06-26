@@ -68,6 +68,7 @@ if ($page == 'registr') {
                             $registry->mail = htmlspecialchars($_POST['reg_mail']);
                             $registry->lang = $_COOKIE['language'];
                             $registry->answer_likes = ',';
+                            $registry->comments_likes = ',';
                             $registry->small_desc = '';
                             $registry->desc = '';
                             $registry->subscribe_tag = ',';

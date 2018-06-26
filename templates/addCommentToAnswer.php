@@ -8,5 +8,6 @@ $addComment->content = $_POST['comment'];
 $addComment->date = date('d.m.Y');
 $addComment->time = date('H:i:s');
 $addComment->likes = 0;
-R::store($addComment);
+$id = R::store($addComment);
+echo $id;
 ?>
