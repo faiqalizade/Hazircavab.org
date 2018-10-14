@@ -23,7 +23,7 @@
 <div class="blog_like_button">
 	<div class="like_button"> <p>Лайкнуть</p> <p>143</p> </div>
 </div>
-<div class="blog_comments_block">
+<div class="blog_comments_block" id='opened_question_question_add_answer'>
 	<p class="comment_text">Коментарии</p>
 
 <?php for ($i=0; $i < 9; $i++):?>
@@ -41,8 +41,11 @@
 	</div>
 <?php endfor; ?>
 	<form id="blog_add_comment_form" method="post">
-		<?php require 'HCeditor/HCeditor.php';?>
+		<hc-editor i='<?=$indexforeditor?>' ></hc-editor>
 		<input type="submit" name="blog_comment_add_submit" id="blog_comment_add_submit" value="Отправить">
 	</form>
 
 </div>
+<script>
+	init_hceditor('opened_question_question_add_answer');
+</script>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 $opened_user_infos = R::load('users',$opened_user_profile);
 $find_user_questions = R::find('questions','user = ? ORDER BY date, time DESC',[$opened_user_infos->login]);
 $find_user_answers = R::find('answers','user = ? ORDER BY date,time DESC',[$opened_user_infos->login]);
@@ -244,7 +244,7 @@ if($opened_user_infos->id != 0):
                                 <?php endif;?>
                                 </div>
                             </div>
-        <?php 
+        <?php
                 endif;
             endforeach;
             echo "</div>";

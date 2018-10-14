@@ -3,8 +3,21 @@
 </div>
 <div class='tags_list_wrapper'>
 <?php
+if(!isset($list_page_number)){
+	$page_number = 1;
+}else{
+	$page_number = $list_page_number;
+}
+$list_limit_last = ($page_number - 1) * 15;
+$list_limit = $page_number * 15;
 $tag_list_get_tags = R::find('tags');
+$page_count = count($tag_list_get_tags) / 15;
+	if(is_float($page_count)){
+		$page_count++;
+	}
+settype($page_count,'int');
 foreach ($tag_list_get_tags as $tag):
+	if($cycle_number >= $list_limit_last && $cycle_number < $list_limit):
 ?>
 <div class='tag_list_block'>
 <a href="index.php?page=tags&tag=<?=$tag->tagname?>&questions" id="tag_list_tag_image"><img src="tagimages/<?=mb_strtolower($tag->tagname)?>.png"></a>
@@ -22,5 +35,32 @@ if(empty($subscribed_tag_logined_user)):?>
 <?php endif;?>
 </div>
 </div>
-<?php endforeach;?>
+<?php
+	endif;
+	if($cycle_number == $list_limit){
+		break;
+	}
+	$cycle_number++;
+endforeach;?>
+<?php if(count($tag_list_get_tags) > 15): ?>
+<div class="questions_pages">
+			<?php if($page_number > 1):?>
+				<a href="index.php?page=tags&pn=<?=$page_number - 1;?>">&#8592; Предыдущий</a>
+			<?php endif;
+			if($page_number > 6){
+				$left_page_list = $page_number - 6;
+			}
+			for($i = 1; $i <= $page_count; $i++):
+				if($i > $left_page_list && $i <= 10 + $left_page_list):
+			?>
+				<a id = '<?=$i?>' href="index.php?page=tags&pn=<?=$i?>"><?=$i?></a>
+			<?php
+				endif;
+			endfor;
+			if($page_number < $page_count):
+			?>
+				<a href="index.php?page=tags&pn=<?=$page_number + 1;?>">Следующий &#8594;</a>
+			<?php endif;?>
+		</div>
+<?php endif;?>
 </div>

@@ -33,7 +33,7 @@ require 'header_title.php';
 				$('#article_on_1200').css({'transition':'margin .5s'});
 				$('.content').css({'transition':'margin .5s'});
 			});
-			$('.stylecss').attr('href','css/style1200-1024.css');	
+			$('.stylecss').attr('href','css/style1200-1024.css');
 		}else if ($(window).width() <= 1022 && $(window).width() > 765 ) {
 			$(document).ready(function () {
 				$('#article_on_1200').css({'transition':'margin .5s'});
@@ -49,8 +49,8 @@ require 'header_title.php';
 		}
 		setTimeout(() => {
 			$('body').css('display','block');
+      $('#article_on_1200').height($('.wrapper').height());
 		}, 100);
-		$('#article_on_1200').height($('.wrapper').height());
 		function setcookie ( name, value, path, exp_y, exp_m, exp_d, exp_h , exp_m , domain, secure ){
    	 var cookie_string = name + "=" + escape ( value );
 
@@ -91,7 +91,6 @@ require 'header_title.php';
 		</script>
 		<link rel="shortcut icon" href="images/Logoicon.jpg" type="image/jpg">
 		<meta name="viewport" content="width=device-width"/>
-		<link rel="stylesheet" href="HCeditor/HCeditor.css">
 		<script src="js/vue.js"></script>
 	</head>
 	<body style='display:none;'>
@@ -211,11 +210,12 @@ require 'header_title.php';
 <div class="content_after_header">
 <div class="main_page">
 <script>
-	var 
+	var
 	authLogin 			= '<?=$user_infos->login?>',
 	authName			= '<?=$user_infos->name?> <?=$user_infos->surname?>',
 	authId				= <?=$user_infos->id?> ;
 </script>
+<script src="HCeditor/HCeditorjs.js"></script>
 	<?php
 	 require 'templates/page.php';
 	//  R::selectDatabase('DB2');
@@ -225,7 +225,7 @@ require 'header_title.php';
 </div>
 <?php
 if ($page != 'adminKabinet') {
-	require 'templates/ads.php'; 
+	require 'templates/ads.php';
 }else {
 	echo "
 	<script>
@@ -286,12 +286,12 @@ if ($page != 'adminKabinet') {
 		}, 200);
 	});
 	$('.header_search').click(function () {
-		$('.mobileModeFind').css('display','flex');	
+		$('.mobileModeFind').css('display','flex');
 		$('.wrapper').css('display','none');
 	});
 	$('#mobileModeFindClose').click(function () {
 		$('.wrapper').css('display','flex');
-		$('.mobileModeFind').css('display','none');	
+		$('.mobileModeFind').css('display','none');
 	});
 	$('#mobileModeFindInput').on('keydown',function (e) {
         if(e.which == 13){
@@ -327,5 +327,4 @@ if ($page != 'adminKabinet') {
         },3000);
     });
 </script>
-<script src="HCeditor/HCeditorjs.js"></script>
 <script src="js/main.js" defer></script>

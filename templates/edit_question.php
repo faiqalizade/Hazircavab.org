@@ -1,4 +1,4 @@
-<?php 
+<?php
 $load_question_for_edit = R::load('questions',$opened_question);
 if($cookie_checked):
     if($load_question_for_edit->user == $user_infos->login || $user_infos->status):
@@ -31,7 +31,10 @@ if($cookie_checked):
             <p class='add_question_input_titles' >Детальнее:</p>
             <?php
             $content = $load_question_for_edit->content;
-            require 'HCeditor/HCeditor.php';?>
+            ?>
+            <div id="opened_question_question_add_answer">
+              <hc-editor i='<?=$indexforeditor?>' content='<?=$content?>' ></hc-editor>
+            </div>
         </form>
         <div id='add_question_send_buttons_wrapper' >
         <div class='add_question_send_button'  id='add_question_send_button'>Опубликовать</div>
@@ -256,7 +259,7 @@ if($cookie_checked):
             }
         });
         $('#add_question_send_button,#add_question_send_button2').click(function () {
-            $('#add_question_form').submit(); 
+            $('#add_question_form').submit();
         });
     </script>
     <?php else:?>

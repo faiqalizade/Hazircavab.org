@@ -15,7 +15,7 @@ article{
 	width: 100%;
 }
 .main_page_header{
-	border-bottom: solid 1px #eee; 
+	border-bottom: solid 1px #eee;
 	margin-bottom: 20px;
 	width: 100%;
 }
@@ -28,7 +28,7 @@ article{
 	font-size: 10px;
 }
 .main_blog,.main_blog_right{
-	border-bottom: solid 1px #eee; 
+	border-bottom: solid 1px #eee;
 	padding: 3% 1%;
 }
 #blog_added_information img{
@@ -40,7 +40,7 @@ article{
 }
 .main_blog_bottom_right{
 	width: 100%;
-	border-bottom: solid 1px #eee; 
+	border-bottom: solid 1px #eee;
 	margin: 0;
 	padding: 3% 0;
 }

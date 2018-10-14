@@ -19,7 +19,7 @@ $list_limit = $page_number * 15;
 	</div>
 	<?php
 	if(isset($_GET['new'])){
-		$question_list = R::find('questions','ORDER BY date,time DESC');
+		$question_list = R::find('questions','ORDER BY date DESC,time DESC');
 		$order_question = 'new';
 		echo "
 		<script>
@@ -43,7 +43,7 @@ $list_limit = $page_number * 15;
 		</script>
 		";
 	}else{
-		$question_list = R::find('questions','ORDER BY date,time DESC');
+		$question_list = R::find('questions','ORDER BY date DESC,time DESC');
 		$order_question = 'new';
 		echo "
 		<script>
@@ -70,7 +70,7 @@ $list_limit = $page_number * 15;
 <?php endif;?>
 </div>
 <div class="questions">
-	<?php 
+	<?php
 	$cycle_number = 0;
 	foreach($question_list as $question):
 		$tagsarray = explode(',',$question->tags);

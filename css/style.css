@@ -259,11 +259,12 @@ header{
 	flex: 1;
 	background-color: #fafafa;
 	height: 100%;
-	padding-left: 3%;
 	display: flex;
 }
 .main_page{
 	width: 800px;
+	padding-left: 3%;
+	position: relative;
 }
 #main_page_title{
 	font-size: 1.5em;
@@ -1104,6 +1105,9 @@ footer a{
 	border-radius: 2px;
 	border: 1px solid #ddd;
 }
+.opened_question_footer_setting_edit_button{
+	color: #2b2c37;
+}
 .opened_question_question_footer_setting_block_wrapper{
 	position: relative;
 	border-radius: 7px;
@@ -1305,7 +1309,7 @@ footer a{
 }
 .users_list_wrapper,.tags_list_wrapper{
 	display: flex;
-	width: 100%;
+	width: 96%;
 	flex-wrap: wrap;
 	justify-content: space-between;
 }
@@ -1978,12 +1982,11 @@ footer a{
 	background-color: #2c2e33;
 }
 #opened_user_profile_not_verifed{
-	width: calc(100% - 5px + 36px);
+	width: calc(100% - 5px);
 	background-color: #e34961;
 	padding: 5px 0 5px 5px;
 	display: block;
 	font-family: 'Exo 2';
-	margin-left: -35px;
 	color: #fff;
 }
 .mail_not_verifed_input{

@@ -32,14 +32,14 @@ $(window).resize(function () {
 			$('.content').css('transition','margin .5s');
         }, 600);
         $('.wrapper').css('display','flex');
-		$('.mobileModeFind').css('display','none');	
+		$('.mobileModeFind').css('display','none');
 	}else if ($(window).width() <= 1022 && $(window).width() > 765 ) {
 		$('.stylecss').attr('href','css/style1024_765.css');
 		setTimeout(function () {
 			$('.content').css('transition','margin .5s');
         }, 600);
         $('.wrapper').css('display','flex');
-		$('.mobileModeFind').css('display','none');	
+		$('.mobileModeFind').css('display','none');
 	}else if ($(window).width() <= 765) {
 		$('.stylecss').attr('href','css/style765-0.css');
 		setTimeout(function () {
@@ -55,7 +55,7 @@ $(window).resize(function () {
 		$('.content').css('margin-left','0');
         $('.main_page_header_menu_block').css('background-color','#516174');
         $('.wrapper').css('display','flex');
-		$('.mobileModeFind').css('display','none');	
+		$('.mobileModeFind').css('display','none');
 	}
 	$('#article_on_1200').height($('.wrapper').height());
 });
@@ -65,7 +65,7 @@ function first_time() {
 	$('#first_time_guide_block').css('display','flex');
 	function getcookie ( cookie_name ){
 		var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
-	
+
 		if ( results )
 		  return ( unescape ( results[2] ) );
 		else
@@ -179,21 +179,21 @@ function openDropMenu(element) {
 }
 
 function removeComment(element) {
-	var 
+	var
 	commentIndex				= $('.remove_button_comment').index(element)
 	commentId					= $('.remove_button_comment').eq(commentIndex).attr('commentId')
 	count						= $(element).closest('.opened_question_question_answer').find('.answers_comments_count').text() ;
 	count = parseInt(count);
 	count--;
 	$(element).closest('.opened_question_question_answer').find('.answers_comments_count').text(count);
-	$(element).closest('.opened_question_comment_to_answer_wrapper').hide();	
+	$(element).closest('.opened_question_comment_to_answer_wrapper').hide();
 	$.ajax({
 		type: "post",
 		url: "templates/deleteCommentToAnswer.php",
 		data: {comment:commentId},
 		dataType: "html",
 		success: function (data) {
-			
+
 		}
 	});
 }
@@ -225,7 +225,7 @@ $(document).on('touchstart',function (event) {
 setTimeout(() => {
 	$('#opened_question_question_add_answer_submit').click(function () {
 		if(endTextLength > 5){
-			$('#add_answer_form').submit(); 
+			$('#add_answer_form').submit();
 		}
 	});
 	var openedAnswerCommenting = 0,indexOpenedAnswerComment;
@@ -241,8 +241,8 @@ $('.opened_question_question_answer_comment_button').click(function () {
 		indexOpenedAnswerComment = indexComment;
 	}
 });
-$('.opened_question_comment_to_answer_reply_bttn').click(function () {  
-		var 
+$('.opened_question_comment_to_answer_reply_bttn').click(function () {
+		var
 		indexEditor 			= $(this).attr('answerEditorIndex'),
 		userName				= $(this).attr('user');
 		userName 				= '@'+userName+',';
@@ -257,7 +257,7 @@ $('.remove_button_comment').click(function () {
 });
 
 $('.opened_question_comment_to_answer_like_bttn').click(function () {
-	var 
+	var
 	likeButtonIndex				= $('.opened_question_comment_to_answer_like_bttn').index(this)
 	likesCount					= $('.comments_to_answer_count').eq(likeButtonIndex).text()
 	commentId					= $(this).attr('commentId') ;
@@ -331,13 +331,13 @@ $('.opened_question_answer_comment_send_button').click(function () {
 					dataType: "html",
 					success: function (data) {
 						$('.editor_textarea').eq(indexToAddComment).val('');
-						var 
+						var
 						commentsCount 		= $('.answers_comments_count').eq(indexCommentsWrapper).text()
 						lastId				= data ;
 						commentsCount = parseInt(commentsCount);
 						commentsCount++;
 						$('.answers_comments_count').eq(indexCommentsWrapper).text(commentsCount);
-						var 
+						var
 						today				= new Date(),
 						day					= today.getDate(),
 						mounth				= today.getMonth()+1,
@@ -347,7 +347,7 @@ $('.opened_question_answer_comment_send_button').click(function () {
 						seconds				= today.getSeconds();
 						if(day < 10) {
 							day = '0'+day;
-						} 
+						}
 						if(mounth < 10) {
 							mounth = '0'+mounth;
 						}
@@ -373,7 +373,7 @@ $('.opened_question_answer_comment_send_button').click(function () {
 							<div class='opened_question_comment_to_answer_content'>
 							`+contentToAddComment.replace(/\n/g, "<br />")+`
 							</div>
-							<div class='opened_question_comment_to_answer_footer'> 
+							<div class='opened_question_comment_to_answer_footer'>
 								<p class='opened_question_comment_to_answer_date'>`+ today +`</p>
 								<p class='opened_question_comment_to_answer_like_bttn'>Нравиться (0)</p>
 								<p class='opened_question_comment_to_answer_reply_bttn'>Ответить</p>
@@ -395,158 +395,3 @@ $('.opened_question_answer_comment_send_button').click(function () {
 		}, 100);
 });
 }, 100);
-
-
-//Opened question page script end not Vue
-Vue.component('hc-editor',{
-	props:{
-		i: String,
-		changer:Boolean,
-		content: String,
-		answerid: Number
-	},
-    data: function () {
-      return{
-		  index: this.i,
-      }  
-    },
-    template: `<div id='editor_wrapper'>
-    <div class='editor_buttons_block' >
-        <div id='editor_buttons_wrapper'>
-            <div @mouseout='mouseOut' @mouseover='mouseOver'  @click='bold' class='editor_button bold' title='Жирный' >
-                <img class='editor_button_img' src="HCeditor/HCeditorimg/bold.svg" alt="Жирный" />
-            </div>
-            <div @mouseout='mouseOut' @mouseover='mouseOver' @click='italic' class='editor_button italic' title='Курсивный'  >
-                <img class='editor_button_img' src="HCeditor/HCeditorimg/italic.svg" alt="Курсивный" />
-            </div>
-            <div @mouseout='mouseOut' @mouseover='mouseOver' @click='link' class='editor_button link' title='Ссылка' >
-                <img class='editor_button_img' src="HCeditor/HCeditorimg/link.svg" alt="Ссылка" />
-            </div>
-            <div @mouseout='mouseOut' @mouseover='mouseOver' @click='superscript' class='editor_button superscript' title='Степень' >
-                <img class='editor_button_img' src="HCeditor/HCeditorimg/superscript.svg" alt="Степень" />
-            </div>
-            <div @mouseout='mouseOut' @mouseover='mouseOver' @click='subscript' class='editor_button subscript' title='Индекс' >
-                <img class='editor_button_img' src="HCeditor/HCeditorimg/subscript.svg" alt="Индекс" />
-            </div>
-            <!--***********-->
-            <div @mouseout='mouseOut' @mouseover='mouseOver' @click='img' class='editor_button image' title='Изображение' >
-                <div class='image_after' >
-                    <img class='editor_button_img' src="HCeditor/HCeditorimg/picture.svg" alt="Изображение" />
-                </div>
-                <div class='image_button_list' >
-                    <label for="uploadFile"><p class='image_local' >С компьютера </p></label>
-                    <p @click='from_internet' class='image_internet' >Из интернета</p>
-                </div>
-            </div>
-            <!--***********-->
-            <div @mouseout='mouseOut' @mouseover='mouseOver' @click='list' class='editor_button list' title='Список' >
-                <div class='list_after' >
-                    <img class='editor_button_img' src="HCeditor/HCeditorimg/list.svg" alt="Список" />
-                </div>
-                <div class='ol_button_list'>
-                    <p @click='ol' class ='ol'>Нумерованный</p>
-                    <p @click='ul' class='ul'>Маркированный</p>
-                </div>
-            </div>
-        </div>
-    </div>
-		<textarea name='HCeditor' @keydown='HCeditor' class="editor_textarea" @focus='focus' @focusout='focusOut' >{{content}}</textarea>
-		<p id='HCeditor_error'></p>
-        <textarea name="HCeditorContent" class="HCeditorcopy">{{content}}</textarea>
-		<input @change='file' type="file"  class='file' id="uploadFile" />
-		<div v-if='changer' id='edit_answer_buttons_wrapper'>
-		<p @click='save' id='edit_answer_button' >Изменить</p>
-		<p id='edit_answer_cancel' @click='close' >Отменить</p>
-		</div>
-</div>`,
-methods:{
-    bold(){
-		closeDropdown();
-        bold(this.index);
-    },
-    italic(){
-		closeDropdown();
-        italic(this.index);
-    },
-    link(){
-		closeDropdown();
-        link(this.index);
-    },
-    superscript(){
-		closeDropdown();
-        superscript(this.index);
-    },
-    subscript(){
-		closeDropdown();
-        subscript(this.index);
-    },
-    img(){
-        image(this.index);
-    },
-    list(){
-        list(this.index);
-    },
-    focus(){
-        editorFocus(this.index);
-    },
-    focusOut(){
-        editorFocusOut(this.index);
-    },
-    mouseOver(){
-        $('.editor_button').mouseover(function () {
-            var e = $('.editor_button').index(this);
-            editorButtonMouseOver(e); 
-        });
-	},
-	mouseOut(){
-        if(!openedListList && !openedListImg){
-            $('.editor_button').css('background-color','transparent');
-        }
-	},
-	HCeditor(){
-		HCeditor(this.index);
-	},
-	close(){
-		this.$emit('changer');
-	},
-	file(){
-		file(this.index);
-	},
-	from_internet(){
-		image_internet(this.index);
-	},
-	ol(){
-		ol(this.index);
-	},
-	ul(){
-		ul(this.index);
-	},
-	save(){
-		var answerId = this.answerid,answerContent=$('.HCeditorcopy').eq(this.index).val(),Index=this.index,element=this;
-		$.ajax({
-			type: "post",
-			url: "templates/edit_answer.php",
-			data: {answerId:answerId,editAnswerContent:answerContent},
-			dataType: "html",
-			cache: false,
-			success: function () {
-				$('.block_for_switch_edit_answer').eq(Index).html(answerContent.replace(/\n/g, "<br />"));
-				element.$emit('changer');
-			}
-		});
-	}
-}
-});
-const vues = document.querySelectorAll(".hc-editor");
-const each = Array.prototype.forEach;
-each.call(vues, (el) => new Vue({
-	el,
-	data:{
-		show:false
-	}
-}));
-
-new Vue({
-	el:'#opened_question_question_add_answer',
-});
-//Opened question page script end with Vue

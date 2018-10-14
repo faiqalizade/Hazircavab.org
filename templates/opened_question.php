@@ -35,7 +35,7 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 			</div>
 			<div class="opened_question_question_footer_setting_block">
 				<?php if($find_question_added_profile->login == $user_infos->login || $user_infos->status == 1): ?>
-					<a href="index.php?page=edit_question&question=<?=$opened_question_load->id?>">Изменить</a>
+					<a class="opened_question_footer_setting_edit_button" href="index.php?page=edit_question&question=<?=$opened_question_load->id?>">Изменить</a>
 					<a href="index.php?page=remove_question&question=<?=$opened_question_load->id?>" class="opened_question_question_footer_setting_delete">Удалить</a>
 				<?php else:?>
 					<a href="index.php">Пожаловаться</a>
@@ -118,7 +118,7 @@ foreach ($find_answers_to_question as $answer):
 										<div class='opened_question_comment_to_answer_content'>
 										<?=preg_replace('#\r?\n#', '<br/>',$comment->content)?>
 										</div>
-										<div class='opened_question_comment_to_answer_footer'> 
+										<div class='opened_question_comment_to_answer_footer'>
 											<p class='opened_question_comment_to_answer_date'><?=$comment->date?> - <?=$comment->time?></p>
 											<?php if(in_array($comment->id,$commentsLikesArray)): ?>
 												<p class='opened_question_comment_to_answer_like_bttn' commentId='<?=$comment->id?>' liked='true'> <span class="comments_to_answer_like_text">Не нравиться</span> (<span class="comments_to_answer_count"><?=$comment->likes?></span>)</p>
@@ -171,7 +171,7 @@ foreach ($find_answers_to_question as $answer):
 					</div>
 				</div>
 			</div>
-	<?php 
+	<?php
 	$indexforeditor++;
 	endforeach;
 	$content = '';
@@ -188,7 +188,7 @@ if(empty($isset_asnwer) && $cookie_checked):
 	<p id='opened_question_question_add_answer_title' >ВАШ ОТВЕТ НА ВОПРОС</p>
 	<div class="editorBlock">
 	<form method="post" id='add_answer_form'>
-	<hc-editor i='<?=$indexforeditor?>' ></hc-editor>
+		<hc-editor i='<?=$indexforeditor?>' ></hc-editor>
 	</form>
 	</div>
 	<div id='opened_question_question_add_answer_submit' >
@@ -214,3 +214,6 @@ else:
 	</div>
 </div>
 <?php endif;?>
+<script>
+	init_hceditor('opened_question_question_add_answer','hc-editor');
+</script>

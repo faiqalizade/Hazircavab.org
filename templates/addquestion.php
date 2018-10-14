@@ -1,4 +1,4 @@
-<?php 
+<?php
 if($cookie_checked):
     if($user_infos->verifed != 1): ?>
     <a href='index.php?page=myprofile&profile' id='opened_user_profile_not_verifed' >
@@ -25,7 +25,9 @@ if($cookie_checked):
             </div>
             <p id='question_tags_error' ></p>
             <p class='add_question_input_titles' >Детальнее:</p>
-            <?php require 'HCeditor/HCeditor.php';?>
+            <div id="opened_question_question_add_answer">
+              <hc-editor i='<?=$indexforeditor?>' ></hc-editor>
+            </div>
         </form>
         <div id='add_question_send_buttons_wrapper' >
         <div class='add_question_send_button'  id='add_question_send_button'>Опубликовать</div>
@@ -199,7 +201,43 @@ if($cookie_checked):
     $('.editor_textarea').on('keyup',function () {
         checkInputsToEmpty();
     });
-    
+    function CheckTags(preview){
+      var return_bool = false;
+      $.ajax({
+              url: 'templates/check_sent_tags.php',
+              type: 'post',
+              cache: false,
+              dataType: 'html',
+              data: ({checkTag:tagInputArr}),
+              success: function (data) {
+                  if(data.length > 0){
+                      tagInputArr = data.split(',');
+                      if(tagInputArr.length <= 5){
+                          $('#question_tags_error').text('');
+                          $('#question_tags').val(tagInputArr.join(','));
+                          $('#HCeditor_error').text('');
+                          $('#HCeditorcopy').val(readyText);
+                          if(preview){
+                            $('#add_question_form_wrapper').css('display','none');
+                            $('#add_question_preview_wrapper').css('display','block');
+                            $('#add_question_preview_tags').html(tagInputArr.join("  &#8226;  "));
+                            $('#add_question_preview_title').text($('#question_title').val());
+                            $('#add_question_preview_content').html(readyText.replace(/(?:\r\n|\r|\n)/g, '<br/>'));
+                            $('#add_question_preview_tags_img').attr('src','tagimages/'+tagInputArr[0].toLowerCase()+'.png');
+                          }
+                          return_bool = true;
+                      }else{
+                          $('#question_tags_error').text('Невозможно указать более пяти тегов');
+                      }
+                  }else{
+                      $('#question_tags_error').text('Необходимо указать один из существующих тегов');
+                  }
+              }
+      });
+      setTimeout(function () {
+        return return_bool;
+      }, 1000);
+    }
     $('#add_question_preview_edit').click(function () {
             $('#add_question_form_wrapper').css('display','block');
             $('#add_question_preview_wrapper').css('display','none');
@@ -215,40 +253,18 @@ if($cookie_checked):
                     //Здесь должны вывести ошибку
                     $('#HCeditor_error').text('Минимальная длина текста: 30, максимальная: 10 000');
                 }else{
-                    $.ajax({
-                            url: 'templates/check_sent_tags.php',
-                            type: 'post',
-                            cache: false,
-                            dataType: 'html',
-                            data: ({checkTag:tagInputArr}),
-                            success: function (data) {
-                                if(data.length > 0){
-                                    tagInputArr = data.split(',');
-                                    if(tagInputArr.length <= 5){
-                                        $('#question_tags_error').text('');
-                                        $('#question_tags').val(tagInputArr.join(','));
-                                        $('#HCeditor_error').text('');
-                                        $('#HCeditorcopy').val(readyText);
-                                        $('#add_question_form_wrapper').css('display','none');
-                                        $('#add_question_preview_wrapper').css('display','block');
-                                        $('#add_question_preview_tags_img').attr('src','tagimages/'+tagInputArr[0].toLowerCase()+'.png');
-                                        $('#add_question_preview_tags').html(tagInputArr.join("  &#8226;  "));
-                                        $('#add_question_preview_title').text($('#question_title').val());
-                                        $('#add_question_preview_content').html(readyText.replace(/(?:\r\n|\r|\n)/g, '<br/>'));
-                                    }else{
-                                        $('#question_tags_error').text('Невозможно указать более пяти тегов');
-                                    }
-                                }else{
-                                    $('#question_tags_error').text('Необходимо указать один из существующих тегов');
-                                }
-                            }
-                    });
+                  CheckTags(true);
                 }
             }
         });
         $('#add_question_send_button,#add_question_send_button2').click(function () {
-            $('#add_question_form').submit(); 
+          if(CheckTags()){
+            $('#add_question_form').submit();
+          }
         });
     });
     </script>
 <?php endif;?>
+<script>
+	init_hceditor('opened_question_question_add_answer');
+</script>
