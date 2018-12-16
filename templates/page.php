@@ -2,9 +2,9 @@
 if ($page == '' || $page == 'questions') {
 	require 'templates/main.php';
 }elseif ($page == 'blog') {
-	if (!isset($blog)) {
+	if (!isset($blog_id)) {
 		require 'templates/blog.php';
-	}elseif (isset($blog)) {
+	}elseif (isset($blog_id)) {
 		require 'templates/opened_blog.php';
 	}
 }elseif ($page == 'question') {

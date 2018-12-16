@@ -56,6 +56,7 @@ if($cookie_checked):
     </div>
 
     <script>
+    init_hceditor('opened_question_question_add_answer','hc-editor');
     var tagInputArr,tagsInput;
     tagInputArr = $('#question_tags').val().split(',');
     var questionTitle = false,questionTags = false,questionContent = false,questionTitleVal;

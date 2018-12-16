@@ -61,7 +61,7 @@ if($opened_user_infos->id != 0):
         if(!empty($opened_user_infos->desc)){
             echo preg_replace( "#\r?\n#", "<br/>", $opened_user_infos->desc);
         }else{
-            echo "<p class='no_subscribe_tag' >Пусто</p>";
+            echo "<p class='empty_tag' >Пусто</p>";
         }
         echo "
         <script>
@@ -128,7 +128,7 @@ if($opened_user_infos->id != 0):
                 $cycle_number++;
             endforeach;
         else:
-            echo "<p class='no_subscribe_tag' >Пусто</p>";
+            echo "<p class='empty_tag' >Пусто</p>";
         endif;
     elseif (isset($_GET['answers'])):
         echo "
@@ -177,7 +177,7 @@ if($opened_user_infos->id != 0):
                 $cycle_number++;
             endforeach;
         else:
-            echo "<p class='no_subscribe_tag' >Пусто</p>";
+            echo "<p class='empty_tag' >Пусто</p>";
         endif;
     elseif (isset($_GET['likes'])):
         echo "
@@ -249,7 +249,7 @@ if($opened_user_infos->id != 0):
             endforeach;
             echo "</div>";
         else:?>
-        <p class='no_subscribe_tag' >Пусто</p>
+        <p class='empty_tag' >Пусто</p>
     <?php
     endif;
     else:

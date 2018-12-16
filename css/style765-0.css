@@ -225,7 +225,7 @@ header{
 	font-size: .6em;
 }
 .questions_pages{
-	display: none;
+	font-size: 10px;
 }
 #opened_tag_header_about{
 	padding: 0;

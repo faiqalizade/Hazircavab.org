@@ -201,8 +201,8 @@ if($cookie_checked):
     $('.editor_textarea').on('keyup',function () {
         checkInputsToEmpty();
     });
+    var check_tags_return_bool = false;
     function CheckTags(preview){
-      var return_bool = false;
       $.ajax({
               url: 'templates/check_sent_tags.php',
               type: 'post',
@@ -225,7 +225,8 @@ if($cookie_checked):
                             $('#add_question_preview_content').html(readyText.replace(/(?:\r\n|\r|\n)/g, '<br/>'));
                             $('#add_question_preview_tags_img').attr('src','tagimages/'+tagInputArr[0].toLowerCase()+'.png');
                           }
-                          return_bool = true;
+                          check_tags_return_bool = true;
+                          return true;
                       }else{
                           $('#question_tags_error').text('Невозможно указать более пяти тегов');
                       }
@@ -234,9 +235,7 @@ if($cookie_checked):
                   }
               }
       });
-      setTimeout(function () {
-        return return_bool;
-      }, 1000);
+        return check_tags_return_bool;
     }
     $('#add_question_preview_edit').click(function () {
             $('#add_question_form_wrapper').css('display','block');
@@ -258,9 +257,18 @@ if($cookie_checked):
             }
         });
         $('#add_question_send_button,#add_question_send_button2').click(function () {
-          if(CheckTags()){
-            $('#add_question_form').submit();
-          }
+            if(endTextLength <= 30){
+                    //Здесь должны вывести ошибку
+                    $('#HCeditor_error').text('Минимальная длина текста: 30, максимальная: 10 000');
+                }else{
+                    CheckTags();
+                }
+            setTimeout(() => {
+                if(check_tags_return_bool){
+                    $('#add_question_form').submit();
+                }
+            }, 500);
+          
         });
     });
     </script>

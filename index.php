@@ -1,19 +1,4 @@
 <?php
-$page = $_GET['page'];
-$blog = $_GET['blog'];
-$opened_user_profile = $_GET['user'];
-$tag = $_GET['tag'];
-$profile = $_GET['profile'];
-$opened_question = $_GET['question'];
-$accaunt = $_GET['password'];
-$activate_accaunt = $_GET['activate_code'];
-$like_answer = $_GET['like'];
-$unlike_answer = $_GET['unlike'];
-$check_answer = $_GET['check'];
-$uncheck_answer = $_GET['uncheck'];
-$remove_answer = $_GET['remove_answer'];
-$list_page_number = $_GET['pn'];
-$query = $_GET['q'];
 require 'db.php';
 require 'header_title.php';
  ?>
@@ -252,9 +237,7 @@ if ($page != 'adminKabinet') {
 		setTimeout(() => {
 			if($('#search_input').val().length > 0){
 				$('#find').css('display','block');
-				$('#findQuestions').remove();
-				$('#findTags').remove();
-				$('#findUsers').remove();
+				$('.foundWrapper').remove();
 				var typedText = $('#search_input').val();
 				$.ajax({
 					url: 'templates/find.php',
@@ -269,8 +252,7 @@ if ($page != 'adminKabinet') {
 				});
 			}else{
 				$('#findQuestions').remove();
-				$('#findTags').remove();
-				$('#findUsers').remove();
+				$('.foundWrapper').remove();
 				$('#notFound').remove();
 				$('#find').css('display','none');
 			}
@@ -278,11 +260,9 @@ if ($page != 'adminKabinet') {
 	});
 	$('#search_input').focusout(function () {
 		setTimeout(() => {
-			$('#findQuestions').remove();
-		$('#findTags').remove();
-		$('#findUsers').remove();
-		$('#notFound').remove();
-		$('#find').css('display','none');
+			$('.foundWrapper').remove();
+			$('#notFound').remove();
+			$('#find').css('display','none');
 		}, 200);
 	});
 	$('.header_search').click(function () {
@@ -311,17 +291,13 @@ if ($page != 'adminKabinet') {
                     dataType: 'html',
                     data: ({findText:typedText}),
                     success: function (data) {
-                        $('#notFound').remove();
-                        $('#findQuestions').remove();
-                        $('#findTags').remove();
-                        $('#findUsers').remove();
+						$('#notFound').remove();
+						$('.foundWrapper').remove();
                         $('#mobileModeFoundWrapper').append(data);
                     }
                 });
             }else{
-                $('#findQuestions').remove();
-                $('#findTags').remove();
-                $('#findUsers').remove();
+				$('.foundWrapper').remove();
                 $('#notFound').remove();
             }
         },3000);

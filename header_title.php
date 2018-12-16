@@ -1,4 +1,21 @@
 <?php
+# =============== VARS ==============
+$page = $_GET['page'];
+$blog_id = $_GET['blog'];
+$opened_user_profile = $_GET['user'];
+$tag = $_GET['tag'];
+$profile = $_GET['profile'];
+$opened_question = $_GET['question'];
+$accaunt = $_GET['password'];
+$activate_accaunt = $_GET['activate_code'];
+$like_answer = $_GET['like'];
+$unlike_answer = $_GET['unlike'];
+$check_answer = $_GET['check'];
+$uncheck_answer = $_GET['uncheck'];
+$remove_answer = $_GET['remove_answer'];
+$list_page_number = $_GET['pn'];
+$query = $_GET['q'];
+# =============== ENDVARS ==============
 date_default_timezone_set('Asia/Baku');
 function generateRandomString($length) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -79,6 +96,17 @@ if ($page == 'registr') {
                             mkdir('usersfiles/'.htmlspecialchars($_POST['reg_login']));
                             mkdir('usersfiles/'.htmlspecialchars($_POST['reg_login']).'/images');
                             copy('profil images/14.png','usersfiles/'.htmlspecialchars($_POST['reg_login']).'/profil.png');
+                            $to = $_POST['reg_mail'];
+                            $subject = 'E-mail adresin təsdiqlənməsi';
+                            $headers = "From: noreply@hazircavab.org\r\n";
+                            $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+                            $message = '<html><body>';
+                            $message .= '<h1>Salam Dostum!</h1>';
+                            $message .= "<p>Əziz ".$_POST['reg_name'].", təbriklər sən Hazırcavab.org saytından qeydiyyatdan keçdin. Son bir etap qaldı, <a href='faiqaliza3.tmweb.ru/index.php?page=activation&activate_code=".$registry_verification."'>buraya keçib</a> e-mail adresi təsdiqlə!"."</p>";
+                            $message .= "<p>Uğurlar Dostum</p>";
+                            $message .= "<p>Hörmətlə HAZIRCAVAB!</p>";
+                            $message .= '</body></html>';
+                            mail($to,$subject,$message,$headers);
                             # Buarada Maile mektub atmag lazimdi
                         }else {
                             $error = 'Пароли не совпадают';
@@ -196,7 +224,7 @@ if($page == 'edit_question'){
     if ($cookie_checked) {
         if(isset($_POST['add_question_title'])){
             $load_question_edit = R::load('questions',$opened_question);
-            if($load_question_edit->user == $user_infos->login || $user_infos->status){
+            if($load_question_edit->user == $user_infos->login || $user_infos->status == 9){
                 if(!empty($load_question_edit)){
                     $load_question_edit->title = htmlspecialchars($_POST['add_question_title']);
                     $old_tag_list_arr = explode(',',$load_question_edit->tags);
@@ -228,7 +256,7 @@ if($page == 'edit_question'){
 if($page == 'remove_question'){
     if($check_cookie){
         $load_remove_question = R::load('questions',$opened_question);
-        if($load_remove_question->user == $user_infos->login || $user_infos->status){
+        if($load_remove_question->user == $user_infos->login || $user_infos->status == 9){
             $remove_tag_arr = explode(',',$load_remove_question->tags);
             $find_question_answers = R::find('answers','question_id = '.$opened_question);
             R::trashAll($find_question_answers);
@@ -357,7 +385,7 @@ if($page == 'question'){
         }elseif (isset($remove_answer)) {
             if($cookie_checked){
                 $load_answer_to_remove = R::load('answers',$remove_answer);
-                if($user_infos->status || $load_answer_to_remove->user == $user_infos->login){
+                if($user_infos->status == 9 || $load_answer_to_remove->user == $user_infos->login){
                     if($load_answer_to_remove->check_answer){
                         $load_question_to_change_check_answers_list = R::load('questions',$opened_question);
                         $check_answers_arr = explode(',',$load_question_to_change_check_answers_list->check_answer);
@@ -451,6 +479,26 @@ if($page == 'unsubscribe'){
             header("Location: index.php");
             exit();
         }
+    }
+}
+
+if($page == 'blog'){
+    if(isset($_POST['blog_comment_add_submit']) && $cookie_checked){
+        $change_question_comments = R::load('blog',$blog_id);
+        $change_question_comments->comments = $change_question_comments->comments + 1;
+        R::store($change_question_comments);
+        $addCommentToBlog = R::dispense('commentstoarticle');
+        $addCommentToBlog->article_id = $blog_id;
+        $addCommentToBlog->content = $_POST['HCeditorContent'];
+        $addCommentToBlog->user_id = $user_infos['id'];
+        $addCommentToBlog->user_name = $user_infos['name'];
+        $addCommentToBlog->user_surname = $user_infos['surname'];
+        $addCommentToBlog->user_login = $user_infos['login'];
+        $addCommentToBlog->date = date('d.m.Y');
+        $addCommentToBlog->time = date('H:i:s');
+        R::store($addCommentToBlog);
+        header("Location:".$_SERVER['HTTP_REFERER']);
+        exit();
     }
 }
 ?>

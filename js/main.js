@@ -10,7 +10,7 @@ $('.main_page_header_menu_block').click(function () {
 	}else {
 		$('#article_on_1200').css('margin-left','-260px');
 		$('.content').css('margin-left','0');
-		$('.main_page_header_menu_block').css('background-color','#516174');
+		$('.main_page_header_menu_block').css('background-color','#4f5a6e');
 		opened_article_on_1200 = false;
 	}
 });
@@ -21,7 +21,7 @@ $('.main_page_header_menu_block').mouseover(function () {
 });
 $('.main_page_header_menu_block').mouseout(function () {
 	if (!opened_article_on_1200) {
-		$(this).css('background-color','#516174');
+		$(this).css('background-color','#4f5a6e');
 	}
 });
 var window_width = $(window).width();

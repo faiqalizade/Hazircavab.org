@@ -233,7 +233,7 @@ header{
 	display: flex;
 	padding: 0 3%;
 	padding-right: 0;
-	background-color: #516174;
+	background-color: #4f5a6e;
 	align-items: center;
 }
 #search_input{
@@ -260,6 +260,7 @@ header{
 	background-color: #fafafa;
 	height: 100%;
 	display: flex;
+	z-index: 2;
 }
 .main_page{
 	width: 800px;
@@ -420,7 +421,8 @@ footer a{
 	justify-content: flex-end;
 	padding-right: 3%;
 }
-#opened_question_page{
+#opened_question_page,
+#opened_blog_page{
 	border-bottom: solid 2px;
 }
 .question_list_titles:hover{
@@ -544,6 +546,7 @@ footer a{
 	display: flex;
 	width: 100%;
 	flex-direction: column;
+	margin-bottom: 40px;
 }
 .blog_page_header_link{
 	float: right;
@@ -563,6 +566,7 @@ footer a{
 	padding-right: 3%;
 	padding: 2% 0;
 	border-bottom: 1px solid #f0f0f0;
+	color: #2c2e33;
 }
 .blog_article:last-child{
 	border: none;
@@ -621,25 +625,22 @@ footer a{
 .blog{
 	float: left;
 	width: 98%;
-	height: 400px;
 	display: flex;
 	margin-bottom: 5%;
 }
 .main_blog,.main_blog_right{
 	flex: 1;
 	padding: 1%;
+	word-break: break-all;
 }
 .main_blog_image_block{
-	height: 60%;
+	height: 250px;
 }
 .main_blog_image_block img{
 	transition: 500ms all;
 	width: 100%;
 	height: 100%;
 	border-radius: 5px;
-}
-.blog_list_titles:first-child{
-	border-bottom: 2px solid;
 }
 .main_blog_bottom_footer_items{
 	width: 25%;
@@ -678,15 +679,13 @@ footer a{
 	flex-direction: column;
 	height: 40%;
 }
-.main_blog_informations_content{
-	flex:1;
-}
 .main_blog_footer{
 	display: flex;
 	float: left;
-	width: 95%;
+	width: 98%;
 	justify-content: space-between;
 	align-items: center;
+	margin-top: 20px;
 }
 .main_blog_bottom_footer{
 	display: flex;
@@ -696,15 +695,20 @@ footer a{
 	justify-content: space-between;
 	align-items: center;
 }
-.main_blog_footer_items img,.main_blog_bottom_footer_items img{
+.main_blog_footer_items img,
+.main_blog_bottom_footer_items img{
 	width: 16px;
 	margin-right: 5px;
 	height: 16px;
+}
+.main_blog_bottom_image_block{
+	height: 150px;
 }
 .main_blog_bottom_image_block img{
 	width: 100%;
 	border-radius: 5px;
 	transition: 500ms all;
+	height: 100%;
 
 }
 .main_blog_bottom_image_block img:hover,.main_blog_image_block img:hover{
@@ -715,7 +719,7 @@ footer a{
 	float: left;
 	width: 32%;
 	margin-bottom: 5%;
-
+	word-break: break-all;
 }
 .main_blog_bottom_wrapper{
 	flex-wrap: wrap;
@@ -914,6 +918,7 @@ footer a{
 	padding: 5% 0;
 	float: left;
 	border-bottom: 1px solid #dbdbdb;
+	width: 100%;
 }
 .blog_comment_content{
 	margin-left: 45px;
@@ -943,6 +948,9 @@ footer a{
 	color: #fff;
 	cursor: pointer;
 	font-family: 'Signika';
+}
+#blog_comment_add_submit_for_label{
+	display: none;
 }
 .opened_question_answer_comment_send_button{
 	border: none;
@@ -1564,7 +1572,7 @@ footer a{
 	position: fixed;
 	top: 0;
 	left: 0;
-	z-index: 2;
+	z-index: 6;
 	display: none;
 	width: 100%;
 	height: 100%;
@@ -2254,7 +2262,8 @@ footer a{
 	word-wrap: break-word;
 	float: left;
 }
-.no_subscribe_tag{
+.empty_tag{
+	font-family: 'Montserrat';
 	text-align: center;
 	font-weight: 600;
 	color: #e34961;
@@ -2322,6 +2331,7 @@ footer a{
 	outline: none;
 	display: none;
 	box-shadow: 0 5px 3px rgba(0, 0, 0, 0.3);
+	z-index: 3;
 }
 #opened_tag_after_list_wrapper{
 	width: 97%;

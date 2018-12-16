@@ -20,7 +20,7 @@ foreach ($tag_list_get_tags as $tag):
 	if($cycle_number >= $list_limit_last && $cycle_number < $list_limit):
 ?>
 <div class='tag_list_block'>
-<a href="index.php?page=tags&tag=<?=$tag->tagname?>&questions" id="tag_list_tag_image"><img src="tagimages/<?=mb_strtolower($tag->tagname)?>.png"></a>
+<a href="index.php?page=tags&tag=<?=$tag->tagname?>&questions" id="tag_list_tag_image"><img src="tagimages/<?=$tag->tagname?>.png"></a>
 <a href="index.php?page=tags&tag=<?=$tag->tagname?>&questions"><p id="tag_list_tag_name"><?=$tag->tagname?></p></a>
 <p id='tag_list_tag_asked'>
 <a href="index.php?page=tags&tag=<?=$tag->tagname?>&questions"><?=$tag->questions?> Вопросов</a>

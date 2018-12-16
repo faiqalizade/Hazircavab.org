@@ -1,0 +1,13 @@
+.input{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.article-title{
+    width: calc(100% - 20px);
+    padding: 5px 10px;
+}
+.form{
+    &-button{
+        margin-top: 10px;
+    }
+}

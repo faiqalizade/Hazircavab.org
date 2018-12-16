@@ -34,7 +34,7 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 				<img src="images/3pointsilver.svg" id="opened_question_question_footer_setting_image">
 			</div>
 			<div class="opened_question_question_footer_setting_block">
-				<?php if($find_question_added_profile->login == $user_infos->login || $user_infos->status == 1): ?>
+				<?php if($find_question_added_profile->login == $user_infos->login || $user_infos->status == 9): ?>
 					<a class="opened_question_footer_setting_edit_button" href="index.php?page=edit_question&question=<?=$opened_question_load->id?>">Изменить</a>
 					<a href="index.php?page=remove_question&question=<?=$opened_question_load->id?>" class="opened_question_question_footer_setting_delete">Удалить</a>
 				<?php else:?>
@@ -131,7 +131,7 @@ foreach ($find_answers_to_question as $answer):
 													<img src="images/3pointsilver.svg" id="opened_question_question_footer_setting_image">
 												</div>
 												<div class="opened_question_question_footer_setting_block">
-												<?php if($comment->user == $user_infos->login || $user_infos->status == 1): ?>
+												<?php if($comment->user == $user_infos->login || $user_infos->status == 9): ?>
 													<a commentId='<?=$comment->id?>' class="opened_question_question_footer_setting_delete remove_button_comment">Удалить</a>
 												<?php else:?>
 													<a href="index.php">Пожаловаться</a>
@@ -161,7 +161,7 @@ foreach ($find_answers_to_question as $answer):
 							<img src="images/3pointsilver.svg" id="opened_question_question_footer_setting_image">
 						</div>
 						<div class="opened_question_question_footer_setting_block">
-							<?php if($find_answer_added_profile->login == $user_infos->login || $user_infos->status == 1): ?>
+							<?php if($find_answer_added_profile->login == $user_infos->login || $user_infos->status == 9): ?>
 								<a @click='show=true' class='opened_question_question_footer_setting_edit' >Изменить</a>
 								<a href="index.php?page=question&question=<?=$opened_question?>&remove_answer=<?=$answer->id?>" class="opened_question_question_footer_setting_delete">Удалить</a>
 							<?php else:?>
