@@ -13,7 +13,7 @@ if(!empty($findquestion) || !empty($findtags) || !empty($findprofiles) || !empty
 </div>
 <div class='foundWrapper' >
     <?php foreach($findtags as $tag): ?>
-        <a href='index.php?page=tags&tag=<?=$tag->tagname?>&questions' class='findList' ><img class='findTagImage' src="tagimages/<?=$tag->tagname?>.png"><?=$tag->tagname?></a>
+        <a href='index.php?page=tags&tag=<?=$tag->name_ru?>&questions' class='findList' ><img class='findTagImage' src="tagimages/<?=$tag->name_ru?>.png"><?=$tag->name_ru?></a>
     <?php endforeach;?>
 </div>
 <div class='foundWrapper' >
@@ -28,6 +28,6 @@ if(!empty($findquestion) || !empty($findtags) || !empty($findprofiles) || !empty
 </div>
 <?php else:?>
 <a href='index.php?page=q&q=<?=$_POST['findText']?>' id='notFound' >
-Поиск по запросу "<?=$_POST['findText']?>"
+<?= $langVals[$_COOKIE['language']]['search'] ?> по запросу "<?=$_POST['findText']?>"
 </a>
 <?php endif;?>

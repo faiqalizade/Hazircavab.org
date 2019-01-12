@@ -226,6 +226,7 @@ header{
 }
 .questions_pages{
 	font-size: 10px;
+
 }
 #opened_tag_header_about{
 	padding: 0;
@@ -256,7 +257,7 @@ header{
 	height: 200px;
 }
 .blog_article_info{
-	width: 100%;
+	width: 96%;
 }
 #first_time_guide_end_desc{
 	font-size: 10px;

@@ -1,4 +1,10 @@
+/*
+  HCeditor v.1.0.0
+  (c) 2018 Faiq Alizade
+  License: MIT
+*/
 #editor_wrapper{
+    color: #0D0B0F;
     width: 100%;
 }
 .HCeditorcopy{
@@ -20,11 +26,11 @@
     flex-direction: row;
     justify-content: flex-start;
     border-radius: 4px 0 0 0 ;
-    background-color: #2a2f4205;
+    background-color: #fbfafb;
 }
 .image_local{
     cursor: pointer;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #eeeeee;
 }
 .editor_button{
     border-left: 1px solid #eee;

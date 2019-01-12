@@ -6,7 +6,7 @@ if($cookie_checked):
     </a>
     <?php endif; ?>
     <div class="main_page_header">
-        <p id="main_page_title">Задать вопрос</p>
+        <p id="main_page_title"><?= $langVals[$_COOKIE['language']]['askQusetions'] ?></p>
     </div>
     <div id='add_question_form_wrapper' >
         <form id='add_question_form' method="post" novalidate>
@@ -257,7 +257,9 @@ if($cookie_checked):
             }
         });
         $('#add_question_send_button,#add_question_send_button2').click(function () {
-            if(endTextLength <= 30){
+            console.log($('.editor_textarea').val());
+            
+            if(endTextLength <= 30 || $('.editor_textarea').val() <= 30){
                     //Здесь должны вывести ошибку
                     $('#HCeditor_error').text('Минимальная длина текста: 30, максимальная: 10 000');
                 }else{
@@ -267,7 +269,7 @@ if($cookie_checked):
                 if(check_tags_return_bool){
                     $('#add_question_form').submit();
                 }
-            }, 500);
+            }, 600);
           
         });
     });

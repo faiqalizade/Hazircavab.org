@@ -20,14 +20,14 @@ foreach ($tag_list_get_tags as $tag):
 	if($cycle_number >= $list_limit_last && $cycle_number < $list_limit):
 ?>
 <div class='tag_list_block'>
-<a href="index.php?page=tags&tag=<?=$tag->tagname?>&questions" id="tag_list_tag_image"><img src="tagimages/<?=$tag->tagname?>.png"></a>
-<a href="index.php?page=tags&tag=<?=$tag->tagname?>&questions"><p id="tag_list_tag_name"><?=$tag->tagname?></p></a>
+<a href="index.php?page=tags&tag=<?=$tag->name_ru?>&questions" id="tag_list_tag_image"><img src="tagimages/<?=$tag->name_ru?>.png"></a>
+<a href="index.php?page=tags&tag=<?=$tag->name_ru?>&questions"><p id="tag_list_tag_name"><?=$tag->name_ru?></p></a>
 <p id='tag_list_tag_asked'>
-<a href="index.php?page=tags&tag=<?=$tag->tagname?>&questions"><?=$tag->questions?> Вопросов</a>
+<a href="index.php?page=tags&tag=<?=$tag->name_ru?>&questions"><?=$tag->questions?> <?= $langVals[$_COOKIE['language']]['questions'] ?></a>
 </p>
 <div class='tag_list_tag_subscribe_wrapper'>
 <?php
-$subscribed_tag_logined_user = R::find('users','WHERE id = ? AND subscribe_tag LIKE ?',[$user_infos->id,'%,'.$tag->tagname.',%']);
+$subscribed_tag_logined_user = R::find('users','WHERE id = ? AND subscribe_tag LIKE ?',[$user_infos->id,'%,'.$tag->name_ru.',%']);
 if(empty($subscribed_tag_logined_user)):?>
 	<a href='index.php?page=subscribe&sub_tag=<?=$tag->id?>' class='tag_list_tag_subscribe' >Подписаться <span><?=$tag->subscribes?></span></a>
 <?php else:?>
@@ -45,7 +45,7 @@ endforeach;?>
 <?php if(count($tag_list_get_tags) > 15): ?>
 <div class="questions_pages">
 			<?php if($page_number > 1):?>
-				<a href="index.php?page=tags&pn=<?=$page_number - 1;?>">&#8592; Предыдущий</a>
+				<a href="index.php?page=tags&pn=<?=$page_number - 1;?>">&#8592; <?=$langVals[$_COOKIE['language']]['paginationPrev']?></a>
 			<?php endif;
 			if($page_number > 6){
 				$left_page_list = $page_number - 6;
@@ -59,7 +59,7 @@ endforeach;?>
 			endfor;
 			if($page_number < $page_count):
 			?>
-				<a href="index.php?page=tags&pn=<?=$page_number + 1;?>">Следующий &#8594;</a>
+				<a href="index.php?page=tags&pn=<?=$page_number + 1;?>"><?=$langVals[$_COOKIE['language']]['paginationNext']?> &#8594;</a>
 			<?php endif;?>
 		</div>
 <?php endif;?>

@@ -42,9 +42,6 @@ if($page == 'activation'){
         exit();
     }
 }
-if($_COOKIE['language'] == 'az'){
-    // header('Location: az/');
-}
 if(isset($_COOKIE['user_id']) && isset($_COOKIE['user_hash'])){
     $check_cookie = R::load('users', $_COOKIE['user_id']);
     if ($check_cookie->user_hash != $_COOKIE['user_hash']) {
@@ -60,6 +57,24 @@ if(isset($_COOKIE['user_id']) && isset($_COOKIE['user_hash'])){
     setcookie('user_id','', time() - 3600,'/');
     $cookie_checked = false;
 }
+if(isset($_COOKIE['language'])){
+    if($_COOKIE['language'] != 'az' && $_COOKIE['language'] != 'ru'){
+        setcookie('language','ru',time() + 1009152000,'/');
+    }
+    if($cookie_checked && $user_infos->lang != $_COOKIE['language']){
+        $check_cookie->lang = $_COOKIE['language'];
+        R::store($check_cookie);
+    }
+}elseif($cookie_checked){
+    if($user_infos->lang != 'az'){
+        setcookie('language','ru',time() + 1009152000,'/');
+    }else{
+        setcookie('language','az',time() + 1009152000,'/');
+    }
+}else{
+    setcookie('language','ru',time() + 1009152000,'/');
+}
+
 if ($page == 'registr') {
     if (isset($_POST['registr_page_submit'])) {
         $searchmail = R::findOne('users','mail = ?',[$_POST['reg_mail']]);
@@ -88,6 +103,9 @@ if ($page == 'registr') {
                             $registry->comments_likes = ',';
                             $registry->small_desc = '';
                             $registry->desc = '';
+                            $registry->questions = 0;
+                            $registry->answers = 0;
+                            $registry->checked_answers = 0;
                             $registry->subscribe_tag = ',';
                             $registry->verifed = $registry_verification;
                             $registry->status = 0;
@@ -205,9 +223,12 @@ if($page == 'addquestion'){
             $add_question->date = date('d.m.Y');
             $add_question->time = date('H:i:s');
             R::store($add_question);
+            $add_question_count_user = R::load('users',$user_infos->id);
+            $add_question_count_user->questions = $add_question_count_user->questions + 1;
+            R::store($add_question_count_user);
             $add_tag_questions_number_array = explode(',',$_POST['add_question_tags']);
             foreach ($add_tag_questions_number_array as $find_tag) {
-                $find_tag_to_add = R::findOne('tags','tagname = ?',[$find_tag]);
+                $find_tag_to_add = R::findOne('tags','name_ru = ?',[$find_tag]);
                 $add_question_numbers = R::dispense('tags');
                 $add_question_numbers->id = $find_tag_to_add->id;
                 $add_question_numbers->questions = $find_tag_to_add->questions + 1;
@@ -229,7 +250,7 @@ if($page == 'edit_question'){
                     $load_question_edit->title = htmlspecialchars($_POST['add_question_title']);
                     $old_tag_list_arr = explode(',',$load_question_edit->tags);
                     foreach ($old_tag_list_arr as $tag) {
-                        $find_tag_to_minus = R::findOne('tags','tagname = ?',[$tag]);
+                        $find_tag_to_minus = R::findOne('tags','name_ru = ?',[$tag]);
                         $minus_question_numbers = R::dispense('tags');
                         $minus_question_numbers->id = $find_tag_to_minus->id;
                         $minus_question_numbers->questions = $find_tag_to_minus->questions - 1;
@@ -238,7 +259,7 @@ if($page == 'edit_question'){
                     $load_question_edit->tags = htmlspecialchars($_POST['add_question_tags']);
                     $change_tag_questions_number_array = explode(',',$_POST['add_question_tags']);
                     foreach ($change_tag_questions_number_array as $find_tag) {
-                        $find_tag_to_add = R::findOne('tags','tagname = ?',[$find_tag]);
+                        $find_tag_to_add = R::findOne('tags','name_ru = ?',[$find_tag]);
                         $change_question_numbers = R::dispense('tags');
                         $change_question_numbers->id = $find_tag_to_add->id;
                         $change_question_numbers->questions = $find_tag_to_add->questions + 1;
@@ -261,7 +282,7 @@ if($page == 'remove_question'){
             $find_question_answers = R::find('answers','question_id = '.$opened_question);
             R::trashAll($find_question_answers);
             foreach ($remove_tag_arr as $tag) {
-                $find_tag_to_minus = R::findOne('tags','tagname = ?',[$tag]);
+                $find_tag_to_minus = R::findOne('tags','name_ru = ?',[$tag]);
                 $minus_question_numbers = R::dispense('tags');
                 $minus_question_numbers->id = $find_tag_to_minus->id;
                 $minus_question_numbers->questions = $find_tag_to_minus->questions - 1;
@@ -273,7 +294,7 @@ if($page == 'remove_question'){
         }
     }
 }
-if($page == 'question'){
+if($page == 'question'){ 
     if(!isset($like_answer) && !isset($unlike_answer) && !isset($check_answer) && !isset($uncheck_answer) && !isset($remove_answer)){
         if(!empty($_POST)){
             if(isset($_POST['HCeditorContent'])){
@@ -281,6 +302,9 @@ if($page == 'question'){
                     $change_question_answered = R::load('questions',$opened_question);
                     $change_question_answered->answers = $change_question_answered->answers + 1;
                     R::store($change_question_answered);
+                    $change_users_answer_count = R::load('users',$user_infos->id);
+                    $change_users_answer_count->answers = $change_users_answer_count->answers + 1;
+                    R::store($change_users_answer_count);
                     $add_answer_to_question = R::dispense('answers');
                     $add_answer_to_question->question_id = $opened_question;
                     $add_answer_to_question->answer_content = $_POST['HCeditorContent'];
@@ -295,6 +319,8 @@ if($page == 'question'){
                 }
             }
         }
+        $opened_question_load = R::load('questions',$opened_question);
+        $pageTitle = $opened_question_load->title.' - ';
     }else{
         if(isset($like_answer)){
             if($cookie_checked){
@@ -420,10 +446,10 @@ if($page == 'subscribe'){
         if(isset($_GET['sub_tag'])){
             $load_tag = R::load('tags',$_GET['sub_tag']);
             if($load_tag->id != 0){
-                $find_user_subscribed = R::findOne('users','WHERE id = ? AND subscribe_tag LIKE ?',[$user_infos->id,'%,'.$load_tag->tagname.',%']);
+                $find_user_subscribed = R::findOne('users','WHERE id = ? AND subscribe_tag LIKE ?',[$user_infos->id,'%,'.$load_tag->name_ru.',%']);
                 if(empty($find_user_subscribed)){
                     $add_subcrirebed_tag = R::load('users',$user_infos->id);
-                    $add_subcrirebed_tag->subscribe_tag = $add_subcrirebed_tag->subscribe_tag.$load_tag->tagname.',';
+                    $add_subcrirebed_tag->subscribe_tag = $add_subcrirebed_tag->subscribe_tag.$load_tag->name_ru.',';
                     $load_tag->subscribes = $load_tag->subscribes + 1;
                     R::store($load_tag);
                     R::store($add_subcrirebed_tag);
@@ -452,11 +478,11 @@ if($page == 'unsubscribe'){
         if(isset($_GET['sub_tag'])){
             $load_unsubscribe_tag = R::load('tags',$_GET['sub_tag']);
             if($load_unsubscribe_tag->id != 0){
-                $find_have_tag = R::findOne('users','WHERE id = ? AND subscribe_tag LIKE ?',[$user_infos->id,'%,'.$load_unsubscribe_tag->tagname.',%']);
+                $find_have_tag = R::findOne('users','WHERE id = ? AND subscribe_tag LIKE ?',[$user_infos->id,'%,'.$load_unsubscribe_tag->name_ru.',%']);
                 if(!empty($find_have_tag)){
                     $old_subscribed_tag_arr = explode(',',$find_have_tag->subscribe_tag);
                     foreach ($old_subscribed_tag_arr as $tag) {
-                        if($tag != $load_unsubscribe_tag->tagname){
+                        if($tag != $load_unsubscribe_tag->name_ru){
                             $new_subscribed_tag_arr[] = $tag;
                         }
                     }

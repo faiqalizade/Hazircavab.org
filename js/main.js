@@ -116,11 +116,11 @@ function first_time() {
 			$('#first_time_guide_next_button_wrapper').css('display','none');
 			setTimeout(() => {
 				$('#first_time_guide_block').fadeOut(1000);
-				setcookie('opened',1,'/',2030,0);
+				setcookie('opened',1,'/',2050,0);
 			}, 5000);
 			$('#first_time_guide_end_desc a').click(function () {
 				$('#first_time_guide_block').fadeOut(1000);
-				setcookie('opened',1,'/',2030,0);
+				setcookie('opened',1,'/',2050,0);
 			});
 		}
 		if (guideIndexNumber != 2) {
@@ -264,7 +264,7 @@ $('.opened_question_comment_to_answer_like_bttn').click(function () {
 	likesCount = parseInt(likesCount);
 	if($(this).attr('liked') == 'false'){
 		likesCount++;
-		$('.comments_to_answer_like_text').eq(likeButtonIndex).text('Не нравиться');
+		$('.comments_to_answer_like_text').eq(likeButtonIndex).text("Like");
 		$('.comments_to_answer_count').eq(likeButtonIndex).text(likesCount);
 		$(this).attr('liked','true');
 		$.ajax({
@@ -277,7 +277,7 @@ $('.opened_question_comment_to_answer_like_bttn').click(function () {
 			}
 		});
 	}else{
-		$('.comments_to_answer_like_text').eq(likeButtonIndex).text('Нравиться');
+		$('.comments_to_answer_like_text').eq(likeButtonIndex).text("Dislike");
 		likesCount--;
 		$('.comments_to_answer_count').eq(likeButtonIndex).text(likesCount);
 		$(this).attr('liked','false');
@@ -375,7 +375,7 @@ $('.opened_question_answer_comment_send_button').click(function () {
 							</div>
 							<div class='opened_question_comment_to_answer_footer'>
 								<p class='opened_question_comment_to_answer_date'>`+ today +`</p>
-								<p class='opened_question_comment_to_answer_like_bttn'>Нравиться (0)</p>
+								<p class='opened_question_comment_to_answer_like_bttn'><?=$langVals[$_COOKIE['language']]['like']?> (0)</p>
 								<p class='opened_question_comment_to_answer_reply_bttn'>Ответить</p>
 								<div class="opened_question_question_footer_setting_block_wrapper">
 									<div onclick='openDropMenu(this)' class="opened_question_question_footer_setting_image">

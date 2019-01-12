@@ -70,8 +70,8 @@ Vue.component('v-sidebar',{
         </div>
         <div class="v-sidebar-element-wrapper">
                 <i class="fas fa-tags" style="width: 45px;"></i>
-                <div @click="changer('tags')" class="v-sidebar-element-list-wrapper">
-                        <div class="v-sidebar-element-header">
+                <div class="v-sidebar-element-list-wrapper">
+                        <div @click="changer('tags')" class="v-sidebar-element-header">
                                 <i class="fas fa-tags" ></i>
                                 <p>Теги</p>
                         </div>
@@ -241,6 +241,40 @@ Vue.component('v-add-blog', {
         </div>
         `
 });
+
+Vue.component('v-add-tag', {
+        template: `
+        <div>
+        <div class='widget'>
+        <div class='widget-header'>
+                        <p><i class="fas fa-plus"></i></p>
+                        <p>Добавить Тег</p>
+                </div>
+                <div class='widget-content'>
+                        <form method='post'  enctype='multipart/form-data'>
+                        <label>
+                                Назание тега Русский: <br/>
+                                <input required class='input article-title' type='text' name='tag-name-ru'>
+                        </label>
+                        <br/>
+                        <label>
+                                Назание тега Азербайджанский: <br/>
+                                <input required class='input article-title' type='text' name='tag-name-az'>
+                        </label>
+                        <br/>
+                        <label>
+                                Изображение: <br/>
+                                <input required class='input' type='file' name='article-img'>
+                        </label>
+                        <br/>
+                        <input required type='submit' name='add-tag-submit' class='button form-button' value='Отправить'>
+                        </form>
+                </div>
+        </div>
+        
+        </div>
+        `
+})
 init_hceditor({
         id: '',
         load_img: true,

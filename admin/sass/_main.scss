@@ -99,6 +99,7 @@ border-right: 2px solid #161616;
     width: 290px;
     top: 0;
     left: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .v-sidebar-element-header{
     color: #fff;
@@ -120,6 +121,7 @@ border-right: 2px solid #161616;
     left: 42px;
     width: 248px;
     background-color: #4f5a6e;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
 }
 .v-sidebar-element-list div{
     color: #fff;

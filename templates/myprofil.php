@@ -12,7 +12,7 @@
 ?>
     </p>
 <div id='my_profil_header' >
-<a href="index.php?page=myprofile&profile" class='my_profil_header_list' >Информация</a>
+<a href="index.php?page=myprofile&profile" class='my_profil_header_list' ><?= $langVals[$_COOKIE['language']]['information'] ?></a>
 <a href="index.php?page=myprofile&password" class='my_profil_header_list' >Изменить пароль</a>
 </div>
 <?php if(isset($profile)):?>
@@ -30,9 +30,9 @@
     <label for='my_profile_image_upload' id='my_profil_img_change_own' >Свой</label>
 </div>
 <form id='my_profil_info_change_form' method="post">
-    <p class='my_profil_info_input_titles' >Имя:</p>
+    <p class='my_profil_info_input_titles' ><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['name'] : $langVals['ru']['name'] ?>:</p>
     <input class='my_profil_info_inputs' name='my_profil_change_name' type="text" value='<?=$user_infos->name?>'>
-    <p class='my_profil_info_input_titles' >Фамилия:</p>
+    <p class='my_profil_info_input_titles' ><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['surname'] : $langVals['ru']['surname'] ?>:</p>
     <input class='my_profil_info_inputs' type="text" name='my_profil_change_surname' value='<?=$user_infos->surname?>'>
     <p class='my_profil_info_input_titles' >Коротко о себе:</p>
     <input class='my_profil_info_inputs' type="text" name='my_profil_change_small_desc' value='<?=$user_infos->small_desc?>'>
@@ -79,15 +79,15 @@ function getcookie ( cookie_name ){
     document.cookie = cookie_string;
   }
   if(getcookie('language') == 'ru'){
-      $('.my_profil_change_lang:eq(0)').attr('class','my_profil_change_lang selected_language');
+    $('.my_profil_change_lang:eq(0)').attr('class','my_profil_change_lang selected_language');
   }else{
     $('.my_profil_change_lang:eq(1)').attr('class','my_profil_change_lang selected_language');
   }
-  $('.my_profil_change_lang').click(function () {
+$('.my_profil_change_lang').click(function () {
       if($('.my_profil_change_lang').index(this) == 1){
-          setcookie('language','az','/',2030,0);
+          setcookie('language','az','/',2050,0);
       }else{
-        setcookie('language','ru','/',2030,0);
+        setcookie('language','ru','/',2050,0);
       }
       location.reload();
   });

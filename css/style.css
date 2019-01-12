@@ -266,6 +266,7 @@ header{
 	width: 800px;
 	padding-left: 3%;
 	position: relative;
+	word-break: break-all;
 }
 #main_page_title{
 	font-size: 1.5em;
@@ -352,7 +353,7 @@ footer a{
 	margin-right: 30%;
 }
 .article_links{
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	color: #cfcbcb;
 	padding: 4% 6%;
 	margin-bottom: .5%;
@@ -584,8 +585,8 @@ footer a{
 }
 .blog_article_info{
 	float: left;
-	padding: 2% 2%;
-	width: calc(80% - 150px);
+	padding: 0 15px;
+	width: calc(95% - 150px);
 	font-family: 'exo 2',sans-serif,'Arial';
 }
 #blog_article_info_header{
@@ -650,7 +651,7 @@ footer a{
 	font-size: 1.25em;
 	display: block;
 	color: #2c2e33;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	font-weight: 600;
 	float: left;
 	margin-bottom: 2%;
@@ -663,13 +664,13 @@ footer a{
 #main_blog_bottom_header{
 	font-size: 1em;
 	color: #2c2e33;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	font-weight: 600;
 }
 #main_blog_description{
 	color: #9c9c9d;
 	font-size: .9em;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 	float: left;
 	width: 100%;
 	overflow: hidden;
@@ -752,7 +753,7 @@ footer a{
 .opened_blog_title{
 	margin: 1.5% 0;
 	font-size: 1.6em;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 }
 .opened_blog_photo{
 	width: 96%;
@@ -761,7 +762,7 @@ footer a{
 .opened_blog_content{
 	width: 96%;
 	color: #2c2e33;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 	margin-bottom: 3%;
 	word-wrap: break-word;
 }
@@ -834,7 +835,7 @@ footer a{
 #main_blog_title{
 	font-size: 2em;
 	font-weight: 500;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	margin-bottom: 9px;
 	color: #2c2e33;
 }
@@ -849,13 +850,13 @@ footer a{
 #blog_added_information p {
 	color: #9c9c9d;
 	font-size: 12px;
-	font-family: 'exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	margin-right: 10px;
 }
 #blog_added_information p a{
 	color: #9c9c9d;
 	font-size: 12px;
-	font-family: 'exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 }
 #blog_added_information img{
 	width: 15px;
@@ -888,7 +889,7 @@ footer a{
 	transition: all .5s;
 	padding: 0 6px;
 	font-size: 12px;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	color: #65c178;
 }
 .like_button p:first-child {
@@ -924,8 +925,11 @@ footer a{
 	margin-left: 45px;
 	float: left;
 	font-weight: 100;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 	width: calc(100% - 45px);
+}
+.blog_comment_content img{
+	max-width: 100%;
 }
 #blog_comment_added_name a{
 	color: #232329;
@@ -938,7 +942,7 @@ footer a{
 	font-size: 12px;
 	font-family: 'Montserrat';
 }
-#blog_comment_add_submit,#opened_question_question_add_answer_submit,.opened_question_answer_comment_send_button{
+.submit_btn{
 	border: solid 2px;
 	background-color: #3157cb;
 	padding: 8px 12px;
@@ -947,7 +951,7 @@ footer a{
 	float: right;
 	color: #fff;
 	cursor: pointer;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 }
 #blog_comment_add_submit_for_label{
 	display: none;
@@ -978,7 +982,7 @@ footer a{
 }
 #question_added_user_information_name{
 	margin-left: 2%;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 	font-size: 1.1em;
 }
 #question_added_user_information_name a{
@@ -988,7 +992,7 @@ footer a{
 	margin-left: 1%;
 	font-size: .8em;
 	font-weight: lighter;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 }
 #question_added_user_information_username a{
 	color: #9c9c9d;
@@ -1007,7 +1011,7 @@ footer a{
 	width: 100%;
 	display: flex;
 	align-items: center;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 	margin-bottom: 2%;
 }
 #opened_question_tags_main_tag_block{
@@ -1035,7 +1039,7 @@ footer a{
 	font-family: 'Montserrat';
 }
 .opened_question_question_content,#add_question_preview_content{
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	font-weight: 500;
 	list-style-position: inside;
 }
@@ -1044,7 +1048,7 @@ footer a{
 	max-width: 100%;
 }
 .opened_question_question_answer_comment_button,.opened_question_comment_to_answer_reply_bttn,.opened_question_comment_to_answer_like_bttn{
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	color: #a0a0a0;
 	border-bottom: dotted 1px;
 	cursor: pointer;
@@ -1080,7 +1084,7 @@ footer a{
 }
 .opened_question_question_footer_time,.opened_question_comment_to_answer_date{
 	color: #9c9c9d;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 	font-weight: 100;
 	flex-grow: 1;
 }
@@ -1136,7 +1140,7 @@ footer a{
 .opened_question_question_footer_setting_block a{
 	text-align: center;
 	padding: 5% 2%;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	border-top: 1px solid #ddd;
 	width: 96%;
 	display: block;
@@ -1157,7 +1161,7 @@ footer a{
 	width: 96%;
 	padding: 5px 0;
 	color: #2a2d32;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	font-weight: 600;
 	letter-spacing: 2px;
 }
@@ -1224,7 +1228,7 @@ footer a{
 	font-weight: 600;
 }
 #opened_question_question_answer_check_button_text,#opened_question_question_answer_checked_button_text{
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	font-size: 12px;
 	color: #4267b2;
 }
@@ -1256,7 +1260,7 @@ footer a{
 	transition: all .5s;
 	padding: 0 5px;
 	color: #65c178;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	font-size: 12px;
 }
 #opened_question_question_answer_liked_button_quantity{
@@ -1272,7 +1276,7 @@ footer a{
 }
 .opened_question_question_answer_header_user,.opened_question_comment_to_answer_user,.opened_question_comment_to_answer_username,.opened_question_question_answer_header_username{
 	margin-right: 7px;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 }
 .opened_question_question_answer_header_user,.opened_question_comment_to_answer_user{
 	color: #000;
@@ -1307,7 +1311,7 @@ footer a{
 	padding: 5px 0;
 	color: #2a2d32;
 	width: 100%;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	font-weight: 600;
 	border-bottom: solid 2px #121417;
 	margin-bottom: 15px;
@@ -1349,7 +1353,7 @@ footer a{
 	border-radius: 0;
 }
 #user_list_user_name,#tag_list_tag_name{
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 	font-size: 20px;
 	color: #222328;
 }
@@ -1442,7 +1446,7 @@ footer a{
 }
 .opened_user_profile_list,.opened_tag_tag_list{
 	float: left;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	color: #2c2e33;
 	padding: 10px 15px;
 }
@@ -1464,7 +1468,7 @@ footer a{
 	cursor: pointer;
 	float: left;
 	color: #1f3491;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	font-size: 14px;
 }
 .tag_list_tag_subscribe span{
@@ -1481,7 +1485,7 @@ footer a{
 	border: solid 1px #2d72d9;
 	color: #fff;
 	font-size: 13px;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	background-color: #2d72d9;
 	display: flex;
 	align-items: center;
@@ -1504,7 +1508,7 @@ footer a{
 }
 #opened_tag_header>p{
 	margin-top: 10px;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	font-size: 20px;
 	color: #2c2e33;
 	font-weight: 600;
@@ -1554,7 +1558,7 @@ footer a{
 	font-size: 13px;
 	background-color: #2d72d9;
 	cursor: pointer;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	border-radius: 2px;
 }
 #opened_tag_header_subscribe_button{
@@ -1565,7 +1569,7 @@ footer a{
 	font-size: 13px;
 	background-color: #fff;
 	cursor: pointer;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	border-radius: 2px;
 }
 #first_time_guide_block{
@@ -1594,7 +1598,7 @@ footer a{
 	font-size: 45px;
 	margin-bottom: 20px;
 	text-align: center;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 }
 .first_time_guide_end_title{
 	animation: pulse 1.5s ease-out infinite;
@@ -1603,14 +1607,14 @@ footer a{
 	font-weight: bolder;
 	margin-bottom: 20px;
 	text-align: center;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 }
 #first_time_guide_change_lang_lang{
 	float: left;
 	background-color: #2c2e33;
 	color: #fff;
 	padding: 5px 15px;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	cursor: pointer;
 	font-size: 24px;
 	margin-right: 20px;
@@ -1625,7 +1629,7 @@ footer a{
 #first_time_guide_change_lang_cancel{
 	color: #1a5e8a;
 	cursor: pointer;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	font-size: 24px;
 }
 #first_time_guide_change_lang_block{
@@ -1679,7 +1683,7 @@ footer a{
 }
 #first_time_guide_end_title{
 	color: #2c2e33;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	font-size: 20px;
 	text-align: center;
 	width: 95%;
@@ -1687,7 +1691,7 @@ footer a{
 #first_time_guide_end_desc{
 	text-align: center;
 	color: #2c2e33;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 }
 #first_time_guide_end_desc a{
 	color: #4285F4;
@@ -1734,7 +1738,7 @@ footer a{
     font-family: 'Montserrat';
 	font-weight: 600;
 	text-align: center;
-	font-size: 22px;
+	font-size: 20px;
     color: #7a8195;
     margin-bottom: 20px;
 }
@@ -1742,7 +1746,7 @@ footer a{
     outline:none;
     width: 230px;
     margin-bottom: 15px;
-    font-family: 'Exo 2';
+    font-family: 'Exo 2','Verdana','Arial',sans-serif;
     padding: 8px 10px;
     border: solid 1px #ededed;
     border-radius: 3px;
@@ -1782,19 +1786,20 @@ footer a{
 #registr_page_desc{
 	color: #9c9c9d;
 	font-size: 12px;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 }
 #registr_page_desc a{
 	color: #4285F4;
 }
 #registr_page_after_submit_text{
-	font-family: 'Exo 2';
+	font-size: 14px;
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	text-align: center;
 }
 #regist_page_error,#login_page_error,#my_profil_change_password_error,#my_profil_change_password_succes{
 	color: #ff0000;
 	font-weight: lighter;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	margin-bottom: 20px;
 }
 #my_profil_change_password_error,#my_profil_change_password_succes{
@@ -1846,7 +1851,7 @@ footer a{
 	border-bottom: solid 1px #eee;
 }
 .my_profil_header_list{
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	color: #2c2e33;
 	padding: 10px 5px;
 }
@@ -1870,7 +1875,7 @@ footer a{
 	cursor: pointer;
 	font-size: 13px;
 	color: #4f5a6e;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 }
 #my_profil_img_change_images_block{
 	display: none;
@@ -1904,7 +1909,7 @@ footer a{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	color: #4d90fe;
 	cursor: pointer;
 }
@@ -1929,7 +1934,7 @@ footer a{
 	width: 96%;
 }
 .my_profil_info_input_titles,.add_question_input_titles{
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	margin-bottom: 10px;
 }
 .add_question_input_titles{
@@ -1994,7 +1999,7 @@ footer a{
 	background-color: #e34961;
 	padding: 5px 0 5px 5px;
 	display: block;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	color: #fff;
 }
 .mail_not_verifed_input{
@@ -2004,7 +2009,7 @@ footer a{
 	border: 1px solid #65c178;
 }
 #my_profil_message_not_sended{
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	color: #9c9c9d;
 	display: block;
 	font-weight: bolder;
@@ -2022,7 +2027,7 @@ footer a{
 }
 #accaunt_activation_success,#accaunt_activation_error{
 	font-size: 25px;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 }
 #accaunt_activation_success{
 	color: #65c178;
@@ -2045,7 +2050,7 @@ footer a{
 }
 .add_question_send_button,#add_question_preview_edit{
 	padding: 8px 13px;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	border: 1px solid;
 	margin-right: 10px;
 	font-size: 13px;
@@ -2074,7 +2079,7 @@ footer a{
 }
 #question_title_error,#question_tags_error{
 	color: #e34961;
-	font-family: 'Exo 2';
+	font-family: 'Exo 2','Verdana','Arial',sans-serif;
 	font-size: 13px;
 }
 #question_tags{
@@ -2161,7 +2166,7 @@ footer a{
 	width: 100%;
 	display: flex;
 	margin-bottom: 15px;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 	align-items: center;
 }
 #add_question_preview_tags{
@@ -2175,7 +2180,7 @@ footer a{
 	margin-bottom: 8px;
 }
 .question_tags{
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 	font-weight: 600;
 	color: #181724;
 }
@@ -2188,7 +2193,7 @@ footer a{
 	margin-right: 8px;
 }
 .question_tags_more_tags{
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 	font-weight: 600;
 	font-size: 14px;
 	color: #bababa;
@@ -2225,12 +2230,12 @@ footer a{
 #opened_question_question_added_answer p{
 	text-align: center;
 }
-#edit_answer_buttons_wrapper{
+.edit_buttons_wrapper{
+	font-family: 'Montserrat','Arial',sans-serif;
 	display: flex;
-	width: 100%;
 	margin-top: 10px;
 }
-#edit_answer_cancel{
+.edit_cancel{
 	margin-left: 15px;
 	color: #c32616;
 	cursor: pointer;
@@ -2238,7 +2243,7 @@ footer a{
 	border: 1px solid;
 	border-radius: 3px;
 }
-#edit_answer_button{
+.edit_button{
 	border: 1px solid;
 	border-radius: 3px;
 	padding: 5px 10px;
@@ -2346,7 +2351,7 @@ footer a{
 	width: calc(100% - 20px);
 	font-size: 15px;
 	color:#2c2e33;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 	transition: all 0.3s;
 	padding: 5px 10px;
 }
@@ -2363,7 +2368,7 @@ footer a{
 #notFound{
 	display: block;
 	color: #077fcc;
-	font-family: 'Signika';
+	font-family: 'Signika','Montserrat','Arial',sans-serif;
 	font-weight: 500;
 	padding: 5px;
 	transition: all 0.3s;

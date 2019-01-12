@@ -1,10 +1,10 @@
 <div class="main_page_header">
-	<p id="main_page_title">Блог</p>
+	<p id="main_page_title"><?=$langVals[$_COOKIE['language']]['blog']?></p>
 </div>
 <div class="blog_page_header_after">
 	<div class="blog_list">
-		<a href="index.php?page=blog&new" class="blog_list_titles">Новые</a>
-		<a href="index.php?page=blog&popular" class="blog_list_titles">Популярные</a>
+		<a href="index.php?page=blog&new" class="blog_list_titles"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['new'] : $langVals['ru']['new'] ?></a>
+		<a href="index.php?page=blog&popular" class="blog_list_titles"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['popular'] : $langVals['ru']['popular'] ?></a>
 	</div>
 </div>
 
@@ -138,7 +138,7 @@ endforeach;
 	if($article_count > 14): ?>
 		<div class="questions_pages">
 			<?php if($page_number > 1):?>
-				<a href="index.php?page=blog&<?=$order_articles?>&pn=<?=$page_number - 1;?>">&#8592; Предыдущий</a>
+				<a href="index.php?page=blog&<?=$order_articles?>&pn=<?=$page_number - 1;?>">&#8592; <?=$langVals[$_COOKIE['language']]['paginationPrev']?></a>
 			<?php endif;
 			if($page_number > 6){
 				$left_page_list = $page_number - 6;
@@ -152,7 +152,7 @@ endforeach;
 			endfor;
 			if($page_number < $page_count):
 			?>
-				<a href="index.php?page=blog&<?=$order_articles?>&pn=<?=$page_number + 1;?>">Следующий &#8594;</a>
+				<a href="index.php?page=blog&<?=$order_articles?>&pn=<?=$page_number + 1;?>"><?=$langVals[$_COOKIE['language']]['paginationNext']?> &#8594;</a>
 			<?php endif;?>
 		</div>
 		<script>

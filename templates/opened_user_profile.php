@@ -1,7 +1,5 @@
 <?php
 $opened_user_infos = R::load('users',$opened_user_profile);
-$find_user_questions = R::find('questions','user = ? ORDER BY date, time DESC',[$opened_user_infos->login]);
-$find_user_answers = R::find('answers','user = ? ORDER BY date,time DESC',[$opened_user_infos->login]);
 $find_user_check_answers = R::getAll('SELECT * FROM answers WHERE user = :user AND check_answer = :answer',
     [':user' => $opened_user_infos->login, ':answer' => 1]
 );
@@ -35,21 +33,21 @@ if($opened_user_infos->id != 0):
     <?php endif;?>
     <div id='opened_user_profile_works' >
         <div class='opened_user_profile_work' >
-            <p class='opened_user_profile_work_number' ><?=count($find_user_questions)?></p>
-            <p class='opened_user_profile_work_name' >вопросов</p>
+            <p class='opened_user_profile_work_number' ><?=$opened_user_infos->questions?></p>
+            <p class='opened_user_profile_work_name' ><?= $langVals[$_COOKIE['language']]['questions'] ?></p>
         </div>
         <div class='opened_user_profile_work' >
-            <p class='opened_user_profile_work_number'><?=count($find_user_answers)?></p>
-            <p class='opened_user_profile_work_name' >ответов</p>
+            <p class='opened_user_profile_work_number'><?=$opened_user_infos->answers?></p>
+            <p class='opened_user_profile_work_name' ><?= $langVals[$_COOKIE['language']]['answersCount'] ?></p>
         </div>
         <div class='opened_user_profile_work' >
-            <p class='opened_user_profile_work_number'><?= (int) ((count($find_user_check_answers) * 100) / count($find_user_answers))?>%</p>
+            <p class='opened_user_profile_work_number'><?= (int) ((count($find_user_check_answers) * 100) / $opened_user_infos->answers)?>%</p>
             <p class='opened_user_profile_work_name' >решений</p>
         </div>
     </div>
 </div>
 <div id='opened_user_profile_lists' >
-    <a href="index.php?page=user&user=<?=$opened_user_profile?>&infos" class='opened_user_profile_list' >Информация</a>
+    <a href="index.php?page=user&user=<?=$opened_user_profile?>&infos" class='opened_user_profile_list' ><?= $langVals[$_COOKIE['language']]['information'] ?></a>
     <a href="index.php?page=user&user=<?=$opened_user_profile?>&questions" class='opened_user_profile_list' >Вопросы</a>
     <a href="index.php?page=user&user=<?=$opened_user_profile?>&answers" class='opened_user_profile_list' >Ответы</a>
     <a href="index.php?page=user&user=<?=$opened_user_profile?>&tags" class='opened_user_profile_list' >Теги</a>
@@ -69,6 +67,7 @@ if($opened_user_infos->id != 0):
         </script>
         ";?>
     <?php elseif(isset($_GET['questions'])):
+            $find_user_questions = R::find('questions','WHERE user = ?',[$opened_user_infos->login]);
             echo "
             <script>
             $('.opened_user_profile_list').eq(1).css('border-bottom','solid 2px');
@@ -103,19 +102,19 @@ if($opened_user_infos->id != 0):
                                 <?php endif;?>
                             </div>
                             <a href="index.php?page=question&question=<?=$question->id?>" class="question_title"><?=$question->title?></a>
-                            <p class="question_information"><?=$question->views?> просмотров &#8226; <?=$question->date.' '.$question->time?></p>
+                            <p class="question_information"><?=$question->views?> <?= $langVals[$_COOKIE['language']]['views'] ?> &#8226; <?=$question->date.' '.$question->time?></p>
                         </div>
                         <div class="question_answers">
                             <?php
                             if($question->check_answer != ','):?>
                             <div class="question_answers_wrapper check">
                                 <p><?=$question->answers?></p>
-                                <p>Ответов</p>
+                                <p><?= $langVals[$_COOKIE['language']]['answersCount'] ?></p>
                             </div>
                             <?php else:?>
                             <div class="question_answers_wrapper">
                                 <p><?=$question->answers?></p>
-                                <p>Ответов</p>
+                                <p><?= $langVals[$_COOKIE['language']]['answersCount'] ?></p>
                             </div>
                             <?php endif;?>
                         </div>
@@ -131,6 +130,7 @@ if($opened_user_infos->id != 0):
             echo "<p class='empty_tag' >Пусто</p>";
         endif;
     elseif (isset($_GET['answers'])):
+        $find_user_answers = R::find('answers','WHERE user = ?',[$opened_user_infos->login]);
         echo "
         <script>
         $('.opened_user_profile_list').eq(2).css('border-bottom','solid 2px');
@@ -217,6 +217,7 @@ if($opened_user_infos->id != 0):
             endforeach;
         endif;
     elseif (isset($_GET['tags'])):
+        
         echo "
         <script>
         $('.opened_user_profile_list').eq(3).css('border-bottom','solid 2px');
@@ -227,14 +228,14 @@ if($opened_user_infos->id != 0):
             echo "<div class='tags_list_wrapper'>";
             foreach($opened_user_tag_subscribe_arr as $subscribe_tag):
                 if(!empty($subscribe_tag)):
-                    $tag = R::findOne('tags','tagname = ?',[$subscribe_tag]);
-                    $subscribed_tag_logined_user = R::find('users','WHERE id = ? AND subscribe_tag LIKE ?',[$user_infos->id,'%,'.$tag->tagname.',%']);
+                    $tag = R::findOne('tags','name_ru = ?',[$subscribe_tag]);
+                    $subscribed_tag_logined_user = R::find('users','WHERE id = ? AND subscribe_tag LIKE ?',[$user_infos->id,'%,'.$tag->name_ru.',%']);
         ?>
                             <div class='tag_list_block'>
-                                <a href="index.php?page=tags&tag=<?=$tag->tagname?>" id="tag_list_tag_image"><img src="tagimages/<?=mb_strtolower($tag->tagname)?>.png"></a>
-                                <a href="index.php?page=tags&tag=<?=$tag->tagname?>"><p id="tag_list_tag_name"><?=$tag->tagname?></p></a>
+                                <a href="index.php?page=tags&tag=<?=$tag->name_ru?>" id="tag_list_tag_image"><img src="tagimages/<?=mb_strtolower($tag->name_ru)?>.png"></a>
+                                <a href="index.php?page=tags&tag=<?=$tag->name_ru?>"><p id="tag_list_tag_name"><?=$tag->name_ru?></p></a>
                                 <p id='tag_list_tag_asked'>
-                                <a href="index.php?page=tags&tag=<?=$tag->tagname?>"><?=$tag->questions?> Вопросов</a>
+                                <a href="index.php?page=tags&tag=<?=$tag->name_ru?>"><?=$tag->questions?> <?= $langVals[$_COOKIE['language']]['questions'] ?></a>
                                 </p>
                                 <div class='tag_list_tag_subscribe_wrapper'>
                                 <?php if(empty($subscribed_tag_logined_user)):?>
@@ -265,7 +266,7 @@ if($opened_user_infos->id != 0):
     <?php if ($list_item_count > 15):?>
 		<div class="questions_pages">
 			<?php if($page_number > 1):?>
-				<a href="index.php?page=user&user=<?=$opened_user_profile?>&<?=$opened_profile_title?>&pn=<?=$page_number - 1;?>">&#8592; Предыдущий</a>
+				<a href="index.php?page=user&user=<?=$opened_user_profile?>&<?=$opened_profile_title?>&pn=<?=$page_number - 1;?>">&#8592; <?=$langVals[$_COOKIE['language']]['paginationPrev']?></a>
 			<?php endif;
 			if($page_number > 6){
 				$left_page_list = $page_number - 6;
@@ -279,7 +280,7 @@ if($opened_user_infos->id != 0):
 			endfor;
 			if($page_number < $page_count):
 			?>
-				<a href="index.php?page=user&user=<?=$opened_user_profile?>&<?=$opened_profile_title?>&pn=<?=$page_number + 1;?>">Следующий &#8594;</a>
+				<a href="index.php?page=user&user=<?=$opened_user_profile?>&<?=$opened_profile_title?>&pn=<?=$page_number + 1;?>"><?=$langVals[$_COOKIE['language']]['paginationNext']?> &#8594;</a>
 			<?php endif;?>
 		</div>
 		<script>
@@ -301,7 +302,7 @@ if($opened_user_infos->id != 0):
 </script>
 
 <?php if($user_infos->status):?>
-<a href="index.php?page=adminKabinet">Admin Panel</a>
+<a href="admin">Admin Panel</a>
 <?php endif;?>
 <?php else:?>
 <script>

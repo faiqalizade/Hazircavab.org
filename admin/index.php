@@ -41,6 +41,15 @@ if(isset($_POST['add-article-submit']) && $cookie_checked){
         $addArticle->time = date('H:i:s');
         R::store($addArticle);
 }
+if(isset($_POST['add-tag-submit']) && $cookie_checked){
+        copy($_FILES['article-img']['tmp_name'],'../tagimages/'.$_POST['tag-name-ru'].'.png');
+        $addTag = R::dispense('tags');
+        $addTag->name_ru = $_POST['tag-name-ru'];
+        $addTag->name_az = $_POST['tag-name-az'];
+        $addTag->subscribes = 0;
+        $addTag->questions = 0;
+        R::store($addTag);
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -65,6 +74,7 @@ var lastPage = <?=$rightPage?>;
                                 <v-content-questions v-if="tab == 'questions'"></v-content-questions>
                                 <v-content-blog v-else-if="tab == 'blog'"></v-content-blog>
                                 <v-add-blog v-else-if="tab == 'addBlog'" ></v-add-blog>
+                                <v-add-tag v-else-if="tab == 'addTag'" ></v-add-tag>
                         </div>
                 </div>
         </div>

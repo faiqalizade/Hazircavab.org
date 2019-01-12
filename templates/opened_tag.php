@@ -7,7 +7,7 @@ if(!isset($list_page_number)){
 $list_limit_last = ($page_number - 1) * 15;
 $list_limit = $page_number * 15;
 $cycle_number = 0;
-$opened_tag_load = R::findOne('tags','tagname = ?',[$tag]);
+$opened_tag_load = R::findOne('tags','name_ru = ?',[$tag]);
 if(isset($_GET['questions'])){
 	$opened_tag_title = 'questions';
 	$opened_tag_questions_load = R::find('questions','ORDER BY date DESC,time DESC');
@@ -28,7 +28,7 @@ $opened_tag_questions_load_where_check = R::find('questions','check_answer <> ?'
 <div id='opened_tag_header_about' >
     <div class='opened_tag_header_about_item'>
         <p><?=$opened_tag_load->questions?></p>
-        <p class='opened_tag_header_about_item_name'>вопросов</p>
+        <p class='opened_tag_header_about_item_name'><?= $langVals[$_COOKIE['language']]['questions'] ?></p>
     </div>
     <div class='opened_tag_header_about_item'>
         <p><?=$opened_tag_load->subscribes?></p>
@@ -87,19 +87,19 @@ if(empty($subscribed_tag_logined_user)):?>
 							<?php endif;?>
 							</div>
 							<a href="index.php?page=question&question=<?=$question->id?>" class="question_title"><?=$question->title?></a>
-							<p class="question_information"><?=$question->views?> просмотров &#8226; <?=$question->date.' '.$question->time?></p>
+							<p class="question_information"><?=$question->views?> <?= $langVals[$_COOKIE['language']]['views'] ?> &#8226; <?=$question->date.' '.$question->time?></p>
 						</div>
 					<div class="question_answers">
 						<?php
 						if($question->check_answer != ','):?>
 						<div class="question_answers_wrapper check">
 							<p><?=$question->answers?></p>
-							<p>Ответов</p>
+							<p><?= $langVals[$_COOKIE['language']]['answersCount'] ?></p>
 						</div>
 						<?php else:?>
 						<div class="question_answers_wrapper">
 							<p><?=$question->answers?></p>
-							<p>Ответов</p>
+							<p><?= $langVals[$_COOKIE['language']]['answersCount'] ?></p>
 						</div>
 						<?php endif;?>
 					</div>
@@ -127,9 +127,9 @@ if(empty($subscribed_tag_logined_user)):?>
 				<a href="index.php?page=user&user=<?=$user_info->id?>" id="user_list_user_image"><img src="usersfiles/<?=$user_info->login?>/profil.png"></a>
 				<a href="index.php?page=user&user=<?=$user_info->id?>"><p id="user_list_user_name"><?=$user_info->name.' '.$user_info->surname?></p></a>
 				<p id="user_list_user_answersquestions">
-					<a href="index.php?page=user&user=<?=$user_info->id?>&user_questions"><?=count($find_user_questions)?> Вопросов</a>
+					<a href="index.php?page=user&user=<?=$user_info->id?>&user_questions"><?=count($find_user_questions)?> <?= $langVals[$_COOKIE['language']]['questions'] ?></a>
 					<span>&#8226;</span>
-					<a href="index.php?page=user&user=<?=$user_info->id?>&user_answers"><?=count($find_user_answers)?> Ответов</a>
+					<a href="index.php?page=user&user=<?=$user_info->id?>&user_answers"><?=count($find_user_answers)?> <?= $langVals[$_COOKIE['language']]['answersCount'] ?></a>
 				</p>
 			</div>
 	<?php
@@ -140,7 +140,7 @@ if(empty($subscribed_tag_logined_user)):?>
 	<?php if ($opened_tag_load->questions > 15):?>
 		<div class="questions_pages">
 			<?php if($page_number > 1):?>
-				<a href="index.php?page=tags&tag=<?=$tag?>&<?=$opened_tag_title?>&pn=<?=$page_number - 1;?>">&#8592; Предыдущий</a>
+				<a href="index.php?page=tags&tag=<?=$tag?>&<?=$opened_tag_title?>&pn=<?=$page_number - 1;?>">&#8592; <?=$langVals[$_COOKIE['language']]['paginationPrev']?></a>
 			<?php endif;
 			if($page_number > 6){
 				$left_page_list = $page_number - 6;
@@ -154,7 +154,7 @@ if(empty($subscribed_tag_logined_user)):?>
 			endfor;
 			if($page_number < $page_count):
 			?>
-				<a href="index.php?page=tags&tag=<?=$tag?>&<?=$opened_tag_title?>&pn=<?=$page_number + 1;?>">Следующий &#8594;</a>
+				<a href="index.php?page=tags&tag=<?=$tag?>&<?=$opened_tag_title?>&pn=<?=$page_number + 1;?>"><?=$langVals[$_COOKIE['language']]['paginationNext']?> &#8594;</a>
 			<?php endif;?>
 		</div>
 		<script>

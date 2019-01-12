@@ -323,7 +323,7 @@ function init_hceditor(id,classes){
           $('.list').css('background-color','transparent');
           openedListList = false;
       if(!openedListList){
-          $('.list').eq(e).css('background-color','#2a2f4213');
+          $('.list').eq(e).css('background-color','#eff0f1');
           $('.ol_button_list').eq(e).fadeIn(500);
           openedListList = true;
       }else{
@@ -375,7 +375,7 @@ function init_hceditor(id,classes){
           openedListImg = false;
       //----------------
       if(!openedListImg){
-          $('.image').eq(e).css('background-color','#2a2f4213');
+          $('.image').eq(e).css('background-color','#eff0f1');
           $('.image_button_list').eq(e).fadeIn(500);
           openedListImg = true;
       }else{
@@ -457,14 +457,14 @@ function init_hceditor(id,classes){
   }
   //---- Editor Focusout
   function editorFocusOut(e){
-      $('.editor_textarea').eq(e).css('border-color','#eee');
-     $('.editor_buttons_block').css('border-bottom-color','#eee');
+    $('.editor_textarea').eq(e).css('border-color','#eee');
+    $('.editor_buttons_block').css('border-bottom-color','#eee');
   }
   //--- Editor Buttons Mouse Over
   function   editorButtonMouseOver(e){
       if(!openedListList && !openedListImg){
           $('.editor_button').css('background-color','transparent');
-          $('.editor_button').eq(e).css('background-color','#2a2f4213');
+          $('.editor_button').eq(e).css('background-color','#eff0f1');
       }
   }
   //---- Editor Buttons Mouse Out
@@ -483,11 +483,13 @@ function init_hceditor(id,classes){
   		i: String,
   		changer:Boolean,
   		content: String,
-  		answerid: Number
+        answerid: Number,
+        required: Boolean,
+        minlength: Number 
   	},
       data: function () {
         return{
-  		  index: this.i,
+            index: this.i,
         }
       },
       template: `<div id='editor_wrapper'>
@@ -530,13 +532,15 @@ function init_hceditor(id,classes){
               </div>
           </div>
       </div>
-  		<textarea name='HCeditor' @keydown='HCeditor' class="editor_textarea" @focus='focus' @focusout='focusOut' >{{content}}</textarea>
+          <textarea v-if='required' :minlength="this.minlength" required name='HCeditor' @keydown='HCeditor' class="editor_textarea" @focus='focus' @focusout='focusOut' >{{content}}</textarea>
+          <textarea v-else name='HCeditor' @keydown='HCeditor' :minlength="this.minlength" class="editor_textarea" @focus='focus' @focusout='focusOut' >{{content}}</textarea>
   		<p id='HCeditor_error'></p>
-          <textarea name="HCeditorContent" class="HCeditorcopy">{{content}}</textarea>
+          <textarea  v-if='required' :minlength="this.minlength" required @keydown='security' name="HCeditorContent" class="HCeditorcopy">{{content}}</textarea>
+          <textarea  v-else :minlength="this.minlength" @keydown='security' name="HCeditorContent" class="HCeditorcopy">{{content}}</textarea>
   		<input @change='file' type="file"  class='file' :id="'uploadFile'+index" style="display:none;" />
-  		<div v-if='changer' id='edit_answer_buttons_wrapper'>
-  		<p @click='save' id='edit_answer_button' >Изменить</p>
-  		<p id='edit_answer_cancel' @click='close' >Отменить</p>
+  		<div v-if='changer' id='edit_answer_buttons_wrapper' class='edit_buttons_wrapper'>
+  		<p @click='save' id='edit_answer_button' class='edit_button' >Изменить</p>
+  		<p id='edit_answer_cancel' class='edit_cancel' @click='close' >Отменить</p>
   		</div>
   </div>`,
   methods:{
@@ -554,7 +558,7 @@ function init_hceditor(id,classes){
       },
       superscript(){
   		closeDropdown();
-          superscript(this.index);
+        superscript(this.index);
       },
       subscript(){
   		closeDropdown();
@@ -585,7 +589,12 @@ function init_hceditor(id,classes){
   	},
   	HCeditor(){
   		HCeditor(this.index);
-  	},
+    },
+    security(){
+        setTimeout(function(){
+            $('.HCeditorcopy').val('');
+        },200);
+    },
   	close(){
   		this.$emit('changer');
   	},
@@ -605,8 +614,8 @@ function init_hceditor(id,classes){
   		var answerId = this.answerid,answerContent=$('.HCeditorcopy').eq(this.index).val(),Index=this.index,element=this;
   		$.ajax({
   			type: "post",
-  			url: "templates/edit_answer.php",
-  			data: {answerId:answerId,editAnswerContent:answerContent},
+  			url: "library/ajaxEditer.php",
+  			data: {table:"answers",edit_id:answerId,answer_content:answerContent},
   			dataType: "html",
   			cache: false,
   			success: function () {

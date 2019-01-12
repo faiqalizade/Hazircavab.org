@@ -9,13 +9,13 @@ $list_limit_last = ($page_number - 1) * 15;
 $list_limit = $page_number * 15;
 ?>
 <div class="main_page_header">
-	<p id="main_page_title">Все вопросы</p>
+	<p id="main_page_title"><?= $langVals[$_COOKIE['language']]['allQuestions'] ?></p>
 </div>
 <div class="main_page_header_after">
 	<div class="question_list">
-		<a href="index.php?page=questions&new" class="question_list_titles">Новые</a>
-		<a href="index.php?page=questions&popular" class="question_list_titles">Популярные</a>
-		<a href="index.php?page=questions&notanswer" class="question_list_titles">Без ответа</a>
+		<a href="index.php?page=questions&new" class="question_list_titles"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['new'] : $langVals['ru']['new'] ?></a>
+		<a href="index.php?page=questions&popular" class="question_list_titles"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['popular'] : $langVals['ru']['popular'] ?></a>
+		<a href="index.php?page=questions&notanswer" class="question_list_titles"><?= $langVals[$_COOKIE['language']]['notAnswered'] ?></a>
 	</div>
 	<?php
 	if(isset($_GET['new'])){
@@ -65,7 +65,7 @@ $list_limit = $page_number * 15;
 	}
 	if($cookie_checked):?>
 	<div class="add_question">
-		<a href="index.php?page=addquestion" id="add_question_button"> <span>Задать вопрос</span> <img id="add_image" src="images/add.png"> </a>
+		<a href="index.php?page=addquestion" id="add_question_button"> <span><?= $langVals[$_COOKIE['language']]['askQusetions'] ?></span> <img id="add_image" src="images/add.png"> </a>
 	</div>
 <?php endif;?>
 </div>
@@ -87,19 +87,19 @@ $list_limit = $page_number * 15;
 	<?php endif;?>
 	</div>
 	<a href="index.php?page=question&question=<?=$question->id?>" class="question_title"><?=$question->title?></a>
-	<p class="question_information"><?=$question->views?> просмотров &#8226; <?=$question->date.' '.$question->time?></p>
+	<p class="question_information"><?=$question->views?> <?= $langVals[$_COOKIE['language']]['views'] ?> &#8226; <?=$question->date.' '.$question->time?></p>
 </div>
 <div class="question_answers">
 	<?php
 	if($question->check_answer != ','):?>
 	<div class="question_answers_wrapper check">
 		<p><?=$question->answers?></p>
-		<p>Ответов</p>
+		<p><?= $langVals[$_COOKIE['language']]['answersCount'] ?></p>
 	</div>
 	<?php else:?>
 	<div class="question_answers_wrapper">
 		<p><?=$question->answers?></p>
-		<p>Ответов</p>
+		<p><?= $langVals[$_COOKIE['language']]['answersCount'] ?></p>
 	</div>
 	<?php endif;?>
 </div>
@@ -116,7 +116,7 @@ endforeach;
 ?>
 		<div class="questions_pages">
 			<?php if($page_number > 1):?>
-				<a href="index.php?page=questions&<?=$order_question?>&pn=<?=$page_number - 1;?>">&#8592; Предыдущий</a>
+				<a href="index.php?page=questions&<?=$order_question?>&pn=<?=$page_number - 1;?>">&#8592; <?=$langVals[$_COOKIE['language']]['paginationPrev']?></a>
 			<?php endif;
 			if($page_number > 6){
 				$left_page_list = $page_number - 6;
@@ -130,7 +130,7 @@ endforeach;
 			endfor;
 			if($page_number < $page_count):
 			?>
-				<a href="index.php?page=questions&<?=$order_question?>&pn=<?=$page_number + 1;?>">Следующий &#8594;</a>
+				<a href="index.php?page=questions&<?=$order_question?>&pn=<?=$page_number + 1;?>"><?=$langVals[$_COOKIE['language']]['paginationNext']?> &#8594;</a>
 			<?php endif;?>
 		</div>
 		<script>
