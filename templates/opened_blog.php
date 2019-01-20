@@ -1,7 +1,35 @@
 <?php
 	$article = R::load('blog',$blog_id);
+	$is_liked_blog_user = R::findOne('bloglikes', 'WHERE user_id = ? AND blog_id = ?',[$user_infos->id,$blog_id]);
 	if($article->id != 0){
 		$article->views = $article->views + 1;
+		if(isset($_POST['like_button_submit'])){
+			if($cookie_checked){
+				$article->likes = $article->likes + 1;
+				$blog_likes_table = R::dispense('bloglikes');
+				$blog_likes_table->blog_id = $blog_id;
+				$blog_likes_table->user_id = $user_infos->id;
+				R::store($blog_likes_table);
+				echo "
+				<script>
+					setTimeout(()=>{
+						window.location = 'index.php?page=blog&blog=$blog_id';
+					},50);
+				</script>
+				";
+			}
+		}elseif (isset($_POST['unlike_button_submit'])) {
+			$article->likes = $article->likes - 1;
+			$blog_likes_table = R::load('bloglikes',$is_liked_blog_user->id);
+			R::trash($blog_likes_table);
+			echo "
+				<script>
+				setTimeout(()=>{
+					window.location = 'index.php?page=blog&blog=$blog_id';
+				},50);
+				</script>
+				";
+		}
 		R::store($article);
 	}
 	$comments = R::find('commentstoarticle','WHERE article_id = ?',[$blog_id]);
@@ -45,12 +73,27 @@
 </div>
 
 <div class="blog_like_button">
-	<div class="like_button">
-		<p>Лайкнуть</p>
-		<p>
-			<?=$article->likes?>
-		</p>
-	</div>
+	<?php if(empty($is_liked_blog_user)): ?>
+		<form method="post">
+			<input  style='display:none'type="submit" name="like_button_submit" id='like_button_submit' >
+		</form>
+		<label for='like_button_submit' class="like_button">
+			<p>Лайкнуть</p>
+			<p id="like_counts">
+				<?=$article->likes?>
+			</p>
+		</label>
+	<?php else: ?>
+		<form method="post">
+			<input  style='display:none'type="submit" name="unlike_button_submit" id='like_button_submit' >
+		</form>
+		<label for='like_button_submit' class="unlike_button">
+			<p>Дизлайкнуть</p>
+			<p id="like_counts">
+				<?=$article->likes?>
+			</p>
+		</label>
+	<?php endif; ?>
 </div>
 <div class="blog_comments_block" id='opened_question_question_add_answer'>
 	<p class="comment_text">Коментарии</p>

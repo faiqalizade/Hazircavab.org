@@ -37,9 +37,13 @@ if ($page == '' || $page == 'questions') {
 	require "templates/AFgroup.php";
 }elseif ($page == 'aboutsite') {
 	require "templates/aboutsite.php";
-}elseif ($page == 'contacts') {
+}elseif ($page == 'feedback') {
 	require "templates/contacts.php";
 }elseif($page == 'q'){
 	require 'templates/findPage.php';
+}elseif ($page == 'het') {
+	require 'templates/het.php';
+}elseif ($page == 'notifications'){
+	require 'templates/notifications.php';
 }
  ?>

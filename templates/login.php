@@ -3,8 +3,8 @@
     <p id='login_page_error'><?=$error?></p>
     <p id='login_page_title'>Вход</p>
     <form method='post'>
-        <input type="text" name="login" required autofocus class='login_page_inputs' placeholder='Логин'>
-        <input type="password" name='password' required class='login_page_inputs' placeholder='Пароль'>
+        <input type="text" autocomplete="username" name="login" required autofocus class='login_page_inputs' placeholder='Логин'>
+        <input type="password" autocomplete='current-password' name='password' required class='login_page_inputs' placeholder='Пароль'>
         <input type="submit" value='Войти' name='login_page_submit' id='login_page_submit'>
     </form>
     <label for="login_page_submit"><div id='login_page_submit_label'>

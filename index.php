@@ -136,9 +136,46 @@ require 'languages.php';
 						<a href="index.php?page=users" class="article_links"><img src="images/users.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['users'] : $langVals['ru']['users'] ?></a>
 						<a href="index.php?page=tags" class="article_links"><img src="images/tags.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['allTags'] : $langVals['ru']['allTags'] ?></a>
 						<a href="index.php?page=het" class="article_links"><img src="images/book.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['gdz'] : $langVals['ru']['gdz'] ?></a>
-						<a href="index.php?page=services" class="article_links"><img src="images/calculator.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['services'] : $langVals['ru']['services'] ?></a>
-						<?php if($cookie_checked):?>
-							<p class="article_links"> <img src="images/bell.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['notifications'] : $langVals['ru']['notifications'] ?></p>
+						<?php if($cookie_checked):
+							$user_notifications = R::find('notifications','WHERE `to` = ? AND viewed = 0 ORDER BY date DESC,time DESC',[$user_infos->login]);
+							?>
+							<a href='index.php?page=notifications' class="article_links"> <img src="images/bell.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['notifications'] : $langVals['ru']['notifications'] ?></a>
+							<div class='notifs_wrapper'>
+								<?php
+								$notif_i = 0;
+								foreach($user_notifications as $notif):
+									if($notif_i < 3):
+									?>
+								<!-- Comments Start -->
+									<a class='notif_wrapper' href="<?=$notif->where?>&notif=<?=$notif->id?>">
+										<img class='notif_image' src="images/notif_<?=$notif->type?>.svg">
+											<p class='notif_content' >
+												<?php if($notif->type == 0):?>
+													<?=$notif->from_login?> ответил на ваш вопрос.
+												<?php elseif($notif->type == 1):?>
+													<?=$notif->from_login?> понравился ваш ответ.
+												<?php elseif($notif->type == 2):?>
+													<?=$notif->from_login?> отметил ваш ответ как правильный.
+												<?php elseif($notif->type == 3):?>
+													<?=$notif->from_login?> прокомментировал ваш ответ.
+												<?php elseif($notif->type == 4):?>
+													<?=$notif->from_login?> понравился ваш комментарий к ответу.
+												<?php elseif($notif->type == 5):?>
+													<?=$notif->from_login?> ответил на ваш комментарий к ответу.
+												<?php endif;?>
+											</p>
+									</a>
+								<!-- Comments End -->
+								  <?php
+									  else:
+										if(count($user_notifications) > 3){
+											$notViewed = count($user_notifications) - 3;
+											echo "<a href='index.php?page=notifications' class='article_links'>Не прочитано - $notViewed</a>";
+										}										
+									endif;
+									$notif_i++;
+								endforeach;?>
+							</div>
 						<?php endif;?>
 					</div>
 				</div>
@@ -158,9 +195,44 @@ require 'languages.php';
 						<a href="index.php?page=users" class="article_links"><img src="images/users.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['users'] : $langVals['ru']['users'] ?></a>
 						<a href="index.php?page=tags" class="article_links"><img src="images/tags.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['allTags'] : $langVals['ru']['allTags'] ?></a>
 						<a href="index.php?page=het" class="article_links"><img src="images/book.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['gdz'] : $langVals['ru']['gdz'] ?></a>
-						<a href="index.php?page=services" class="article_links"><img src="images/calculator.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['services'] : $langVals['ru']['services'] ?></a>
 						<?php if($cookie_checked):?>
 							<p class="article_links"> <img src="images/bell.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['notifications'] : $langVals['ru']['notifications'] ?></p>
+							<div class='notifs_wrapper'>
+								<?php
+								$notif_i = 0;
+								foreach($user_notifications as $notif):
+									if($notif_i < 3):
+									?>
+								<!-- Comments Start -->
+									<a class='notif_wrapper' href="<?=$notif->where?>&notif=<?=$notif->id?>">
+										<img class='notif_image' src="images/notif_<?=$notif->type?>.svg">
+											<p class='notif_content' >
+												<?php if($notif->type == 0):?>
+													<?=$notif->from_login?> ответил на ваш вопрос.
+												<?php elseif($notif->type == 1):?>
+													<?=$notif->from_login?> понравился ваш ответ.
+												<?php elseif($notif->type == 2):?>
+													<?=$notif->from_login?> отметил ваш ответ как правильный.
+												<?php elseif($notif->type == 3):?>
+													<?=$notif->from_login?> прокомментировал ваш ответ.
+												<?php elseif($notif->type == 4):?>
+													<?=$notif->from_login?> понравился ваш комментарий к ответу.
+												<?php elseif($notif->type == 5):?>
+													<?=$notif->from_login?> ответил на ваш комментарий к ответу.
+												<?php endif;?>
+											</p>
+									</a>
+								<!-- Comments End -->
+								  <?php
+									  else:
+										if(count($user_notifications) > 3){
+											$notViewed = count($user_notifications) - 3;
+											echo "<a href='index.php?page=notifications' class='article_links'>Не прочитано - $notViewed</a>";
+										}										
+									endif;
+									$notif_i++;
+								endforeach;?>
+							</div>
 						<?php endif;?>
 					</div>
 			</div>

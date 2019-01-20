@@ -104,7 +104,7 @@ foreach ($find_answers_to_question as $answer):
 							<!--*******************-->
 							<?php foreach($commentsToAnswer as $comment):
 								$commentAddedUser = R::findOne('users','login = ?',[$comment->user]);
-								$commentsLikesArray = explode(',',$commentAddedUser->comments_likes);
+								$commentsLikesArray = explode(',',$user_infos->comments_likes);
 								?>
 								<div class='opened_question_comment_to_answer_wrapper'>
 									<div class='opened_question_comment_to_answer_image_user'>
@@ -120,7 +120,7 @@ foreach ($find_answers_to_question as $answer):
 										<div class='opened_question_comment_to_answer_footer'>
 											<p class='opened_question_comment_to_answer_date'><?=$comment->date?> - <?=$comment->time?></p>
 											<?php if(in_array($comment->id,$commentsLikesArray)): ?>
-												<p class='opened_question_comment_to_answer_like_bttn' commentId='<?=$comment->id?>' liked='true'> <span class="comments_to_answer_like_text"><?=$langVals[$_COOKIE['language']]['unlike']?></span> (<span class="comments_to_answer_count"><?=$comment->likes?></span>)</p>
+												<p class='opened_question_comment_to_answer_like_bttn' commentId='<?=$comment->id?>' liked='true'> <span class="comments_to_answer_like_text"><?=$langVals[$_COOKIE['language']]['unlike']?></span> (<span class="comments_to_answer_count"><?=$comment->likes?></span>)</pre>
 											<?php else:?>
 												<p class='opened_question_comment_to_answer_like_bttn' commentId='<?=$comment->id?>' liked='false'> <span class="comments_to_answer_like_text"><?=$langVals[$_COOKIE['language']]['like']?></span> (<span class="comments_to_answer_count"><?=$comment->likes?></span>)</p>
 											<?php endif;?>

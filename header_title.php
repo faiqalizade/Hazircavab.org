@@ -1,4 +1,11 @@
 <?php
+// Notif types: 
+// 0 = add answer to question
+// 1 = like answer to question
+// 2 = check answer to question
+// 3 = add comment to answer
+// 4 = like comment to answer
+// 5 = reply to comment answer
 # =============== VARS ==============
 $page = $_GET['page'];
 $blog_id = $_GET['blog'];
@@ -295,6 +302,7 @@ if($page == 'remove_question'){
     }
 }
 if($page == 'question'){ 
+    $opened_question_load = R::load('questions',$opened_question);
     if(!isset($like_answer) && !isset($unlike_answer) && !isset($check_answer) && !isset($uncheck_answer) && !isset($remove_answer)){
         if(!empty($_POST)){
             if(isset($_POST['HCeditorContent'])){
@@ -314,12 +322,23 @@ if($page == 'question'){
                     $add_answer_to_question->likes = 0;
                     $add_answer_to_question->check_answer = 0;
                     R::store($add_answer_to_question);
+                    if($user_infos->login != $opened_question_load->user){
+                        $add_notif = R::dispense('notifications');
+                        $add_notif->from_id = $user_infos->id;
+                        $add_notif->from_login = $user_infos->login;
+                        $add_notif->to = $opened_question_load->user;
+                        $add_notif->type = 0;
+                        $add_notif->where = 'index.php?page=question&question='.$opened_question;
+                        $add_notif->viewed = 0;
+                        $add_notif->date = date('d.m.Y');
+                        $add_notif->time = date('H:i:s');
+                        R::store($add_notif);
+                    }
                     header('Refresh:0');
                     exit();
                 }
             }
         }
-        $opened_question_load = R::load('questions',$opened_question);
         $pageTitle = $opened_question_load->title.' - ';
     }else{
         if(isset($like_answer)){
@@ -332,6 +351,18 @@ if($page == 'question'){
                     $load_liked_answer_user = R::load('users',$user_infos->id);
                     $load_liked_answer_user->answer_likes = $load_liked_answer_user->answer_likes.$like_answer.',';
                     R::store($load_liked_answer_user);
+                    if($user_infos->login != $load_liked_answer->user){
+                        $add_notif = R::dispense('notifications');
+                        $add_notif->from_id = $user_infos->id;
+                        $add_notif->from_login = $user_infos->login;
+                        $add_notif->to = $load_liked_answer->user;
+                        $add_notif->type = 1;
+                        $add_notif->where = 'index.php?page=question&question='.$opened_question;
+                        $add_notif->viewed = 0;
+                        $add_notif->date = date('d.m.Y');
+                        $add_notif->time = date('H:i:s');
+                        R::store($add_notif);
+                    }
                     header("Location:".$_SERVER['HTTP_REFERER']);
                     exit();
                 }else{
@@ -347,8 +378,18 @@ if($page == 'question'){
                         $load_clicked_check_answer_question->check_answer = ','.$check_answer.',';
                         $load_checked_answer = R::load('answers',$check_answer);
                         $load_checked_answer->check_answer = 1;
+                        $add_notif = R::dispense('notifications');
+                        $add_notif->from_id = $user_infos->id;
+                        $add_notif->from_login = $user_infos->login;
+                        $add_notif->to = $load_checked_answer->user;
+                        $add_notif->type = 2;
+                        $add_notif->where = 'index.php?page=question&question='.$opened_question;
+                        $add_notif->viewed = 0;
+                        $add_notif->date = date('d.m.Y');
+                        $add_notif->time = date('H:i:s');
                         R::store($load_checked_answer);
                         R::store($load_clicked_check_answer_question);
+                        R::store($add_notif);
                         header("Location:".$_SERVER['HTTP_REFERER']);
                         exit();
                     }else{
@@ -525,6 +566,19 @@ if($page == 'blog'){
         R::store($addCommentToBlog);
         header("Location:".$_SERVER['HTTP_REFERER']);
         exit();
+    }
+}
+if(isset($_GET['notif'])){
+    if(is_int($_GET['notif'])){
+        $notifEdit = R::load('notifications',$_GET['notif']);
+        if($cookie_checked){
+            if($notifEdit->to == $user_infos->login){
+                if(!$notifEdit->viewed){
+                    $notifEdit->viewed = 1;
+                    R::store($notifEdit);
+                }
+            }
+        }
     }
 }
 ?>
