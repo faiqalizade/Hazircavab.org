@@ -6,7 +6,7 @@ if($cookie_checked):
     </a>
     <?php endif; ?>
     <div class="main_page_header">
-        <p id="main_page_title"><?= $langVals[$_COOKIE['language']]['askQusetions'] ?></p>
+        <p id="main_page_title"><?= $langVals[$defLang]['askQusetions'] ?></p>
     </div>
     <div id='add_question_form_wrapper' >
         <form id='add_question_form' method="post" novalidate>

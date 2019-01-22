@@ -34,11 +34,11 @@ if($opened_user_infos->id != 0):
     <div id='opened_user_profile_works' >
         <div class='opened_user_profile_work' >
             <p class='opened_user_profile_work_number' ><?=$opened_user_infos->questions?></p>
-            <p class='opened_user_profile_work_name' ><?= $langVals[$_COOKIE['language']]['questions'] ?></p>
+            <p class='opened_user_profile_work_name' ><?= $langVals[$defLang]['questions'] ?></p>
         </div>
         <div class='opened_user_profile_work' >
             <p class='opened_user_profile_work_number'><?=$opened_user_infos->answers?></p>
-            <p class='opened_user_profile_work_name' ><?= $langVals[$_COOKIE['language']]['answersCount'] ?></p>
+            <p class='opened_user_profile_work_name' ><?= $langVals[$defLang]['answersCount'] ?></p>
         </div>
         <div class='opened_user_profile_work' >
             <p class='opened_user_profile_work_number'><?= (int) ((count($find_user_check_answers) * 100) / $opened_user_infos->answers)?>%</p>
@@ -47,7 +47,7 @@ if($opened_user_infos->id != 0):
     </div>
 </div>
 <div id='opened_user_profile_lists' >
-    <a href="index.php?page=user&user=<?=$opened_user_profile?>&infos" class='opened_user_profile_list' ><?= $langVals[$_COOKIE['language']]['information'] ?></a>
+    <a href="index.php?page=user&user=<?=$opened_user_profile?>&infos" class='opened_user_profile_list' ><?= $langVals[$defLang]['information'] ?></a>
     <a href="index.php?page=user&user=<?=$opened_user_profile?>&questions" class='opened_user_profile_list' >Вопросы</a>
     <a href="index.php?page=user&user=<?=$opened_user_profile?>&answers" class='opened_user_profile_list' >Ответы</a>
     <a href="index.php?page=user&user=<?=$opened_user_profile?>&tags" class='opened_user_profile_list' >Теги</a>
@@ -102,19 +102,19 @@ if($opened_user_infos->id != 0):
                                 <?php endif;?>
                             </div>
                             <a href="index.php?page=question&question=<?=$question->id?>" class="question_title"><?=$question->title?></a>
-                            <p class="question_information"><?=$question->views?> <?= $langVals[$_COOKIE['language']]['views'] ?> &#8226; <?=$question->date.' '.$question->time?></p>
+                            <p class="question_information"><?=$question->views?> <i class="fas fa-eye"></i> &#8226; <?=$question->date.' '.$question->time?></p>
                         </div>
                         <div class="question_answers">
                             <?php
                             if($question->check_answer != ','):?>
                             <div class="question_answers_wrapper check">
                                 <p><?=$question->answers?></p>
-                                <p><?= $langVals[$_COOKIE['language']]['answersCount'] ?></p>
+                                <p><?= $langVals[$defLang]['answersCount'] ?></p>
                             </div>
                             <?php else:?>
                             <div class="question_answers_wrapper">
                                 <p><?=$question->answers?></p>
-                                <p><?= $langVals[$_COOKIE['language']]['answersCount'] ?></p>
+                                <p><?= $langVals[$defLang]['answersCount'] ?></p>
                             </div>
                             <?php endif;?>
                         </div>
@@ -235,7 +235,7 @@ if($opened_user_infos->id != 0):
                                 <a href="index.php?page=tags&tag=<?=$tag->name_ru?>" id="tag_list_tag_image"><img src="tagimages/<?=mb_strtolower($tag->name_ru)?>.png"></a>
                                 <a href="index.php?page=tags&tag=<?=$tag->name_ru?>"><p id="tag_list_tag_name"><?=$tag->name_ru?></p></a>
                                 <p id='tag_list_tag_asked'>
-                                <a href="index.php?page=tags&tag=<?=$tag->name_ru?>"><?=$tag->questions?> <?= $langVals[$_COOKIE['language']]['questions'] ?></a>
+                                <a href="index.php?page=tags&tag=<?=$tag->name_ru?>"><?=$tag->questions?> <?= $langVals[$defLang]['questions'] ?></a>
                                 </p>
                                 <div class='tag_list_tag_subscribe_wrapper'>
                                 <?php if(empty($subscribed_tag_logined_user)):?>
@@ -266,7 +266,7 @@ if($opened_user_infos->id != 0):
     <?php if ($list_item_count > 15):?>
 		<div class="questions_pages">
 			<?php if($page_number > 1):?>
-				<a href="index.php?page=user&user=<?=$opened_user_profile?>&<?=$opened_profile_title?>&pn=<?=$page_number - 1;?>">&#8592; <?=$langVals[$_COOKIE['language']]['paginationPrev']?></a>
+				<a href="index.php?page=user&user=<?=$opened_user_profile?>&<?=$opened_profile_title?>&pn=<?=$page_number - 1;?>">&#8592; <?=$langVals[$defLang]['paginationPrev']?></a>
 			<?php endif;
 			if($page_number > 6){
 				$left_page_list = $page_number - 6;
@@ -280,7 +280,7 @@ if($opened_user_infos->id != 0):
 			endfor;
 			if($page_number < $page_count):
 			?>
-				<a href="index.php?page=user&user=<?=$opened_user_profile?>&<?=$opened_profile_title?>&pn=<?=$page_number + 1;?>"><?=$langVals[$_COOKIE['language']]['paginationNext']?> &#8594;</a>
+				<a href="index.php?page=user&user=<?=$opened_user_profile?>&<?=$opened_profile_title?>&pn=<?=$page_number + 1;?>"><?=$langVals[$defLang]['paginationNext']?> &#8594;</a>
 			<?php endif;?>
 		</div>
 		<script>

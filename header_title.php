@@ -24,6 +24,27 @@ $list_page_number = $_GET['pn'];
 $query = $_GET['q'];
 # =============== ENDVARS ==============
 date_default_timezone_set('Asia/Baku');
+if(isset($_COOKIE['language'])){
+    if($_COOKIE['language'] != 'az' && $_COOKIE['language'] != 'ru'){
+        setcookie('language','ru',time() + 1009152000,'/');
+        $defLang = 'ru';
+    }
+    if($cookie_checked && $user_infos->lang != $_COOKIE['language']){
+        $check_cookie->lang = $_COOKIE['language'];
+        R::store($check_cookie);
+    }
+}elseif($cookie_checked){
+    if($user_infos->lang != 'az'){
+        setcookie('language','ru',time() + 1009152000,'/');
+        $defLang = 'ru';
+    }else{
+        setcookie('language','az',time() + 1009152000,'/');
+        $defLang = 'az';
+    }
+}else{
+    setcookie('language','ru',time() + 1009152000,'/');
+    $defLang = 'ru';
+}
 function generateRandomString($length) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -64,24 +85,6 @@ if(isset($_COOKIE['user_id']) && isset($_COOKIE['user_hash'])){
     setcookie('user_id','', time() - 3600,'/');
     $cookie_checked = false;
 }
-if(isset($_COOKIE['language'])){
-    if($_COOKIE['language'] != 'az' && $_COOKIE['language'] != 'ru'){
-        setcookie('language','ru',time() + 1009152000,'/');
-    }
-    if($cookie_checked && $user_infos->lang != $_COOKIE['language']){
-        $check_cookie->lang = $_COOKIE['language'];
-        R::store($check_cookie);
-    }
-}elseif($cookie_checked){
-    if($user_infos->lang != 'az'){
-        setcookie('language','ru',time() + 1009152000,'/');
-    }else{
-        setcookie('language','az',time() + 1009152000,'/');
-    }
-}else{
-    setcookie('language','ru',time() + 1009152000,'/');
-}
-
 if ($page == 'registr') {
     if (isset($_POST['registr_page_submit'])) {
         $searchmail = R::findOne('users','mail = ?',[$_POST['reg_mail']]);
@@ -286,7 +289,7 @@ if($page == 'remove_question'){
         $load_remove_question = R::load('questions',$opened_question);
         if($load_remove_question->user == $user_infos->login || $user_infos->status == 9){
             $remove_tag_arr = explode(',',$load_remove_question->tags);
-            $find_question_answers = R::find('answers','question_id = '.$opened_question);
+            $find_question_answers = R::find('answers','question_id = ?',[$opened_question]);
             R::trashAll($find_question_answers);
             foreach ($remove_tag_arr as $tag) {
                 $find_tag_to_minus = R::findOne('tags','name_ru = ?',[$tag]);
@@ -569,7 +572,6 @@ if($page == 'blog'){
     }
 }
 if(isset($_GET['notif'])){
-    if(is_int($_GET['notif'])){
         $notifEdit = R::load('notifications',$_GET['notif']);
         if($cookie_checked){
             if($notifEdit->to == $user_infos->login){
@@ -579,6 +581,5 @@ if(isset($_GET['notif'])){
                 }
             }
         }
-    }
 }
 ?>

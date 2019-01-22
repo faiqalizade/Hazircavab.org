@@ -23,7 +23,7 @@ foreach ($tag_list_get_tags as $tag):
 <a href="index.php?page=tags&tag=<?=$tag->name_ru?>&questions" id="tag_list_tag_image"><img src="tagimages/<?=$tag->name_ru?>.png"></a>
 <a href="index.php?page=tags&tag=<?=$tag->name_ru?>&questions"><p id="tag_list_tag_name"><?=$tag->name_ru?></p></a>
 <p id='tag_list_tag_asked'>
-<a href="index.php?page=tags&tag=<?=$tag->name_ru?>&questions"><?=$tag->questions?> <?= $langVals[$_COOKIE['language']]['questions'] ?></a>
+<a href="index.php?page=tags&tag=<?=$tag->name_ru?>&questions"><?=$tag->questions?> <?= $langVals[$defLang]['questions'] ?></a>
 </p>
 <div class='tag_list_tag_subscribe_wrapper'>
 <?php
@@ -45,7 +45,7 @@ endforeach;?>
 <?php if(count($tag_list_get_tags) > 15): ?>
 <div class="questions_pages">
 			<?php if($page_number > 1):?>
-				<a href="index.php?page=tags&pn=<?=$page_number - 1;?>">&#8592; <?=$langVals[$_COOKIE['language']]['paginationPrev']?></a>
+				<a href="index.php?page=tags&pn=<?=$page_number - 1;?>">&#8592; <?=$langVals[$defLang]['paginationPrev']?></a>
 			<?php endif;
 			if($page_number > 6){
 				$left_page_list = $page_number - 6;
@@ -59,7 +59,7 @@ endforeach;?>
 			endfor;
 			if($page_number < $page_count):
 			?>
-				<a href="index.php?page=tags&pn=<?=$page_number + 1;?>"><?=$langVals[$_COOKIE['language']]['paginationNext']?> &#8594;</a>
+				<a href="index.php?page=tags&pn=<?=$page_number + 1;?>"><?=$langVals[$defLang]['paginationNext']?> &#8594;</a>
 			<?php endif;?>
 		</div>
 <?php endif;?>

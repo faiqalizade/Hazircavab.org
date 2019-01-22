@@ -28,6 +28,6 @@ if(!empty($findquestion) || !empty($findtags) || !empty($findprofiles) || !empty
 </div>
 <?php else:?>
 <a href='index.php?page=q&q=<?=$_POST['findText']?>' id='notFound' >
-<?= $langVals[$_COOKIE['language']]['search'] ?> по запросу "<?=$_POST['findText']?>"
+<?= $langVals[$defLang]['search'] ?> по запросу "<?=$_POST['findText']?>"
 </a>
 <?php endif;?>

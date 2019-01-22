@@ -49,11 +49,11 @@ $(window).resize(function () {
 		$('.content').css('margin-left','')
 		$('.content').css('transition','none');
 		$('.stylecss').attr('href','');
-		$('.main_page_header_menu_block').css('background-color','#516174');
+		$('.main_page_header_menu_block').css('background-color','#4f5a6e');
 		opened_article_on_1200 = false;
 		$('#article_on_1200').css('margin-left','-260px');
 		$('.content').css('margin-left','0');
-        $('.main_page_header_menu_block').css('background-color','#516174');
+        $('.main_page_header_menu_block').css('background-color','#4f5a6e');
         $('.wrapper').css('display','flex');
 		$('.mobileModeFind').css('display','none');
 	}
@@ -91,11 +91,18 @@ function first_time() {
 
     document.cookie = cookie_string;
   }
-  if (getcookie('language') == null) {
+  if (getcookie('opened') == null) {
 	$('#first_time_guide_change_lang_block').fadeIn(1000);
 	$('#first_time_guide_change_lang_block').css('display','flex');
 	$('#first_time_guide_change_lang_cancel').click(function () {
 		setcookie('language','ru','/',2030,0);
+		$('#first_time_guide_change_lang_block').fadeOut(500);
+		setTimeout(() => {
+			languageFind();
+		}, 500);
+	});
+	$('#first_time_guide_change_lang_lang').click(function () {
+		setcookie('language','az','/',2030,0);
 		$('#first_time_guide_change_lang_block').fadeOut(500);
 		setTimeout(() => {
 			languageFind();
@@ -264,7 +271,7 @@ $('.opened_question_comment_to_answer_like_bttn').click(function () {
 	likesCount = parseInt(likesCount);
 	if($(this).attr('liked') == 'false'){
 		likesCount++;
-		$('.comments_to_answer_like_text').eq(likeButtonIndex).text("Like");
+		$('.comments_to_answer_like_text').eq(likeButtonIndex).html("<i class=\"fas fa-thumbs-up\"></i>");
 		$('.comments_to_answer_count').eq(likeButtonIndex).text(likesCount);
 		$(this).attr('liked','true');
 		$.ajax({
@@ -277,7 +284,7 @@ $('.opened_question_comment_to_answer_like_bttn').click(function () {
 			}
 		});
 	}else{
-		$('.comments_to_answer_like_text').eq(likeButtonIndex).text("Dislike");
+		$('.comments_to_answer_like_text').eq(likeButtonIndex).html("<i class=\"far fa-thumbs-up\"></i>");
 		likesCount--;
 		$('.comments_to_answer_count').eq(likeButtonIndex).text(likesCount);
 		$(this).attr('liked','false');
@@ -375,8 +382,8 @@ $('.opened_question_answer_comment_send_button').click(function () {
 							</div>
 							<div class='opened_question_comment_to_answer_footer'>
 								<p class='opened_question_comment_to_answer_date'>`+ today +`</p>
-								<p class='opened_question_comment_to_answer_like_bttn'><?=$langVals[$_COOKIE['language']]['like']?> (0)</p>
-								<p class='opened_question_comment_to_answer_reply_bttn'>Ответить</p>
+								<p class='opened_question_comment_to_answer_like_bttn'><i class="fas fa-thumbs-up"></i> (0)</p>
+								<p class='opened_question_comment_to_answer_reply_bttn'><i class="fas fa-reply"></i></p>
 								<div class="opened_question_question_footer_setting_block_wrapper">
 									<div onclick='openDropMenu(this)' class="opened_question_question_footer_setting_image">
 										<img src="images/3pointsilver.svg" id="opened_question_question_footer_setting_image">

@@ -12,7 +12,7 @@
 ?>
     </p>
 <div id='my_profil_header' >
-<a href="index.php?page=myprofile&profile" class='my_profil_header_list' ><?= $langVals[$_COOKIE['language']]['information'] ?></a>
+<a href="index.php?page=myprofile&profile" class='my_profil_header_list' ><?= $langVals[$defLang]['information'] ?></a>
 <a href="index.php?page=myprofile&password" class='my_profil_header_list' >Изменить пароль</a>
 </div>
 <?php if(isset($profile)):?>
@@ -30,9 +30,9 @@
     <label for='my_profile_image_upload' id='my_profil_img_change_own' >Свой</label>
 </div>
 <form id='my_profil_info_change_form' method="post">
-    <p class='my_profil_info_input_titles' ><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['name'] : $langVals['ru']['name'] ?>:</p>
+    <p class='my_profil_info_input_titles' ><?php echo (isset($defLang)) ? $langVals[$defLang]['name'] : $langVals['ru']['name'] ?>:</p>
     <input class='my_profil_info_inputs' name='my_profil_change_name' type="text" value='<?=$user_infos->name?>'>
-    <p class='my_profil_info_input_titles' ><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['surname'] : $langVals['ru']['surname'] ?>:</p>
+    <p class='my_profil_info_input_titles' ><?php echo (isset($defLang)) ? $langVals[$defLang]['surname'] : $langVals['ru']['surname'] ?>:</p>
     <input class='my_profil_info_inputs' type="text" name='my_profil_change_surname' value='<?=$user_infos->surname?>'>
     <p class='my_profil_info_input_titles' >Коротко о себе:</p>
     <input class='my_profil_info_inputs' type="text" name='my_profil_change_small_desc' value='<?=$user_infos->small_desc?>'>

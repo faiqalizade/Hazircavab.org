@@ -2,6 +2,7 @@
 require 'db.php';
 require 'header_title.php';
 require 'languages.php';
+$defLang = $_COOKIE['language'];
  ?>
 <!DOCTYPE html>
 <html>
@@ -85,7 +86,7 @@ require 'languages.php';
 		<div class='mobileModeFind' >
 			<div>
                 <div id='mobileModeFindWrapper' >
-                    <input id='mobileModeFindInput' placeholder='<?= $langVals[$_COOKIE['language']]['search'] ?>' autocomplete="off" type="text">
+                    <input id='mobileModeFindInput' placeholder='<?= $langVals[$defLang]['search'] ?>' autocomplete="off" type="text">
                     <p id='mobileModeFindClose' >Закрыть</p>
                 </div>
             </div>
@@ -110,7 +111,7 @@ require 'languages.php';
 					<img id='first_time_guide_lang_setting_img' src="images/first_time_guide_lang.jpg">
 				</div>
 				<div class='first_time_guide_blocks' id='first_time_guide_end_block'>
-					<p id='first_time_guide_end_title' >Список <?= $langVals[$_COOKIE['language']]['questions'] ?> прост: Заголовок вопроса, просмотры,время добавления, количество <?= $langVals[$_COOKIE['language']]['answersCount'] ?>(<b>если цвет зелёный это знак того что среди <?= $langVals[$_COOKIE['language']]['answersCount'] ?> есть правильный</b>)</p>
+					<p id='first_time_guide_end_title' >Список <?= $langVals[$defLang]['questions'] ?> прост: Заголовок вопроса, просмотры,время добавления, количество <?= $langVals[$defLang]['answersCount'] ?>(<b>если цвет зелёный это знак того что среди <?= $langVals[$defLang]['answersCount'] ?> есть правильный</b>)</p>
 					<img id='first_time_guide_before_end_image' src="images/first_time_guide_question_list.jpg">
 				</div>
 				<div class='first_time_guide_blocks'>
@@ -131,15 +132,15 @@ require 'languages.php';
 						<a href="index.php" id="sidebar_logo_link"><img id="sidebar_logo" src="images/Logo2.0white.svg" alt="Home"></a>
 					</div>
 					<div class="article_links_block">
-						<a href="index.php?page=blog" class="article_links"><img src="images/blog.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['blog'] : $langVals['ru']['blog'] ?></a>
-						<a href="index.php?page=questions&new" class="article_links"><img src="images/question-sign.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['allQuestions'] : $langVals['ru']['allQuestions'] ?></a>
-						<a href="index.php?page=users" class="article_links"><img src="images/users.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['users'] : $langVals['ru']['users'] ?></a>
-						<a href="index.php?page=tags" class="article_links"><img src="images/tags.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['allTags'] : $langVals['ru']['allTags'] ?></a>
-						<a href="index.php?page=het" class="article_links"><img src="images/book.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['gdz'] : $langVals['ru']['gdz'] ?></a>
+						<a href="index.php?page=blog" class="article_links"><img src="images/blog.svg"><?php echo (isset($defLang)) ? $langVals[$defLang]['blog'] : $langVals['ru']['blog'] ?></a>
+						<a href="index.php?page=questions&new" class="article_links"><img src="images/question-sign.svg"><?php echo (isset($defLang)) ? $langVals[$defLang]['allQuestions'] : $langVals['ru']['allQuestions'] ?></a>
+						<a href="index.php?page=users" class="article_links"><img src="images/users.svg"><?php echo (isset($defLang)) ? $langVals[$defLang]['users'] : $langVals['ru']['users'] ?></a>
+						<a href="index.php?page=tags" class="article_links"><img src="images/tags.svg"><?php echo (isset($defLang)) ? $langVals[$defLang]['allTags'] : $langVals['ru']['allTags'] ?></a>
+						<a href="index.php?page=het" class="article_links"><img src="images/book.svg"><?php echo (isset($defLang)) ? $langVals[$defLang]['gdz'] : $langVals['ru']['gdz'] ?></a>
 						<?php if($cookie_checked):
 							$user_notifications = R::find('notifications','WHERE `to` = ? AND viewed = 0 ORDER BY date DESC,time DESC',[$user_infos->login]);
 							?>
-							<a href='index.php?page=notifications' class="article_links"> <img src="images/bell.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['notifications'] : $langVals['ru']['notifications'] ?></a>
+							<a href='index.php?page=notifications' class="article_links"> <img src="images/bell.svg"><?php echo (isset($defLang)) ? $langVals[$defLang]['notifications'] : $langVals['ru']['notifications'] ?></a>
 							<div class='notifs_wrapper'>
 								<?php
 								$notif_i = 0;
@@ -181,22 +182,22 @@ require 'languages.php';
 				</div>
 				<?php if(!$cookie_checked): ?>
 				<div class="article_footer">
-					<p style="text-align:center; font-size:1.1em; margin-bottom: 7%;"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['sidebarInfoHC'] : $langVals['ru']['sidebarInfoHC'] ?></p>
-					<p style="text-align:center; font-size:.8em; color:#b9b4b4"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['sidebarInfoDesc'] : $langVals['ru']['sidebarInfoDesc'] ?></p>
-					<a href="#" class="article_footer_about_button"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['next'] : $langVals['ru']['next'] ?> &#8594;</a>
+					<p style="text-align:center; font-size:1.1em; margin-bottom: 7%;"><?php echo (isset($defLang)) ? $langVals[$defLang]['sidebarInfoHC'] : $langVals['ru']['sidebarInfoHC'] ?></p>
+					<p style="text-align:center; font-size:.8em; color:#b9b4b4"><?php echo (isset($defLang)) ? $langVals[$defLang]['sidebarInfoDesc'] : $langVals['ru']['sidebarInfoDesc'] ?></p>
+					<a href="#" class="article_footer_about_button"><?php echo (isset($defLang)) ? $langVals[$defLang]['next'] : $langVals['ru']['next'] ?> &#8594;</a>
 				</div>
 				<?php endif;?>
 			</article>
 			<!-- ********** -->
 			<div id="article_on_1200">
 			<div class="article_links_block">
-						<a href="index.php?page=blog" class="article_links"><img src="images/blog.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['blog'] : $langVals['ru']['blog'] ?></a>
-						<a href="index.php?page=questions&new" class="article_links"><img src="images/question-sign.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['allQuestions'] : $langVals['ru']['allQuestions'] ?></a>
-						<a href="index.php?page=users" class="article_links"><img src="images/users.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['users'] : $langVals['ru']['users'] ?></a>
-						<a href="index.php?page=tags" class="article_links"><img src="images/tags.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['allTags'] : $langVals['ru']['allTags'] ?></a>
-						<a href="index.php?page=het" class="article_links"><img src="images/book.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['gdz'] : $langVals['ru']['gdz'] ?></a>
+						<a href="index.php?page=blog" class="article_links"><img src="images/blog.svg"><?php echo (isset($defLang)) ? $langVals[$defLang]['blog'] : $langVals['ru']['blog'] ?></a>
+						<a href="index.php?page=questions&new" class="article_links"><img src="images/question-sign.svg"><?php echo (isset($defLang)) ? $langVals[$defLang]['allQuestions'] : $langVals['ru']['allQuestions'] ?></a>
+						<a href="index.php?page=users" class="article_links"><img src="images/users.svg"><?php echo (isset($defLang)) ? $langVals[$defLang]['users'] : $langVals['ru']['users'] ?></a>
+						<a href="index.php?page=tags" class="article_links"><img src="images/tags.svg"><?php echo (isset($defLang)) ? $langVals[$defLang]['allTags'] : $langVals['ru']['allTags'] ?></a>
+						<a href="index.php?page=het" class="article_links"><img src="images/book.svg"><?php echo (isset($defLang)) ? $langVals[$defLang]['gdz'] : $langVals['ru']['gdz'] ?></a>
 						<?php if($cookie_checked):?>
-							<p class="article_links"> <img src="images/bell.svg"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['notifications'] : $langVals['ru']['notifications'] ?></p>
+							<p class="article_links"> <img src="images/bell.svg"><?php echo (isset($defLang)) ? $langVals[$defLang]['notifications'] : $langVals['ru']['notifications'] ?></p>
 							<div class='notifs_wrapper'>
 								<?php
 								$notif_i = 0;
@@ -248,7 +249,7 @@ require 'languages.php';
 								<a href="index.php"><img id="main_page_header_logo" src="images/Logo2.0white.svg"></a>
 							</div>
 							<div class="search_input_block">
-								<input id="search_input" autocomplete="off" type="text" placeholder="<?= $langVals[$_COOKIE['language']]['search'] ?>" name="Search">
+								<input id="search_input" autocomplete="off" type="text" placeholder="<?= $langVals[$defLang]['search'] ?>" name="Search">
 								<div id='find'>
 
 								</div>
@@ -263,7 +264,7 @@ require 'languages.php';
 						<a id='user_logined_header_block' href="index.php?page=user&user=<?=$user_infos->id?>"><img src="usersfiles/<?=$user_infos->login?>/profil.png"></a>
 						<?php else:?>
 						<a href="index.php?page=login"><img src="images/avatar.svg"></a>
-						<a href="index.php?page=login" id="header_login_button"><?php echo (isset($_COOKIE['language'])) ? $langVals[$_COOKIE['language']]['signIn'] : $langVals['ru']['signIn'] ?></a>
+						<a href="index.php?page=login" id="header_login_button"><?php echo (isset($defLang)) ? $langVals[$defLang]['signIn'] : $langVals['ru']['signIn'] ?></a>
 						<?php endif;?>
 						</div>
 					</header>
@@ -278,7 +279,7 @@ require 'languages.php';
 </script>
 <script src="HCeditor/HCeditorjs.js"></script>
 	<?php
-	 require 'templates/page.php';
+	require 'templates/page.php';
 	//  R::selectDatabase('DB2');
 	//  $test = R::find('admin');
 	//  var_dump($test);
@@ -297,7 +298,7 @@ if ($page != 'adminKabinet') {
 ?>
 					</div>
 				</div>
-				<?php require 'templates/footer.php'; ?>
+				<?php require 'templates/footer.php';?>
 			</div>
 	</body>
 </html>
@@ -380,4 +381,5 @@ if ($page != 'adminKabinet') {
 	});
 	var interfaceLang = '<?=$_COOKIE["language"]?>';
 </script>
+<link rel="stylesheet" href="admin/css/all.css">
 <script src="js/main.js" defer></script>

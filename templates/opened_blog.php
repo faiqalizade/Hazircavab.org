@@ -78,7 +78,7 @@
 			<input  style='display:none'type="submit" name="like_button_submit" id='like_button_submit' >
 		</form>
 		<label for='like_button_submit' class="like_button">
-			<p>Лайкнуть</p>
+			<p><i class="fas fa-thumbs-up"></i></p>
 			<p id="like_counts">
 				<?=$article->likes?>
 			</p>
@@ -88,7 +88,7 @@
 			<input  style='display:none'type="submit" name="unlike_button_submit" id='like_button_submit' >
 		</form>
 		<label for='like_button_submit' class="unlike_button">
-			<p>Дизлайкнуть</p>
+			<p><i class="fas fa-thumbs-up"></i></p>
 			<p id="like_counts">
 				<?=$article->likes?>
 			</p>

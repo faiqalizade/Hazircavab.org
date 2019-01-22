@@ -1027,6 +1027,7 @@ footer a{
 	width: 150px;
 	border-radius: 2px;
 	border: 1px solid #ddd;
+	z-index: 2;
 }
 .opened_question_footer_setting_edit_button{
 	color: #2b2c37;
@@ -1891,7 +1892,7 @@ footer a{
 	padding: 5px 10px;
 }
 #my_profil_change_lang_title,.my_profil_change_lang{
-	font-family: 'Exo 2',sans-serif;
+	font-family: 'Roboto',Arial,sans-serif;
 	margin-right: 15px;
 	padding: 5px;
 }

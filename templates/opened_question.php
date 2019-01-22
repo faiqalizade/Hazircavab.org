@@ -27,7 +27,7 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 		<?=preg_replace( "#\r?\n#", "<br/>", $opened_question_load->content );?>
 	</div>
 	<div class="opened_question_question_footer">
-		<p class="opened_question_question_footer_time"><?=$opened_question_load->views?> &nbsp; <?= $langVals[$_COOKIE['language']]['views'] ?> &nbsp; <?=$opened_question_load->date?> - <?=$opened_question_load->time?></p>
+		<p class="opened_question_question_footer_time"><?=$opened_question_load->views?> &nbsp; <i class="fas fa-eye"></i> &nbsp; - &nbsp; <?=$opened_question_load->date?> - <?=$opened_question_load->time?></p>
 		<div class="opened_question_question_footer_setting_block_wrapper">
 			<div class="opened_question_question_footer_setting_image">
 				<img src="images/3pointsilver.svg" id="opened_question_question_footer_setting_image">
@@ -44,7 +44,7 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 	</div>
 </div>
 <?php if(!empty($find_answers_to_question)):?>
-	<p id="text_answers_to_question" ><?=$langVals[$_COOKIE['language']]['questionsAnswersText']?></p>
+	<p id="text_answers_to_question" ><?=$langVals[$defLang]['questionsAnswersText']?></p>
 <?php
 $indexforeditor=0;
 foreach ($find_answers_to_question as $answer):
@@ -75,11 +75,11 @@ foreach ($find_answers_to_question as $answer):
 							$load_user_like_answers = R::find('users','WHERE id = ? AND answer_likes LIKE ?',[$user_infos->id,'%,'.$answer->id.',%']);
 							if(empty($load_user_like_answers)):?>
 							<a href="index.php?page=question&question=<?=$opened_question?>&like=<?=$answer->id?>" id="opened_question_question_answer_like_button">
-								<p id="opened_question_question_answer_like_button_text"><?=$langVals[$_COOKIE['language']]['like']?></p>
+								<p id="opened_question_question_answer_like_button_text"><i class="fas fa-thumbs-up"></i></p>
 								<p id="opened_question_question_answer_like_button_quantity"><?=$answer->likes?></p>
 							<?php else:?>
 							<a href="index.php?page=question&question=<?=$opened_question?>&unlike=<?=$answer->id?>" id="opened_question_question_answer_liked_button">
-								<p id="opened_question_question_answer_liked_button_text"><?=$langVals[$_COOKIE['language']]['unlike']?></p>
+								<p id="opened_question_question_answer_liked_button_text"><i class="fas fa-thumbs-up"></i></p>
 								<p id="opened_question_question_answer_liked_button_quantity"><?=$answer->likes?></p>
 							<?php endif; ?>
 							</a>
@@ -96,7 +96,7 @@ foreach ($find_answers_to_question as $answer):
 							$indexforeditor++;
 							$commentsToAnswer = R::find('commentstoanswer','WHERE answer_id = ? ORDER BY date,time',[$answer->id]);
 							?>
-							<p class='opened_question_question_answer_comment_button' >Комментарии (<span class="answers_comments_count"><?=count($commentsToAnswer)?></span>) </p>
+							<p class='opened_question_question_answer_comment_button' ><i class="fas fa-comment"></i> (<span class="answers_comments_count"><?=count($commentsToAnswer)?></span>) </p>
 						</div>
 					<?php endif;?>
 					<div class='opened_question_answer_comment_wrapper'>
@@ -120,11 +120,11 @@ foreach ($find_answers_to_question as $answer):
 										<div class='opened_question_comment_to_answer_footer'>
 											<p class='opened_question_comment_to_answer_date'><?=$comment->date?> - <?=$comment->time?></p>
 											<?php if(in_array($comment->id,$commentsLikesArray)): ?>
-												<p class='opened_question_comment_to_answer_like_bttn' commentId='<?=$comment->id?>' liked='true'> <span class="comments_to_answer_like_text"><?=$langVals[$_COOKIE['language']]['unlike']?></span> (<span class="comments_to_answer_count"><?=$comment->likes?></span>)</pre>
+												<p class='opened_question_comment_to_answer_like_bttn' commentId='<?=$comment->id?>' liked='true'> <span class="comments_to_answer_like_text"><i class="fas fa-thumbs-up"></i></span> (<span class="comments_to_answer_count"><?=$comment->likes?></span>)</pre>
 											<?php else:?>
-												<p class='opened_question_comment_to_answer_like_bttn' commentId='<?=$comment->id?>' liked='false'> <span class="comments_to_answer_like_text"><?=$langVals[$_COOKIE['language']]['like']?></span> (<span class="comments_to_answer_count"><?=$comment->likes?></span>)</p>
+												<p class='opened_question_comment_to_answer_like_bttn' commentId='<?=$comment->id?>' liked='false'> <span class="comments_to_answer_like_text"><i class="far fa-thumbs-up"></i></span> (<span class="comments_to_answer_count"><?=$comment->likes?></span>)</p>
 											<?php endif;?>
-											<p class='opened_question_comment_to_answer_reply_bttn' user='<?=$comment->user?>' answerEditorIndex='<?=$indexforeditor?>' >Ответить</p>
+											<p class='opened_question_comment_to_answer_reply_bttn' user='<?=$comment->user?>' answerEditorIndex='<?=$indexforeditor?>' ><i class="fas fa-reply"></i></p>
 											<div class="opened_question_question_footer_setting_block_wrapper">
 												<div class="opened_question_question_footer_setting_image">
 													<img src="images/3pointsilver.svg" id="opened_question_question_footer_setting_image">

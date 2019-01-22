@@ -3,7 +3,7 @@ $notifications = R::find('notifications','WHERE `to` = ? ORDER BY date DESC,time
 ?>
 <div class="main_page_header">
     <p id="main_page_title">
-        <?= $langVals[$_COOKIE['language']]['notifications'] ?>
+        <?= $langVals[$defLang]['notifications'] ?>
     </p>
 </div>
 <div class="main_page_header_after">

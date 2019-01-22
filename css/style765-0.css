@@ -307,7 +307,7 @@ header{
 #mobileModeFindClose{
 	color: #a0a0a0;
 	cursor: pointer;
-	font-family: 'Exo 2';
+	font-family: 'Roboto',Arial,sans-serif;
 	border-bottom: dotted 1px;
 }
 #mobileModeFoundWrapper{

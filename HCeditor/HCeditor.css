@@ -27,6 +27,7 @@
     justify-content: flex-start;
     border-radius: 4px 0 0 0 ;
     background-color: #fbfafb;
+    overflow-x: scroll;
 }
 .image_local{
     cursor: pointer;
@@ -68,7 +69,7 @@
 }
 .image_button_list,.ol_button_list{
     position: absolute;
-    left: -2px;
+    right: -2px;
     background-color: #fff;
     top: 43px;
     display: none;

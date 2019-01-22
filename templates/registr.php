@@ -3,9 +3,9 @@
     <p id='registr_page_title'>Регистрация</p>
     <form method="post" id='registr_page_form'>
         <input type="text" class='registr_page_inputs' required name='reg_name' placeholder='<?php echo (isset($_COOKIE['
-            language'])) ? $langVals[$_COOKIE['language']]['name'] : $langVals['ru']['name'] ?>' >
+            language'])) ? $langVals[$defLang]['name'] : $langVals['ru']['name'] ?>' >
         <input type="text" class='registr_page_inputs' required name='reg_lastName' placeholder='<?php echo (isset($_COOKIE['
-            language'])) ? $langVals[$_COOKIE['language']]['surname'] : $langVals['ru']['surname'] ?>'>
+            language'])) ? $langVals[$defLang]['surname'] : $langVals['ru']['surname'] ?>'>
         <input type="text" class='registr_page_inputs' required name='reg_login' placeholder='Логин'>
         <input type="email" class='registr_page_inputs' required name='reg_mail' placeholder='E-mail'>
         <input type="password" autocomplete="new-password" class='registr_page_inputs' required name='reg_password' placeholder='Пароль'>
@@ -25,10 +25,10 @@
     <p id='registr_page_title'>Регистрация</p>
     <form method="post" id='registr_page_form'>
         <input type="text" class='registr_page_inputs' required name='reg_name' placeholder='<?php echo (isset($_COOKIE['
-            language'])) ? $langVals[$_COOKIE['language']]['name'] : $langVals['ru']['name'] ?>' value='
+            language'])) ? $langVals[$defLang]['name'] : $langVals['ru']['name'] ?>' value='
         <?=$_POST['reg_name']?>'>
         <input type="text" class='registr_page_inputs' required name='reg_lastName' placeholder='<?php echo (isset($_COOKIE['
-            language'])) ? $langVals[$_COOKIE['language']]['surname'] : $langVals['ru']['surname'] ?>' value='
+            language'])) ? $langVals[$defLang]['surname'] : $langVals['ru']['surname'] ?>' value='
         <?=$_POST['reg_lastName']?>'>
         <input type="text" class='registr_page_inputs' required name='reg_login' placeholder='Логин' value='<?=$_POST['
             reg_login']?>'>
