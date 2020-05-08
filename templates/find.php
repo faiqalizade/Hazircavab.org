@@ -2,7 +2,11 @@
 require '../db.php';
 $findquestion = R::find('questions','title LIKE ? ORDER BY views DESC, date DESC, time DESC LIMIT 3',['%'.$_POST['findText'].'%']);
 $findarticles = R::find('blog','title LIKE ? ORDER BY views DESC, date DESC, time DESC LIMIT 3',['%'.$_POST['findText'].'%']);
-$findtags = R::find('tags','tagname LIKE ? LIMIT 3',['%'.$_POST['findText'].'%']);
+if($_POST['lang'] == 'ru'){
+    $findtags = R::find('tags','name_ru LIKE ? LIMIT 3',['%'.$_POST['findText'].'%']);
+}else{
+    $findtags = R::find('tags','name_az LIKE ? LIMIT 3',['%'.$_POST['findText'].'%']);
+}
 $findprofiles = R::find('users','login LIKE ? LIMIT 3',[$_POST['findText'].'%']);
 if(!empty($findquestion) || !empty($findtags) || !empty($findprofiles) || !empty($findarticles)):
 ?>
@@ -13,12 +17,12 @@ if(!empty($findquestion) || !empty($findtags) || !empty($findprofiles) || !empty
 </div>
 <div class='foundWrapper' >
     <?php foreach($findtags as $tag): ?>
-        <a href='index.php?page=tags&tag=<?=$tag->name_ru?>&questions' class='findList' ><img class='findTagImage' src="tagimages/<?=$tag->name_ru?>.png"><?=$tag->name_ru?></a>
+        <a href='index.php?page=tags&tag=<?=$tag->id?>&questions' class='findList' ><img class='findTagImage' src="tagimages/<?=$tag->id?>.png"><?= ($_POST['lang'] == 'ru') ? $tag->name_ru : $tag->name_az?></a>
     <?php endforeach;?>
 </div>
 <div class='foundWrapper' >
     <?php foreach($findprofiles as $user): ?>
-        <a href='index.php?page=user&user=<?=$user->id?>&infos' class='findList' ><img class='findTagImage' src="usersfiles/<?=$user->login?>/profil.png">@<?=substr($user->login,0,66);?></a>
+        <a href='index.php?page=user&user=<?=$user->id?>&infos' class='findList' ><img class='findTagImage' src="usersfiles/<?=$user->login?>/profil.jpg">@<?=substr($user->login,0,66);?></a>
     <?php endforeach;?>
 </div>
 <div class='foundWrapper' >
@@ -28,6 +32,6 @@ if(!empty($findquestion) || !empty($findtags) || !empty($findprofiles) || !empty
 </div>
 <?php else:?>
 <a href='index.php?page=q&q=<?=$_POST['findText']?>' id='notFound' >
-<?= $langVals[$defLang]['search'] ?> по запросу "<?=$_POST['findText']?>"
+<?=($_POST['lang'] == 'ru') ? "Поиск по запросу" : 'Axtarış' ?> "<?=$_POST['findText']?>"
 </a>
 <?php endif;?>

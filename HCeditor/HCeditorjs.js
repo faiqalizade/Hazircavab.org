@@ -424,7 +424,7 @@ function init_hceditor(id,classes){
                   $('.editor_textarea').eq(e).removeAttr('disabled');
               }
       });
-      link = 'usersfiles/'+profil+'/images/'+file_name+'.png';
+      link = 'usersfiles/'+profil+'/images/'+file_name+'.jpg';
       var caretpos,oldText = $('.editor_textarea').eq(e).val(),newText = '';
       caretpos = $('.editor_textarea').eq(e).prop("selectionStart");
       for(i = 0; i < caretpos; i++){
@@ -476,7 +476,6 @@ function init_hceditor(id,classes){
   //End Functions for Edit
 
 
-
   // VUEJS
   Vue.component('hc-editor',{
   	props:{
@@ -490,6 +489,7 @@ function init_hceditor(id,classes){
       data: function () {
         return{
             index: this.i,
+            interfaceLanguage: interfaceLang
         }
       },
       template: `<div id='editor_wrapper'>

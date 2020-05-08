@@ -2,50 +2,46 @@
     if($user_infos->verifed != 1):
     ?>
     <a href='index.php?page=myprofile&profile' id='opened_user_profile_not_verifed' >
-    Подтвердите, пожалуйста, эл.Почту: <?=$user_infos->mail?> 
+    Пожалуйста подтвердите  Email: <?=$user_infos->mail?> 
 </a>
     <?php endif;?>
     <p>
-<?php
-// $user_infost = preg_replace( "#\r?\n#", "<br/>", $user_infos->desc );
-// Для вывода текста с переносами
-?>
     </p>
-<div id='my_profil_header' >
+<div style='<?=($user_infos->verifed != 1) ? "margin-top:25px" : ""?>' id='my_profil_header' >
 <a href="index.php?page=myprofile&profile" class='my_profil_header_list' ><?= $langVals[$defLang]['information'] ?></a>
-<a href="index.php?page=myprofile&password" class='my_profil_header_list' >Изменить пароль</a>
+<a href="index.php?page=myprofile&password" class='my_profil_header_list' ><?=$langVals[$defLang]['changePasswordText']?></a>
 </div>
 <?php if(isset($profile)):?>
 <div id='my_profil_wrapper' >
-<img id='my_profil_image' src="usersfiles/<?=$user_infos->login?>/profil.png">
-<p id='my_profil_img_change_bttn' >Изменить</p>
+<img id='my_profil_image' src="usersfiles/<?=$user_infos->login?>/profil.jpg">
+<p id='my_profil_img_change_bttn' ><?=$langVals[$defLang]['editText']?></p>
 <div id='my_profil_img_change_images_block' >
     <form method="post" id='my_profil_image_change_form' enctype='multipart/form-data'> 
     <input id='my_profil_selected_img_number' name='my_profil_selected_img_number' type="text">
     <input type="file" name="my_profil_own_image" id="my_profile_image_upload">
     </form>
         <?php for($i = 1; $i <= 14; $i++):?>
-        <img class='my_profil_img_change_image' src="profil images/<?=$i?>.png">
+        <img class='my_profil_img_change_image' src="profil images/<?=$i?>.jpg">
         <?php endfor;?>
-    <label for='my_profile_image_upload' id='my_profil_img_change_own' >Свой</label>
+    <label for='my_profile_image_upload' id='my_profil_img_change_own' ><i class="fas fa-plus"></i></label>
 </div>
 <form id='my_profil_info_change_form' method="post">
     <p class='my_profil_info_input_titles' ><?php echo (isset($defLang)) ? $langVals[$defLang]['name'] : $langVals['ru']['name'] ?>:</p>
     <input class='my_profil_info_inputs' name='my_profil_change_name' type="text" value='<?=$user_infos->name?>'>
     <p class='my_profil_info_input_titles' ><?php echo (isset($defLang)) ? $langVals[$defLang]['surname'] : $langVals['ru']['surname'] ?>:</p>
     <input class='my_profil_info_inputs' type="text" name='my_profil_change_surname' value='<?=$user_infos->surname?>'>
-    <p class='my_profil_info_input_titles' >Коротко о себе:</p>
+    <p class='my_profil_info_input_titles' ><?=$langVals[$defLang]['smallAboutText']?>:</p>
     <input class='my_profil_info_inputs' type="text" name='my_profil_change_small_desc' value='<?=$user_infos->small_desc?>'>
-    <p class='my_profil_info_input_titles' >О себе:</p>
+    <p class='my_profil_info_input_titles' ><?=$langVals[$defLang]['bigAboutText']?>:</p>
     <textarea id='my_profil_info_textarea' name='my_profil_change_desc' ><?=$user_infos->desc?></textarea>
     <input type="submit" name="my_profile_info_change_submit" id='my_profil_change_info_submit' >
 </form>
 <div id='my_profil_change_lang_wrapper' >
-    <p id='my_profil_change_lang_title' >Язык:</p>
+    <p id='my_profil_change_lang_title' ><?=$langVals[$defLang]['langText']?>:</p>
     <p class='my_profil_change_lang' >Русский</p>
     <p class='my_profil_change_lang' >Azərbaycanca</p>
 </div>
-<p id='my_profil_change_info_submit_label' ><label for="my_profil_change_info_submit" >Сохранить</label></p>
+<p id='my_profil_change_info_submit_label' ><label for="my_profil_change_info_submit" ><?=$langVals[$defLang]['saveText']?></label></p>
 </div>
 <a id='my_profil_message_not_sended' >Если эл.почта не подтверждена, то при каждом нажатии на кнопку сохранить мы снова отправляем сообщение на почту для подтверждения. При этом прошлое сообщение становиться не активным</a>
 <script>
@@ -96,16 +92,16 @@ $('.my_profil_change_lang').click(function () {
 <p id='my_profil_change_password_error' ><?=$error?></p>
 <p id='my_profil_change_password_succes'><?=$succes?></p>
 <form id='my_profil_pass_change_form' method="post">
-    <p class='my_profil_info_input_titles' >Старый пароль:</p>
+    <p class='my_profil_info_input_titles' ><?=$langVals[$defLang]['oldPasswordText']?>:</p>
     <input class='my_profil_info_inputs' name='my_profil_change_pass_old' type="password" required>
-    <p class='my_profil_info_input_titles' >Новый пароль:</p>
+    <p class='my_profil_info_input_titles' ><?=$langVals[$defLang]['newPasswordText']?>:</p>
     <input class='my_profil_info_inputs' type="password" name='my_profil_change_pass_new' required>
-    <p class='my_profil_info_input_titles' >Повторите новый пароль:</p>
+    <p class='my_profil_info_input_titles' ><?=$langVals[$defLang]['newRepaitPasswordText']?>:</p>
     <input class='my_profil_info_inputs' type="password" name='my_profil_change_pass_again_new' required>
     <input type="submit" name="my_profile_pass_change_submit" id='my_profil_change_pass_submit' >
 </form>
-<p id='my_profil_change_info_submit_label' ><label for="my_profil_change_pass_submit" >Сохранить</label></p>
-<a id='my_profile_pass_change_forgot_button' href="index.php?page=forgot">Забыл(-а) пароль</a>
+<p id='my_profil_change_info_submit_label' ><label for="my_profil_change_pass_submit" ><?=$langVals[$defLang]['saveText']?></label></p>
+<a id='my_profile_pass_change_forgot_button' href="index.php?page=forgot"><?=$langVals[$defLang]['forgotPasswordText']?></a>
 <script>
 $('.my_profil_header_list:last-child').css('border-bottom','solid 2px');
 </script>

@@ -6,22 +6,28 @@ Vue.component('v-header',{
                                 <img height='40px' class='v-header-logo' src="../images/Logo2.0white.svg">
                         </div>
                         <div class="v-header-user-info">
-                                <div class='v-header-user-icon'>
-                                <i class="fas fa-envelope"></i>
-                                <span class='badge'>112</span>
+                                <div @click="changer('messages')" class='v-header-user-icon'>
+                                        <i class="fas fa-envelope"></i>
+                                        <span class='badge'>112</span>
                                 </div>
                                 <div class='v-header-user-icon'>
                                 <i class="fas fa-bell"></i>
                                 <span class='badge'>112</span>
                                 </div>
-                                <span>Faiq Alizade</span>
+                                <span>`+userName+` `+userSurname+`</span>
                                 <div class='v-header-user-image-wrapper'>
-                                <img src='../profil images/3.png'/>
+                                <img src='../usersfiles/`+userLogin+`/profil.jpg'/>
                                 </div>
                         </div>
                 </div>
         </div>      
-        `
+        `,
+        methods:{
+                changer(tab){
+                        window.history.pushState("", "", '?p='+tab+'&pagination=1');
+                        this.$emit('changer',tab);
+                }
+        }
 });
 Vue.component('v-sidebar',{
         template: `
@@ -92,16 +98,14 @@ Vue.component('v-sidebar',{
                         </div>
                 </div>
         </div>
-</div>
-        `,
-        methods:{
+</div>`,
+methods:{
                 changer(tab){
                         window.history.pushState("", "", '?p='+tab+'&pagination=1');
                         this.$emit('changer',tab);
                 }
         }
 });
-
 Vue.component('v-content-question',{
         props:{
                 questions: Object,
@@ -161,7 +165,7 @@ Vue.component('v-content-questions',{
                 $.ajax({
                         type: "post",
                         url: "ajaxGetContent.php",
-                        data: {table: 'questions',limit: 40,page: parseInt(paginationNumber),order: 'BY date,time'},
+                        data: {table: 'questions',limit: 40,page: parseInt(paginationNumber),order: 'BY date DESC,time DESC'},
                         dataType: "json",
                         success: function (response) {
                                 questions = response;
@@ -173,11 +177,31 @@ Vue.component('v-content-questions',{
         },
 });
 Vue.component('v-content-blog',{
+        props:{
+                blogs: Object,
+        },
         template: `
-        <div>
-        asdkjasdlkjaskldjaskldjklsadjklasjd
-        asdajsdkljaskldj
-        </div>
+                <div>
+                <div class='table-elem-wrapper' v-for='blog in blogs'>
+                        <div class="table-block table-block-id">{{blog.id}}</div>
+                        <div class="table-block table-block-qt">{{blog.title}}</div>
+                        <div class="table-block">{{blog.date}} {{blog.time}} </div>
+                        <div class="table-block table-block-id">{{blog.views}}</div>                                        
+                        <div class="table-block table-block-id">{{blog.likes}}</div>                                        
+                        <div class="table-block table-block-id">{{blog.comments}}</div>                                        
+                        <div class="table-block">
+                                <a :href="'../index.php?page=blog&blog='+blog.id" class="table-action table-action-view">
+                                        <i class="fas fa-eye"></i>
+                                </a>
+                                <a :href="'?p=edit_blog&blog='+blog.id" class="table-action table-action-edit">
+                                        <i class="fas fa-pen"></i>
+                                </a>
+                                <a :href="'?p=remove_blog&blog='+blog.id" class="table-action table-action-remove">
+                                        <i class="fas fa-trash-alt"></i>
+                                </a>
+                        </div>
+                </div>
+                </div>
         `
 });
 Vue.component('v-pagination',{
@@ -242,7 +266,59 @@ Vue.component('v-add-blog', {
         `
 });
 
+Vue.component('v-blogs',{
+        data: function () {
+                return{
+                        pageNum: parseInt(paginationNumber),
+                        blogs: null,
+                }
+        },
+        template: `
+        <div id='v-content-blogs' class='widget' >
+                <div class='widget-header'>
+                        <p><i class="fas fa-bars"></i></p>
+                        <p>Блог</p>
+                </div>
+                <div class='widget-content'>
+                        <div class='v-content-questions-table admin-table'>
+                                <div class='admin-table-header'>
+                                        <div class="table-block table-block-id">id</div>
+                                        <div class="table-block table-block-qt">Title</div>                                        
+                                        <div class="table-block">Date</div>                                        
+                                        <div class="table-block  table-block-id"><i class="fas fa-eye"></i></div>
+                                        <div class="table-block table-block-id"><i class="fas fa-heart"></i></div>
+                                        <div class="table-block table-block-id"><i class="fas fa-comment"></i></div>
+                                        <div class="table-block">Actions</div>
+                                </div>
+                                <v-content-blog :blogs='blogs'></v-content-blog>
+                        </div>
+                        <v-pagination p='tags' :lastPage="${lastPage}" :pageNum='pageNum' ></v-pagination>
+                </div>
+        </div>
+        `,
+        created() {
+                var blogs;
+                $.ajax({
+                        type: "post",
+                        url: "ajaxGetContent.php",
+                        data: {table: 'blog',limit: 40,page: parseInt(paginationNumber),order: "BY date DESC,time DESC"},
+                        dataType: "json",
+                        success: function (response) {
+                                blogs = response;
+                        }
+                });
+                setTimeout(() => {
+                        this.blogs = blogs;
+                }, 100);
+        },
+});
+
 Vue.component('v-add-tag', {
+        data: function(){
+                return {
+                        editTag: Object,
+                }
+        },
         template: `
         <div>
         <div class='widget'>
@@ -254,12 +330,12 @@ Vue.component('v-add-tag', {
                         <form method='post'  enctype='multipart/form-data'>
                         <label>
                                 Назание тега Русский: <br/>
-                                <input required class='input article-title' type='text' name='tag-name-ru'>
+                                <input :value='editTag.name_ru' required class='input article-title' type='text' name='tag-name-ru'>
                         </label>
                         <br/>
                         <label>
                                 Назание тега Азербайджанский: <br/>
-                                <input required class='input article-title' type='text' name='tag-name-az'>
+                                <input :value='editTag.name_az' required class='input article-title' type='text' name='tag-name-az'>
                         </label>
                         <br/>
                         <label>
@@ -273,8 +349,124 @@ Vue.component('v-add-tag', {
         </div>
         
         </div>
+        `,
+        created() {
+                var tag;
+                $.ajax({
+                        type: "post",
+                        url: "ajaxLoad.php",
+                        data: {table: 'tags',loadid: getUrlParameter('edit_tag')},
+                        dataType: "json",
+                        success: function (response) {
+                                tag = response;
+                        }
+                });
+                setTimeout(() => {
+                        this.editTag = tag;
+                }, 100);
+        },
+});
+
+Vue.component('v-users',{
+        template: `
+        <div id='v-content-users' class='widget' >
+                <div class='widget-header'>
+                        <p><i class="fas fa-bars"></i></p>
+                        <p>Пользователи</p>
+                </div>
+                <div class='widget-content'>
+                        <p>Пользователи...</p>
+                </div>
+        </div>
         `
-})
+});
+
+Vue.component('v-content-tag',{
+        props:{
+                tags: Object,
+        },
+        template: `
+                <div>
+                <div class='table-elem-wrapper' v-for='tag in tags'>
+                        <div class="table-block table-block-id">{{tag.id}}</div>
+                        <div class="table-block">{{tag.name_ru}}</div>
+                        <div class="table-block">{{tag.name_az}}</div>                                        
+                        <div class="table-block">{{tag.questions}}</div>
+                        <div class="table-block">{{tag.subscribes}}</div>
+                        <div class="table-block">
+                                <img width='40px' :src="'../tagimages/'+tag.id+'.png'" />
+                        </div>
+                        <div class="table-block">
+                                <a :href="'../index.php?page=tags&tag='+tag.id" class="table-action table-action-view">
+                                        <i class="fas fa-eye"></i>
+                                </a>
+                                <a :href="'?p=addTag&pagination=1&edit_tag='+tag.id" class="table-action table-action-edit">
+                                        <i class="fas fa-pen"></i>
+                                </a>
+                                <a style='cursor:pointer' @click="removeTag(tag.id)"  class="table-action table-action-remove">
+                                        <i class="fas fa-trash-alt"></i>
+                                </a>
+                        </div>
+                </div>
+                </div>
+        `,
+        methods: {
+                removeTag(tagId){
+                        var isRemove = confirm('Remove tag?');
+                        if(isRemove){
+                                location = '?p=removeTag&removeTag='+tagId;
+                        }
+                }
+        }
+});
+
+Vue.component('v-tags',{
+        data: function () {
+                return{
+                        pageNum: parseInt(paginationNumber),
+                        tags: null,
+                }
+        },
+        template: `
+        <div id='v-content-blogs' class='widget' >
+                <div class='widget-header'>
+                        <p><i class="fas fa-bars"></i></p>
+                        <p>Теги</p>
+                </div>
+                <div class='widget-content'>
+                        <div class='v-content-questions-table admin-table'>
+                                <div class='admin-table-header'>
+                                        <div class="table-block table-block-id">id</div>
+                                        <div class="table-block">Tagname RU</div>                                        
+                                        <div class="table-block">Tagname AZ</div>                                        
+                                        <div class="table-block">Questions</div>
+                                        <div class="table-block">Subscribes</div>
+                                        <div class="table-block">Icon</div>
+                                        <div class="table-block">Actions</div>
+                                </div>
+                                <v-content-tag :tags='tags'></v-content-tag>
+                        </div>
+                        <v-pagination p='tags' :lastPage="${lastPage}" :pageNum='pageNum' ></v-pagination>
+                </div>
+        </div>
+        `,
+        created() {
+                var tags;
+                $.ajax({
+                        type: "post",
+                        url: "ajaxGetContent.php",
+                        data: {table: 'tags',limit: 40,page: parseInt(paginationNumber)},
+                        dataType: "json",
+                        success: function (response) {
+                                tags = response;
+                        }
+                });
+                setTimeout(() => {
+                        this.tags = tags;
+                }, 100);
+        },
+});
+
 init_hceditor({
         id: '',
         load_img: true,

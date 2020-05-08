@@ -5,21 +5,35 @@ if($opened_question_load->id != 0){
 }
 $find_question_added_profile = R::findOne('users','login = ?',[$opened_question_load->user]);
 $find_answers_to_question = R::find('answers','question_id = ? ORDER BY check_answer DESC, date,time',[$opened_question]);
-$opened_question_tag_array = explode(',',$opened_question_load->tags);
+$opened_question_tag_array = R::find('questiontags','WHERE question_id = ?',[$opened_question]);
+$indexforeditor = 0;
+
+$findOtherNotifications = R::find('notifications',' WHERE `viewed` = ? AND `whereid` = ? AND `to` = ?',[0,$opened_question,'faiqalizade']);
 ?>
 <div class="question_added_user_information">
-	<a href="index.php?page=user&user=<?=$find_question_added_profile->id?>"><img id="question_added_user_information_image" src="usersfiles/<?=$find_question_added_profile->login?>/profil.png"></a>
+	<a href="index.php?page=user&user=<?=$find_question_added_profile->id?>"><img id="question_added_user_information_image" src="usersfiles/<?=$find_question_added_profile->login?>/profil.jpg"></a>
 	<p id="question_added_user_information_name"> <a href="index.php?page=user&user=<?=$find_question_added_profile->id?>"><?=$find_question_added_profile->name.' '.$find_question_added_profile->surname?></a></p>
 	<p id="question_added_user_information_username"> <a href="index.php?page=user&user=<?=$find_question_added_profile->id?>">@<?=$find_question_added_profile->login?></a> </p>
 </div>
 <div class="opened_question">
 	<div class="opened_question_title">
 		<div class="opened_question_tags">
-			<a href="index.php?page=tags&tag=<?=$opened_question_tag_array[0]?>" id="opened_question_tags_main_tag_block" > <img src="tagimages/<?=$opened_question_tag_array[0]?>.png"><?=$opened_question_tag_array[0]?></a>
-			<?php for($i = 1; $i < count($opened_question_tag_array); $i++):?>
-			<p>&#8226;</p>
-			<p><a href="index.php?page=tags&tag=<?=$opened_question_tag_array[$i]?>"><?=$opened_question_tag_array[$i]?></a></p>
-			<?php endfor;?>
+			<?php
+			$i = 0;
+			foreach($opened_question_tag_array as $tag):
+				if($i == 0):
+					unset($i);
+				?>
+					<a href="index.php?page=tags&tag=<?=$tag->tag_id?>" id="opened_question_tags_main_tag_block" > <img src="tagimages/<?=$tag->tag_id?>.png"><?php echo ($defLang == 'az') ? $tag->tag_name_az : $tag->tag_name_ru ?></a>
+				<?php
+				else:?>
+					<p>&#8226;</p>
+					<p><a href="index.php?page=tags&tag=<?=$tag->tag_id?>"><?php echo ($defLang == 'az') ? $tag->tag_name_az : $tag->tag_name_ru ?></a></p>
+				<?php 
+				endif;
+				$i++
+				?>
+			<?php endforeach;?>
 		</div>
 		<p id="opened_question_question_title"><?=$opened_question_load->title?></p>
 	</div>
@@ -34,24 +48,24 @@ $opened_question_tag_array = explode(',',$opened_question_load->tags);
 			</div>
 			<div class="opened_question_question_footer_setting_block">
 				<?php if($find_question_added_profile->login == $user_infos->login || $user_infos->status == 9): ?>
-					<a class="opened_question_footer_setting_edit_button" href="index.php?page=edit_question&question=<?=$opened_question_load->id?>">Изменить</a>
-					<a href="index.php?page=remove_question&question=<?=$opened_question_load->id?>" class="opened_question_question_footer_setting_delete">Удалить</a>
+					<a class="opened_question_footer_setting_edit_button" href="index.php?page=edit_question&question=<?=$opened_question_load->id?>"><?=$langVals[$defLang]['editText']?></a>
+					<a href="index.php?page=remove_question&question=<?=$opened_question_load->id?>" class="opened_question_question_footer_setting_delete"><?=$langVals[$defLang]['removeText']?></a>
 				<?php else:?>
-					<a href="index.php">Пожаловаться</a>
+					<a href="index.php"><?=$langVals[$defLang]['complainText']?></a>
 				<?php endif;?>
 			</div>
 		</div>
 	</div>
 </div>
-<?php if(!empty($find_answers_to_question)):?>
-	<p id="text_answers_to_question" ><?=$langVals[$defLang]['questionsAnswersText']?></p>
 <?php
-$indexforeditor=0;
+if(!empty($find_answers_to_question)):?>
+	<p id="text_answers_to_question" ><?=$langVals[$defLang]['questionsAnswersText']?></pre>
+<?php
 foreach ($find_answers_to_question as $answer):
 	$find_answer_added_profile = R::findOne('users','login = ?',[$answer->user]);?>
 			<div class="opened_question_question_answers_wrapper hc-editor" >
 				<div class="opened_question_answer_imgs">
-					<a href="index.php?page=user&user=<?=$find_answer_added_profile->id?>" id="opened_question_question_answer_added_user_image" ><img src="usersfiles/<?=$find_answer_added_profile->login?>/profil.png"></a>
+					<a href="index.php?page=user&user=<?=$find_answer_added_profile->id?>" id="opened_question_question_answer_added_user_image" ><img src="usersfiles/<?=$find_answer_added_profile->login?>/profil.jpg"></a>
 					<?php if($answer->check_answer):?>
 						<img id="opened_question_question_answer_added_checked" src="images/check.png">
 					<?php endif;?>
@@ -108,7 +122,7 @@ foreach ($find_answers_to_question as $answer):
 								?>
 								<div class='opened_question_comment_to_answer_wrapper'>
 									<div class='opened_question_comment_to_answer_image_user'>
-										<a href='index.php?page=user&user=<?=$commentAddedUser->id?>'><img src='usersfiles/<?=$comment->user?>/profil.png' class='opened_question_comment_to_answer_image'></a>
+										<a href='index.php?page=user&user=<?=$commentAddedUser->id?>'><img src='usersfiles/<?=$comment->user?>/profil.jpg' class='opened_question_comment_to_answer_image'></a>
 									</div>
 									<div class='opened_question_comment_to_answer_content_wrapper'>
 										<div class='opened_question_comment_to_answer_user_infos'>
@@ -131,9 +145,9 @@ foreach ($find_answers_to_question as $answer):
 												</div>
 												<div class="opened_question_question_footer_setting_block">
 												<?php if($comment->user == $user_infos->login || $user_infos->status == 9): ?>
-													<a commentId='<?=$comment->id?>' class="opened_question_question_footer_setting_delete remove_button_comment">Удалить</a>
+													<a commentId='<?=$comment->id?>' class="opened_question_question_footer_setting_delete remove_button_comment"><?=$langVals[$defLang]['removeText']?></a>
 												<?php else:?>
-													<a href="index.php">Пожаловаться</a>
+													<a href="index.php"><?=$langVals[$defLang]['complainText']?></a>
 												<?php endif;?>
 												</div>
 											</div>
@@ -148,7 +162,7 @@ foreach ($find_answers_to_question as $answer):
 						</div>
 						<div>
 							<div answerId='<?=$answer->id?>' indexEditorComment='<?=$indexforeditor?>' class='opened_question_answer_comment_send_button submit_btn' >
-								Комментировать
+								<?=$langVals[$defLang]['addComment']?>
 							</div>
 						</div>
 					</div>
@@ -161,10 +175,10 @@ foreach ($find_answers_to_question as $answer):
 						</div>
 						<div class="opened_question_question_footer_setting_block">
 							<?php if($find_answer_added_profile->login == $user_infos->login || $user_infos->status == 9): ?>
-								<a @click='show=true' class='opened_question_question_footer_setting_edit' >Изменить</a>
-								<a href="index.php?page=question&question=<?=$opened_question?>&remove_answer=<?=$answer->id?>" class="opened_question_question_footer_setting_delete">Удалить</a>
+								<a @click='show=true' class='opened_question_question_footer_setting_edit' ><?=$langVals[$defLang]['editText']?></a>
+								<a href="index.php?page=question&question=<?=$opened_question?>&remove_answer=<?=$answer->id?>" class="opened_question_question_footer_setting_delete"><?=$langVals[$defLang]['removeText']?></a>
 							<?php else:?>
-								<a href="index.php">Пожаловаться</a>
+								<a href="index.php"><?=$langVals[$defLang]['complainText']?></a>
 							<?php endif;?>
 						</div>
 					</div>
@@ -184,35 +198,42 @@ $isset_asnwer = in_array($opened_question,array_column($load_answers_for_user,'q
 if(empty($isset_asnwer) && $cookie_checked):
 ?>
 <div id="opened_question_question_add_answer">
-	<p id='opened_question_question_add_answer_title' >ВАШ ОТВЕТ НА ВОПРОС</p>
+	<p id='opened_question_question_add_answer_title' ><?=$langVals[$defLang]['yourAnswerToQuestion']?></p>
 	<div class="editorBlock">
 	<form method="post" id='add_answer_form'>
 		<hc-editor i='<?=$indexforeditor?>' ></hc-editor>
 	</form>
 	</div>
 	<div id='opened_question_question_add_answer_submit' class='submit_btn' >
-		Отправить
+		<?=$langVals[$defLang]['addAnswer']?>
 	</div>
 </div>
 <?php else:?>
 <div id="opened_question_question_add_answer">
-	<p id='opened_question_question_add_answer_title' >ВАШ ОТВЕТ НА ВОПРОС</p>
+	<p id='opened_question_question_add_answer_title' ><?=$langVals[$defLang]['yourAnswerToQuestion']?></p>
 	<div id='opened_question_question_added_answer' >
 	<img src="images/lock.svg">
-	<p>Вы уже ответили на этот вопрос</p>
+	<p><?=$langVals[$defLang]['answeredToQuestion']?></p>
 	</div>
 </div>
 <?php endif;
 else:
 ?>
 <div id="opened_question_question_add_answer">
-	<p id='opened_question_question_add_answer_title' >ВАШ ОТВЕТ НА ВОПРОС</p>
+	<p id='opened_question_question_add_answer_title' ><?=$langVals[$defLang]['yourAnswerToQuestion']?></p>
 	<div id='opened_question_question_added_answer' >
 	<img src="images/lock.svg">
-	<p>Чтобы ответить на вопрос вы должны войти</p>
+	<p><?=$langVals[$defLang]['signinForSendAnswer']?></p>
 	</div>
 </div>
 <?php endif;?>
 <script>
 	init_hceditor('opened_question_question_add_answer','hc-editor');
 </script>
+<?php
+foreach ($findOtherNotifications as $notif) {
+	$readNotif = R::load('notifications',$notif->id);
+	$readNotif->viewed = 1;
+	R::store($readNotif);
+}
+?>

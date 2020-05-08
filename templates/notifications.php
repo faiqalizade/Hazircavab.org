@@ -14,24 +14,30 @@ $notifications = R::find('notifications','WHERE `to` = ? ORDER BY date DESC,time
         <div class="notif-page-list-item">
             <div class="notif-page-notif-notviewed-wrapper">
                 <?php if(!$notif->viewed): ?>
-                    <span class='notif-page-notif-notviewed' ></span>
+                <span class='notif-page-notif-notviewed'></span>
                 <?php endif;?>
             </div>
             <img class='notif-page-notif-img' src="images/notif_<?=$notif->type?>.svg">
             <div class='notif-page-notif-content'>
-                <a class='notif-page-notif-title' href="#">
+                <a class='notif-page-notif-title' href="<?=$notif->where?>&notif=<?=$notif->id?>">
                     <?php if($notif->type == 0):?>
-                    <?=$notif->from_login?> ответил на ваш вопрос.
+                        <?=$notif->from_login?>
+                        <?=$langVals[$defLang]['notif0']?>
                     <?php elseif($notif->type == 1):?>
-                    <?=$notif->from_login?> понравился ваш ответ.
+                        <?=$notif->from_login?>
+                        <?=$langVals[$defLang]['notif1']?>
                     <?php elseif($notif->type == 2):?>
-                    <?=$notif->from_login?> отметил ваш ответ как правильный.
+                        <?=$notif->from_login?>
+                        <?=$langVals[$defLang]['notif2']?>
                     <?php elseif($notif->type == 3):?>
-                    <?=$notif->from_login?> прокомментировал ваш ответ.
+                        <?=$notif->from_login?>
+                        <?=$langVals[$defLang]['notif3']?>
                     <?php elseif($notif->type == 4):?>
-                    <?=$notif->from_login?> понравился ваш комментарий к ответу.
+                        <?=$notif->from_login?>
+                        <?=$langVals[$defLang]['notif4']?>
                     <?php elseif($notif->type == 5):?>
-                    <?=$notif->from_login?> ответил на ваш комментарий к ответу.
+                        <?=$notif->from_login?>
+                        <?=$langVals[$defLang]['notif5']?>
                     <?php endif;?>
                 </a>
                 <p class='notif-page-notif-date'>

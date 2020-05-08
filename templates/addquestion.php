@@ -2,7 +2,7 @@
 if($cookie_checked):
     if($user_infos->verifed != 1): ?>
     <a href='index.php?page=myprofile&profile' id='opened_user_profile_not_verifed' >
-        Подтвердите, пожалуйста, эл.Почту: <?=$user_infos->mail?>
+        <?=$langVals[$defLang]['verifyEmailText']?> <?=$user_infos->mail?>
     </a>
     <?php endif; ?>
     <div class="main_page_header">
@@ -10,10 +10,10 @@ if($cookie_checked):
     </div>
     <div id='add_question_form_wrapper' >
         <form id='add_question_form' method="post" novalidate>
-            <p class='add_question_input_titles' >Заголовок вопроса</p>
+            <p class='add_question_input_titles' ><?=$langVals[$defLang]['questionTitleText']?></p>
             <input class='add_question_inputs' AUTOCOMPLETE='off' maxlength='125' name='add_question_title' id='question_title' type="text">
             <p id='question_title_error' ></p>
-            <p class='add_question_input_titles' >Теги:</p>
+            <p class='add_question_input_titles' ><?=$langVals[$defLang]['tagsText']?>:</p>
             <p></p>
             <input class='add_question_inputs' id='question_tags' type="text" name='add_question_tags'>
             <div id='question_tags_alternative_input_block' >
@@ -24,14 +24,14 @@ if($cookie_checked):
             </div>
             </div>
             <p id='question_tags_error' ></p>
-            <p class='add_question_input_titles' >Детальнее:</p>
+            <p class='add_question_input_titles' ><?=$langVals[$defLang]['moreText']?>:</p>
             <div id="opened_question_question_add_answer">
               <hc-editor i='<?=$indexforeditor?>' ></hc-editor>
             </div>
         </form>
         <div id='add_question_send_buttons_wrapper' >
-        <div class='add_question_send_button'  id='add_question_send_button'>Опубликовать</div>
-        <div class='add_question_send_button' id='add_question_preview_button' >Предпромотр</div>
+        <div class='add_question_send_button'  id='add_question_send_button'><?=$langVals[$defLang]['publishText']?></div>
+        <div class='add_question_send_button' id='add_question_preview_button' ><?=$langVals[$defLang]['previewText']?></div>
         </div>
     </div>
     <div id='add_question_preview_wrapper'>
@@ -42,13 +42,13 @@ if($cookie_checked):
         <p id='add_question_preview_title' ></p>
         <div id='add_question_preview_content' ></div>
         <div id='add_question_send_buttons_wrapper'>
-            <div class='add_question_send_button'  id='add_question_send_button2'>Опубликовать</div>
+            <div class='add_question_send_button'  id='add_question_send_button2'><?=$langVals[$defLang]['publishText']?></div>
             <div class='add_question_send_button'  id='add_question_preview_edit'>Редактировать</div>
         </div>
     </div>
     <script>
     $(document).ready(function () {
-        var tagInputArr,tagsInput;
+        var tagInputArr,tagsInput,tagsInputIdArr;
     var questionTitle = false,questionTags = false,questionContent = false,questionTitleVal;
     $('#question_tags_alternative_input').focus(function () {
         $('#question_tags_alternative_input_wrapper').css('border-color','#077fcc');
@@ -78,7 +78,7 @@ if($cookie_checked):
                 type: 'post',
                 cache: false,
                 dataType: 'html',
-                data: ({findTag: addTag}),
+                data: ({findTag: addTag,lang:interfaceLang}),
                 success: function (data) {
                         $('#question_tags_alternative_input_found_tags').remove();
                         $('#question_tags_alternative_input').after(data);
@@ -89,8 +89,10 @@ if($cookie_checked):
                             if($.inArray($(this).find('p').text(),tagInputArr) == -1){
                                 $('#question_tags_alternative_input_wrapper_2').before('<div class="add_question_tag" >'+$(this).find('p').text().toUpperCase()+' <span class="tag_remove_span" >&#10005;</span> </div>');
                             if(!tagsInput){
+                                tagsInputIdArr = [parseInt($(this).find('span').text())];
                                 tagsInput += $(this).find('p').text();
                             }else{
+                                tagsInputIdArr.push(parseInt($(this).find('span').text()));
                                 tagsInput += ',' + $(this).find('p').text();
                             }
                             $('#question_tags_alternative_input').val('');
@@ -112,12 +114,19 @@ if($cookie_checked):
         if(e.keyCode == 13){
             setTimeout(() => {
                 tagsInput = $('#question_tags').val();
+                if($('.found_tag').eq(0).find('p').text() != ''){
+                    addTag = $('.found_tag').eq(0).find('p').text();
+                }else{
+                    addTag = false;
+                }
             if($.inArray(addTag,tagInputArr) == -1){
                 if(addTag){
                     $('#question_tags_alternative_input_wrapper_2').before('<div class="add_question_tag" >'+addTag.toUpperCase()+' <span class="tag_remove_span" >&#10005;</span> </div>');
                     if(!tagsInput){
+                        tagsInputIdArr = [parseInt($('.found_tag').eq(0).find('span').text())];
                         tagsInput += addTag;
                     }else{
+                        tagsInputIdArr.push(parseInt($('.found_tag').eq(0).find('span').text()));
                         tagsInput += ',' + addTag;
                     }
                     $('#question_tags_alternative_input').val('');
@@ -134,6 +143,7 @@ if($cookie_checked):
         var removingTagIndex = $('.tag_remove_span').index(this);
         $('.add_question_tag').eq(removingTagIndex).remove();
         tagInputArr.splice(removingTagIndex,1);
+        tagsInputIdArr.splice(removingTagIndex,1);
         $('#question_tags').val(tagInputArr.join(','));
         checkInputsToEmpty();
     });
@@ -142,13 +152,19 @@ if($cookie_checked):
     });
     checkInputsToEmpty();
     function checkInputsToEmpty(){
-        if($('#question_title').val().length > 15){
-            questionTitleVal = $('#question_title').val();
+        if($('#question_title').val().length > 0){
+            questionTitleVal = $('#question_title').val().trim();
             if(questionTitleVal[0] == questionTitleVal[0].toUpperCase()){
                 $('#question_title_error').text('');
+                questionTitleVal = questionTitleVal.trim();
                 if(questionTitleVal[questionTitleVal.length - 1] == '?'){
-                    questionTitle = true;
-                    $('#question_title_error').text('');
+                    if(questionTitleVal.length < 14){
+                        questionTitle = false;
+                        $('#question_title_error').text('Минимальная длина текста 14');
+                    }else{
+                        questionTitle = true;
+                        $('#question_title_error').text('');
+                    }
                 }else{
                     questionTitle = false;
                     $('#question_title_error').text('Вопрос должен заканчиватья с вопросительным знаком');
@@ -208,29 +224,35 @@ if($cookie_checked):
               type: 'post',
               cache: false,
               dataType: 'html',
-              data: ({checkTag:tagInputArr}),
+              data: ({checkTag:tagsInputIdArr,lang:interfaceLang}),
               success: function (data) {
+                  data = JSON.parse(data);
                   if(data.length > 0){
-                      tagInputArr = data.split(',');
-                      if(tagInputArr.length <= 5){
-                          $('#question_tags_error').text('');
-                          $('#question_tags').val(tagInputArr.join(','));
-                          $('#HCeditor_error').text('');
-                          $('#HCeditorcopy').val(readyText);
-                          if(preview){
-                            $('#add_question_form_wrapper').css('display','none');
-                            $('#add_question_preview_wrapper').css('display','block');
-                            $('#add_question_preview_tags').html(tagInputArr.join("  &#8226;  "));
-                            $('#add_question_preview_title').text($('#question_title').val());
-                            $('#add_question_preview_content').html(readyText.replace(/(?:\r\n|\r|\n)/g, '<br/>'));
-                            $('#add_question_preview_tags_img').attr('src','tagimages/'+tagInputArr[0].toLowerCase()+'.png');
-                          }
-                          check_tags_return_bool = true;
-                          return true;
+                      if(data.length <= 5){
+                            tagInputArr = [];
+                            data.forEach(element => {
+                                tagInputArr.push(element[0]);
+                            });
+                            $('#question_tags_error').text('');
+                            $('#question_tags').val(tagInputArr.join(','));
+                            $('#HCeditor_error').text('');
+                            $('#HCeditorcopy').val(readyText);
+                            if(preview){
+                                $('#add_question_form_wrapper').css('display','none');
+                                $('#add_question_preview_wrapper').css('display','block');
+                                $('#add_question_preview_tags').html(tagInputArr.join("  &#8226;  "));
+                                $('#add_question_preview_title').text($('#question_title').val());
+                                $('#add_question_preview_content').html(readyText.replace(/(?:\r\n|\r|\n)/g, '<br/>'));
+                                $('#add_question_preview_tags_img').attr('src','tagimages/'+data[0][1]+'.png');
+                            }
+                            check_tags_return_bool = true;
+                            return true;
                       }else{
+                            check_tags_return_bool = false;
                           $('#question_tags_error').text('Невозможно указать более пяти тегов');
                       }
                   }else{
+                        check_tags_return_bool = false;
                       $('#question_tags_error').text('Необходимо указать один из существующих тегов');
                   }
               }
@@ -252,25 +274,28 @@ if($cookie_checked):
                     //Здесь должны вывести ошибку
                     $('#HCeditor_error').text('Минимальная длина текста: 30, максимальная: 10 000');
                 }else{
-                  CheckTags(true);
+                    $('#HCeditor_error').text('');
+                    CheckTags(true);
                 }
             }
         });
         $('#add_question_send_button,#add_question_send_button2').click(function () {
-            console.log($('.editor_textarea').val());
             
             if(endTextLength <= 30 || $('.editor_textarea').val() <= 30){
                     //Здесь должны вывести ошибку
                     $('#HCeditor_error').text('Минимальная длина текста: 30, максимальная: 10 000');
                 }else{
+                    $('#HCeditor_error').text('');
                     CheckTags();
+                    setTimeout(() => {
+                        if(check_tags_return_bool && questionTitle){
+                        $('#question_tags').val(tagsInputIdArr);
+                            setTimeout(() => {
+                                $('#add_question_form').submit();
+                            }, 200);
+                        }
+                    }, 600);
                 }
-            setTimeout(() => {
-                if(check_tags_return_bool){
-                    $('#add_question_form').submit();
-                }
-            }, 600);
-          
         });
     });
     </script>

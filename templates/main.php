@@ -73,17 +73,28 @@ $list_limit = $page_number * 15;
 	<?php
 	$cycle_number = 0;
 	foreach($question_list as $question):
-		$tagsarray = explode(',',$question->tags);
 		if($cycle_number >= $list_limit_last && $cycle_number < $list_limit):
+			$tagsarray = R::find('questiontags','WHERE question_id = ?',[$question->id]);
+			if(!empty($tagsarray)){
+				foreach ($tagsarray as $val) {
+					$first_tag_id = $val->tag_id;
+					if($defLang == 'az'){
+						$first_tag_name = $val->tag_name_az;
+					}else{
+						$first_tag_name = $val->tag_name_ru;
+					}
+					break;
+				}
+			}
 		?>
 <div class="question">
 <div class="question2">
 <div class="question_information_block">
 	<div class='question_tags_wrapper' >
-	<a href="index.php?page=question&question=<?=$question->id?>"><img src="tagimages/<?=$tagsarray[0]?>.png"></a>
-	<a href="index.php?page=question&question=<?=$question->id?>" class='question_tags' ><?=$tagsarray[0]?></a>
+	<a href="index.php?page=question&question=<?=$question->id?>"><img src="tagimages/<?=$first_tag_id?>.png"></a>
+	<a href="index.php?page=question&question=<?=$question->id?>" class='question_tags' ><?=$first_tag_name?></a>
 	<?php if(count($tagsarray) > 1):?>
-	<a href="index.php?page=question&question=<?=$question->id?>" class='question_tags_more_tags'> &nbsp; и ещё <?=count($tagsarray) - 1?></a>
+	<a href="index.php?page=question&question=<?=$question->id?>" class='question_tags_more_tags'> &nbsp; <?=$langVals[$defLang]['andMore']?> <?=count($tagsarray) - 1?></a>
 	<?php endif;?>
 	</div>
 	<a href="index.php?page=question&question=<?=$question->id?>" class="question_title"><?=$question->title?></a>
@@ -106,6 +117,7 @@ $list_limit = $page_number * 15;
 		</div>
 			</div>
 <?php
+		unset($first_tag_name,$first_tag_id,$tagsarray);
 	endif;
 	if($cycle_number == $list_limit){
 		break;

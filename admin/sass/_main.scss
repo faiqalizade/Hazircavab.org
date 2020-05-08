@@ -175,13 +175,14 @@ width: 15%;
 border-right:  solid 1px #161616;
 font-weight: 500;
 border-top: solid 1px #161616;
-overflow: scroll;
+overflow: hidden;
 display: flex;
 align-items: center;
-justify-content: center;
+justify-content: space-around;
 color: #fff;
 }
 .admin-table-header>.table-block{
+    
 background-color: #212733;
 border-top: none;
 border-bottom: solid 1px #161616;
@@ -214,7 +215,6 @@ display: flex;
 justify-content: center;
 align-items: center;
 border-radius: 4px;
-margin-right: 10px;
 color: #fff;
 }
 .table-action-view{

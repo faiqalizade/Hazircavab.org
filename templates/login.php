@@ -1,19 +1,19 @@
 <?php if(!isset($_COOKIE['user_id']) && !isset($_COOKIE['user_hash'])):?>
 <div id='login_page_wrapper' >
     <p id='login_page_error'><?=$error?></p>
-    <p id='login_page_title'>Вход</p>
+    <p id='login_page_title'><?=$langVals[$defLang]['loginPage']?></p>
     <form method='post'>
-        <input type="text" autocomplete="username" name="login" required autofocus class='login_page_inputs' placeholder='Логин'>
-        <input type="password" autocomplete='current-password' name='password' required class='login_page_inputs' placeholder='Пароль'>
+        <input type="text" autocomplete="username" name="login" required autofocus class='login_page_inputs' placeholder='<?=$langVals[$defLang]['loginText']?>'>
+        <input type="password" autocomplete='current-password' name='password' required class='login_page_inputs' placeholder='<?=$langVals[$defLang]['passwordText']?>'>
         <input type="submit" value='Войти' name='login_page_submit' id='login_page_submit'>
     </form>
     <label for="login_page_submit"><div id='login_page_submit_label'>
-        Войти
+    <?=$langVals[$defLang]['signIn']?>
     </div></label>
     <a href='index.php?page=registr' id='login_page_register_bttn' >
-        Регистрация
+    <?=$langVals[$defLang]['signUp']?>
     </a>
-    <a id='login_page_forgot_bttn' href="index.php?page=forgot">Забыл(-a) пароль</a>
+    <a id='login_page_forgot_bttn' href="index.php?page=forgot"><?=$langVals[$defLang]['forgotPasswordText']?></a>
 </div>
 <script>
     $('.login_page_inputs').focus(function(){
@@ -26,9 +26,5 @@
 </script>
 <?php
 else:
-    echo "
-    <script>
-location = 'index.php';
-</script>
-    ";
+    echo "<script>location = 'index.php';</script>";
 endif;?>

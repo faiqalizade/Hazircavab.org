@@ -45,5 +45,7 @@ if ($page == '' || $page == 'questions') {
 	require 'templates/het.php';
 }elseif ($page == 'notifications'){
 	require 'templates/notifications.php';
+}elseif ($page == 'forgot') {
+	require 'templates/forgotPassword.php';
 }
  ?>

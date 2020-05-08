@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
 	var opened_article_on_1200 = false;
 $('.main_page_header_menu_block').click(function () {
@@ -26,7 +27,7 @@ $('.main_page_header_menu_block').mouseout(function () {
 });
 var window_width = $(window).width();
 $(window).resize(function () {
-	if ($(window).width() < 1200 && $(window).width() > 1022) {
+	if ($(window).width() < 1255 && $(window).width() > 1022) {
 		$('.stylecss').attr('href','css/style1200-1024.css');
 		setTimeout(function () {
 			$('.content').css('transition','margin .5s');
@@ -59,6 +60,25 @@ $(window).resize(function () {
 	}
 	$('#article_on_1200').height($('.wrapper').height());
 });
+	$('.opened_user_profil_selections').click(function(){
+		$('.select_selectedOption').hide();
+		$('.select_options_wrapper').fadeIn(1000);
+		setTimeout(() => {
+			$('.select_options_wrapper').css('display','flex');
+		}, 120);
+	});
+	$(document).click(function(event){
+		if(event.target.className != 'select_selectedOption' && event.target.className != 'select_selectedOption_text' && event.target.className != 'fas fa-angle-down'){
+			$('.select_options_wrapper').hide();
+			$('.select_selectedOption').show();
+		}
+	});
+	// $(document).on('touchstart',function (event) {
+	// 	if(event.target.className != 'select_selectedOption' && event.target.className != 'select_selectedOption_text' && event.target.className != 'fas fa-angle-down'){
+	// 		$('.select_options_wrapper').hide();
+	// 		$('.select_selectedOption').show();
+	// 	}
+	// });
 });
 function first_time() {
 
@@ -95,13 +115,16 @@ function first_time() {
 	$('#first_time_guide_change_lang_block').fadeIn(1000);
 	$('#first_time_guide_change_lang_block').css('display','flex');
 	$('#first_time_guide_change_lang_cancel').click(function () {
+		$('.guide_az').hide();
 		setcookie('language','ru','/',2030,0);
 		$('#first_time_guide_change_lang_block').fadeOut(500);
+
 		setTimeout(() => {
 			languageFind();
 		}, 500);
 	});
 	$('#first_time_guide_change_lang_lang').click(function () {
+		$('.guide_ru').hide();
 		setcookie('language','az','/',2030,0);
 		$('#first_time_guide_change_lang_block').fadeOut(500);
 		setTimeout(() => {
@@ -118,12 +141,15 @@ function first_time() {
 	$('#first_time_guide_next_button_wrapper').css('display','flex');
 	$('#first_time_guide_lang_setting').fadeIn(1000);
 	$('#first_time_guide_lang_setting').css('display','flex');
-	$('#first_time_guide_next_button').click(function () {
+	$('#first_time_guide_next_button, .first_time_guide_next_button_az').click(function () {
 		if (guideIndexNumber == 1) {
 			$('#first_time_guide_next_button_wrapper').css('display','none');
 			setTimeout(() => {
 				$('#first_time_guide_block').fadeOut(1000);
 				setcookie('opened',1,'/',2050,0);
+				if(getcookie('language') == 'az'){
+					location.reload();
+				}
 			}, 5000);
 			$('#first_time_guide_end_desc a').click(function () {
 				$('#first_time_guide_block').fadeOut(1000);
@@ -253,6 +279,7 @@ $('.opened_question_comment_to_answer_reply_bttn').click(function () {
 		indexEditor 			= $(this).attr('answerEditorIndex'),
 		userName				= $(this).attr('user');
 		userName 				= '@'+userName+',';
+
 		$('.editor_textarea').eq(indexEditor).val(userName);
 		$('.HCeditorcopy').eq(indexEditor).val(userName);
 		setCaretToPos($('.editor_textarea').eq(indexEditor)[0],userName.length);
@@ -301,11 +328,12 @@ $('.opened_question_comment_to_answer_like_bttn').click(function () {
 $('.opened_question_answer_comment_send_button').click(function () {
 	var
 	indexToAddComment		= $(this).attr('indexEditorComment'),
-	contentToAddComment		= $('.HCeditorcopy').eq(indexToAddComment).val()
+	contentToAddComment		= $('.HCeditorcopy').eq(indexToAddComment).val(),
 	answerIdToComment 		= $(this).attr('answerId'),
-	indexCommentsWrapper	= $('.opened_question_answer_comment_send_button').index(this)  ;
-	contentToAddComment = contentToAddComment.trim();
-	var replyToUserComment = '';
+	indexCommentsWrapper	= $('.opened_question_answer_comment_send_button').index(this),
+	contentToAddComment 	= contentToAddComment.trim();
+	var replyToUserComment = '',
+	userId;
 		if(contentToAddComment[0] == '@'){
 			for(var i=1; i < contentToAddComment.length; i++){
 				if(contentToAddComment[i] != ',' ){
@@ -323,6 +351,7 @@ $('.opened_question_answer_comment_send_button').click(function () {
 					var arr = data.split(',');
 					if(arr[0] == 'true'){
 						contentToAddComment = "<a href='index.php?page=user&user="+arr[1]+"' class='answer_comment_reply'>"+replyToUserComment+"</a>"+contentToAddComment.substring(i);
+						userId = arr[1];
 					}else{
 						replyToUserComment = '';
 					}
@@ -334,7 +363,14 @@ $('.opened_question_answer_comment_send_button').click(function () {
 				$.ajax({
 					type: "post",
 					url: "templates/addCommentToAnswer.php",
-					data: {answer:answerIdToComment,comment:contentToAddComment,user:authLogin,replyto:replyToUserComment},
+					data: {
+						user_id:userId,
+						answer:answerIdToComment,
+						comment:contentToAddComment,
+						user:authLogin,
+						replyto:replyToUserComment,
+						lang:interfaceLang
+					},
 					dataType: "html",
 					success: function (data) {
 						$('.editor_textarea').eq(indexToAddComment).val('');
@@ -371,7 +407,7 @@ $('.opened_question_answer_comment_send_button').click(function () {
 						var commentAddBlock = `
 						<div class='opened_question_comment_to_answer_wrapper'>
 						<div class='opened_question_comment_to_answer_image_user'>
-							<a href='index.php?page=user&user`+authId+`'><img src='usersfiles/`+authLogin+`/profil.png' class='opened_question_comment_to_answer_image'></a>
+							<a href='index.php?page=user&user`+authId+`'><img src='usersfiles/`+authLogin+`/profil.jpg' class='opened_question_comment_to_answer_image'></a>
 						</div>
 						<div class='opened_question_comment_to_answer_content_wrapper'>
 							<div class='opened_question_comment_to_answer_user_infos'>
@@ -382,8 +418,6 @@ $('.opened_question_answer_comment_send_button').click(function () {
 							</div>
 							<div class='opened_question_comment_to_answer_footer'>
 								<p class='opened_question_comment_to_answer_date'>`+ today +`</p>
-								<p class='opened_question_comment_to_answer_like_bttn'><i class="fas fa-thumbs-up"></i> (0)</p>
-								<p class='opened_question_comment_to_answer_reply_bttn'><i class="fas fa-reply"></i></p>
 								<div class="opened_question_question_footer_setting_block_wrapper">
 									<div onclick='openDropMenu(this)' class="opened_question_question_footer_setting_image">
 										<img src="images/3pointsilver.svg" id="opened_question_question_footer_setting_image">

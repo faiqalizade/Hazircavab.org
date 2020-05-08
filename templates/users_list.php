@@ -22,7 +22,7 @@ settype($page_count,'int');
 		if($cycle_number >= $list_limit_last && $cycle_number < $list_limit):
 		?>
 		<div class="user_list_block">
-			<a href="index.php?page=user&user=<?=$user_info->id?>" id="user_list_user_image"><img src="usersfiles/<?=$user_info->login?>/profil.png"></a>
+			<a href="index.php?page=user&user=<?=$user_info->id?>" id="user_list_user_image"><img src="usersfiles/<?=$user_info->login?>/profil.jpg"></a>
 			<a href="index.php?page=user&user=<?=$user_info->id?>"><p id="user_list_user_name"><?=$user_info->name.' '.$user_info->surname?></p></a>
 			<p id="user_list_user_answersquestions">
 				<a href="index.php?page=user&user=<?=$user_info->id?>&user_questions"><?=$user_info->questions?> <?= $langVals[$defLang]['questions'] ?></a>

@@ -39,7 +39,7 @@
 		<?=$article->title?>
 	</p>
 	<div id="blog_added_information">
-		<img src="usersfiles/<?=$article->user_login?>/profil.png">
+		<img src="usersfiles/<?=$article->user_login?>/profil.jpg">
 		<p>
 			<a href="index.php?page=user&user=<?=$article->user_id?>&infos">
 				<?=$article->user_name?> <?=$article->user_surname?>
@@ -96,14 +96,14 @@
 	<?php endif; ?>
 </div>
 <div class="blog_comments_block" id='opened_question_question_add_answer'>
-	<p class="comment_text">Коментарии</p>
+	<p class="comment_text"><?=$langVals[$defLang]['comments']?></p>
 
 	<?php
 	if(!empty($comments)):
 	foreach ($comments as $comment):?>
 	<div class="blog_comment" data_comment_id='<?=$comment->id?>'>
 		<div class="blog_comment_added_user_inf">
-			<img id="blog_comment_added_user_image" src="usersfiles/<?=$comment->user_login?>/profil.png">
+			<img id="blog_comment_added_user_image" src="usersfiles/<?=$comment->user_login?>/profil.jpg">
 			<div>
 				<p id="blog_comment_added_name"> <a href="#">
 						<?=$comment->user_name?>
@@ -123,10 +123,10 @@
 						</div>
 						<div class="opened_question_question_footer_setting_block">
 							<?php if($comment->user_login == $user_infos->login || $user_infos->status == 9): ?>
-								<a class='opened_question_question_footer_setting_edit' >Изменить</a>
-								<a class="opened_question_question_footer_setting_delete">Удалить</a>
+								<a class='opened_question_question_footer_setting_edit' ><?=$langVals[$defLang]['editText']?></a>
+								<a class="opened_question_question_footer_setting_delete"><?=$langVals[$defLang]['removeText']?></a>
 							<?php else:?>
-								<a href="index.php">Пожаловаться</a>
+								<a href="index.php"><?=$langVals[$defLang]['complainText']?></a>
 							<?php endif;?>
 						</div>
 					</div>
@@ -136,16 +136,17 @@
 	endforeach;
 	else:
 	?>
-	<p class='empty_tag'>Пусто</p>
+	<p class='empty_tag'><?=$langVals[$defLang]['emptyText']?></p>
 <?php endif;
 if($cookie_checked):
 ?>
 <form id="blog_add_comment_form" method="post">
+
 		<hc-editor :minlength='10' :required='true' i='<?=$indexforeditor?>'></hc-editor>
-		<label for="blog_comment_add_submit_for_label" class='blog_comment_add_submit submit_btn'>Отправить</label>
-		<input type="submit" name="blog_comment_add_submit" id="blog_comment_add_submit_for_label" value="Отправить">
+		<label for="blog_comment_add_submit_for_label" class='blog_comment_add_submit submit_btn'><?=$langVals[$defLang]['addComment']?></label>
+		<input type="submit" name="blog_comment_add_submit" id="blog_comment_add_submit_for_label" value="<?=$langVals[$defLang]['addComment']?>">
 		<div class="edit_buttons_wrapper" style='display:none'>
-			<p class="edit_button">Изменить</p> 
+			<p class="edit_button"><?=$langVals[$defLang]['editText']?></p> 
 			<p class="edit_cancel">Отменить</p>
 		</div>
 </form>
@@ -153,7 +154,7 @@ if($cookie_checked):
 <div id="opened_question_question_add_answer">
 	<div id='opened_question_question_added_answer' >
 		<img src="images/lock.svg">
-		<p>Чтобы комментировать статью вы должны войти</p>
+		<p><?=$langVals[$defLang]['signinForSendAnswer']?></p>
 	</div>
 </div>
 <?php endif;?>

@@ -2,33 +2,40 @@
 $load_question_for_edit = R::load('questions',$opened_question);
 if($cookie_checked):
     if($load_question_for_edit->user == $user_infos->login || $user_infos->status):
+    $tag_list_arr = R::find('questiontags','WHERE question_id = ?',[$opened_question]);
+    foreach ($tag_list_arr as $tag) {
+        if($defLang == 'ru'){
+            $tags[] = $tag->tag_name_ru;
+        }else{
+            $tags[] = $tag->tag_name_az;
+        }
+        $tagIds[] = $tag->tag_id;
+    }
+    $tagIds = implode(',',$tagIds);
 ?>
         <div class="main_page_header">
         <p id="main_page_title">Изменить вопрос</p>
     </div>
     <div id='add_question_form_wrapper' >
         <form id='add_question_form' method="post" novalidate>
-            <p class='add_question_input_titles' >Заголовок вопроса</p>
+            <p class='add_question_input_titles' ><?=$langVals[$defLang]['questionTitleText']?></p>
             <input class='add_question_inputs' AUTOCOMPLETE='off' maxlength='125' name='add_question_title' id='question_title' value='<?=$load_question_for_edit->title?>' type="text">
             <p id='question_title_error' ></p>
-            <p class='add_question_input_titles' >Теги:</p>
+            <p class='add_question_input_titles' ><?=$langVals[$defLang]['tagsText']?>:</p>
             <p></p>
-            <input class='add_question_inputs' id='question_tags' type="text" value='<?=$load_question_for_edit->tags?>' name='add_question_tags'>
+            <input class='add_question_inputs' id='question_tags' type="text" value='<?=implode(',',$tags)?>' name='add_question_tags'>
             <div id='question_tags_alternative_input_block' >
             <div id='question_tags_alternative_input_wrapper' >
-                <?php
-                $tag_list_arr = explode(',',$load_question_for_edit->tags);
-                foreach ($tag_list_arr as $tag):
-                ?>
-                <div class="add_question_tag" ><?=strtoupper($tag);?> <span class="tag_remove_span" >&#10005;</span> </div>
+                <?php foreach ($tag_list_arr as $tag):?>
+                    <div class="add_question_tag" ><?= ($defLang == 'ru') ? mb_strtoupper($tag->tag_name_ru) : mb_strtoupper($tag->tag_name_az) ;?> <span class="tag_remove_span" >&#10005;</span> </div>
                 <?php endforeach; ?>
                 <div id='question_tags_alternative_input_wrapper_2' >
                 <input type="text" AUTOCOMPLETE='off' id='question_tags_alternative_input'>
                 </div>
             </div>
             </div>
-            <p id='question_tags_error' ></p>
-            <p class='add_question_input_titles' >Детальнее:</p>
+            <p id='question_tags_error' ></pre>
+            <p class='add_question_input_titles' ><?=$langVals[$defLang]['moreText']?>:</p>
             <?php
             $content = $load_question_for_edit->content;
             ?>
@@ -37,8 +44,8 @@ if($cookie_checked):
             </div>
         </form>
         <div id='add_question_send_buttons_wrapper' >
-        <div class='add_question_send_button'  id='add_question_send_button'>Опубликовать</div>
-        <div class='add_question_send_button' id='add_question_preview_button' >Предпромотр</div>
+        <div class='add_question_send_button'  id='add_question_send_button'><?=$langVals[$defLang]['publishText']?></div>
+        <div class='add_question_send_button' id='add_question_preview_button' ><?=$langVals[$defLang]['previewText']?></div>
         <a id='edit_question_send_button_cancel' href="<?=$_SERVER['HTTP_REFERER']?>">Отменить</a>
         </div>
     </div>
@@ -50,16 +57,24 @@ if($cookie_checked):
         <p id='add_question_preview_title' ></p>
         <div id='add_question_preview_content' ></div>
         <div id='add_question_send_buttons_wrapper'>
-            <div class='add_question_send_button'  id='add_question_send_button2'>Опубликовать</div>
+            <div class='add_question_send_button'  id='add_question_send_button2'><?=$langVals[$defLang]['publishText']?></div>
             <div class='add_question_send_button'  id='add_question_preview_edit'>Редактировать</div>
         </div>
     </div>
 
     <script>
     init_hceditor('opened_question_question_add_answer','hc-editor');
-    var tagInputArr,tagsInput;
+    readyText = $('.HCeditorcopy').val();
+    var 
+    tagInputArr,
+    tagsInput,
+    tagsInputIdArr = "<?=$tagIds?>".split(',');
     tagInputArr = $('#question_tags').val().split(',');
-    var questionTitle = false,questionTags = false,questionContent = false,questionTitleVal;
+    var 
+    questionTitle = false,
+    questionTags = false,
+    questionContent = false,
+    questionTitleVal;
     $('#question_tags_alternative_input').focus(function () {
         $('#question_tags_alternative_input_wrapper').css('border-color','#077fcc');
     });
@@ -88,7 +103,7 @@ if($cookie_checked):
                 type: 'post',
                 cache: false,
                 dataType: 'html',
-                data: ({findTag: addTag}),
+                data: ({findTag: addTag,lang:interfaceLang}),
                 success: function (data) {
                         $('#question_tags_alternative_input_found_tags').remove();
                         $('#question_tags_alternative_input').after(data);
@@ -99,8 +114,10 @@ if($cookie_checked):
                             if($.inArray($(this).find('p').text(),tagInputArr) == -1){
                                 $('#question_tags_alternative_input_wrapper_2').before('<div class="add_question_tag" >'+$(this).find('p').text().toUpperCase()+' <span class="tag_remove_span" >&#10005;</span> </div>');
                             if(!tagsInput){
+                                tagsInputIdArr = [parseInt($(this).find('span').text())];
                                 tagsInput += $(this).find('p').text();
                             }else{
+                                tagsInputIdArr.push(parseInt($(this).find('span').text()));
                                 tagsInput += ',' + $(this).find('p').text();
                             }
                             $('#question_tags_alternative_input').val('');
@@ -122,12 +139,19 @@ if($cookie_checked):
         if(e.keyCode == 13){
             setTimeout(() => {
                 tagsInput = $('#question_tags').val();
+                if($('.found_tag').eq(0).find('p').text() != ''){
+                    addTag = $('.found_tag').eq(0).find('p').text();
+                }else{
+                    addTag = false;
+                }
             if($.inArray(addTag,tagInputArr) == -1){
                 if(addTag){
                     $('#question_tags_alternative_input_wrapper_2').before('<div class="add_question_tag" >'+addTag.toUpperCase()+' <span class="tag_remove_span" >&#10005;</span> </div>');
                     if(!tagsInput){
+                        tagsInputIdArr = [parseInt($('.found_tag').eq(0).find('span').text())];
                         tagsInput += addTag;
                     }else{
+                        tagsInputIdArr.push(parseInt($('.found_tag').eq(0).find('span').text()));
                         tagsInput += ',' + addTag;
                     }
                     $('#question_tags_alternative_input').val('');
@@ -144,6 +168,7 @@ if($cookie_checked):
         var removingTagIndex = $('.tag_remove_span').index(this);
         $('.add_question_tag').eq(removingTagIndex).remove();
         tagInputArr.splice(removingTagIndex,1);
+        tagsInputIdArr.splice(removingTagIndex,1);
         $('#question_tags').val(tagInputArr.join(','));
         checkInputsToEmpty();
     });
@@ -152,13 +177,18 @@ if($cookie_checked):
     });
     checkInputsToEmpty();
     function checkInputsToEmpty(){
-        if($('#question_title').val().length > 15){
-            questionTitleVal = $('#question_title').val();
+        if($('#question_title').val().length > 0){
+            questionTitleVal = $('#question_title').val().trim();
             if(questionTitleVal[0] == questionTitleVal[0].toUpperCase()){
                 $('#question_title_error').text('');
                 if(questionTitleVal[questionTitleVal.length - 1] == '?'){
-                    questionTitle = true;
-                    $('#question_title_error').text('');
+                    if(questionTitleVal.length < 14){
+                        questionTitle = false;
+                        $('#question_title_error').text('Минимальная длина текста 14');
+                    }else{
+                        questionTitle = true;
+                        $('#question_title_error').text('');
+                    }
                 }else{
                     questionTitle = false;
                     $('#question_title_error').text('Вопрос должен заканчиватья с вопросительным знаком');
@@ -221,7 +251,6 @@ if($cookie_checked):
             }
         });
     $('#add_question_preview_button').click(function () {
-            console.log(readyText);
             if($('.add_question_send_button').css('cursor') == 'pointer'){
                 tagLength = 0;
                 if(endTextLength <= 30){
@@ -233,21 +262,29 @@ if($cookie_checked):
                             type: 'post',
                             cache: false,
                             dataType: 'html',
-                            data: ({checkTag:tagInputArr}),
+                            data: ({checkTag:tagsInputIdArr,lang:interfaceLang}),
                             success: function (data) {
+                                data = JSON.parse(data);
                                 if(data.length > 0){
-                                    tagInputArr = data.split(',');
-                                    if(tagInputArr.length <= 5){
+                                    if(data.length <= 5){
+                                        tagInputArr = [];
+                                        data.forEach(element => {
+                                            tagInputArr.push(element[0]);
+                                        });
                                         $('#question_tags_error').text('');
                                         $('#question_tags').val(tagInputArr.join(','));
                                         $('#HCeditor_error').text('');
                                         $('#HCeditorcopy').val(readyText);
-                                        $('#add_question_form_wrapper').css('display','none');
-                                        $('#add_question_preview_wrapper').css('display','block');
-                                        $('#add_question_preview_tags_img').attr('src','tagimages/'+tagInputArr[0].toLowerCase()+'.png');
-                                        $('#add_question_preview_tags').html(tagInputArr.join("  &#8226;  "));
-                                        $('#add_question_preview_title').text($('#question_title').val());
-                                        $('#add_question_preview_content').html(readyText.replace(/(?:\r\n|\r|\n)/g, '<br/>'));
+                                        if(true){
+                                            $('#add_question_form_wrapper').css('display','none');
+                                            $('#add_question_preview_wrapper').css('display','block');
+                                            $('#add_question_preview_tags').html(tagInputArr.join("  &#8226;  "));
+                                            $('#add_question_preview_title').text($('#question_title').val());
+                                            $('#add_question_preview_content').html(readyText.replace(/(?:\r\n|\r|\n)/g, '<br/>'));
+                                            $('#add_question_preview_tags_img').attr('src','tagimages/'+data[0][1]+'.png');
+                                        }
+                                        check_tags_return_bool = true;
+                                        return true;
                                     }else{
                                         $('#question_tags_error').text('Невозможно указать более пяти тегов');
                                     }
@@ -260,7 +297,16 @@ if($cookie_checked):
             }
         });
         $('#add_question_send_button,#add_question_send_button2').click(function () {
-            $('#add_question_form').submit();
+            if(endTextLength <= 30 || $('.editor_textarea').val() <= 30){
+                $('#HCeditor_error').text('Минимальная длина текста: 30, максимальная: 10 000');
+            }else{
+                if(tagsInputIdArr.length > 0 && questionTitle){
+                    $('#question_tags').val(tagsInputIdArr);
+                    setTimeout(() => {
+                        $('#add_question_form').submit();
+                    }, 10);
+                }
+            }
         });
     </script>
     <?php else:?>

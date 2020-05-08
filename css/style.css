@@ -82,11 +82,21 @@
 	padding:0;
 	font-family: 'Roboto',Arial,sans-serif;
 }
-html,body{
+html,
+body,
+.container,
+.wall{
 	height: 100%;
+}
+@media only screen and (min-width:1200px){
+	.wall{
+		max-width: 1440px;
+		margin: auto;
+	}
 }
 a{
 	text-decoration: none;
+	color: #185eaf;
 }
 article{
 	display: flex;
@@ -173,9 +183,18 @@ header{
 	color: #2c2e33;
 }
 .ads_page_right_sidebar{
+	padding-top: 10px;
 	background-color: #eef1f4;
 	width: 345px;
-	text-align: center;
+	font-size: 17px;
+	font-weight: 500;
+}
+.ads_page_right_sidebar a{
+	color: #7c7c7c;
+}
+.ads_page_right_sidebar p {
+	padding: 6px 0 6px 15px;
+	border-bottom: #b8b8b8 solid 1px;
 }
 .content{
 	flex: 1;
@@ -1051,6 +1070,7 @@ footer a{
 }
 .opened_question_question_footer_setting_block a{
 	text-align: center;
+	color: #2b2c37;
 	padding: 5% 2%;
 	font-family: 'Roboto','Arial',sans-serif;
 	border-top: 1px solid #ddd;
@@ -1064,7 +1084,7 @@ footer a{
 .opened_question_question_footer_setting_block a:first-child{
 	border: none;
 }
-.opened_question_question_footer_setting_delete{
+.opened_question_question_footer_setting_block .opened_question_question_footer_setting_delete{
 	cursor: pointer;
 	color: red;
 }
@@ -1076,6 +1096,7 @@ footer a{
 	font-family: 'Roboto','Arial',sans-serif;
 	font-weight: 600;
 	letter-spacing: 2px;
+	float: left;
 }
 #opened_question_question_answer_added_user_image img{
 	width: 100%;
@@ -1498,8 +1519,8 @@ footer a{
 }
 #first_time_guide{
 	background-color: #fff;
-	height: 500px;
-	width: 900px;
+	height: 600px;
+	width: 1200px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -1559,8 +1580,7 @@ footer a{
 	align-items: center;
 }
 #first_time_guide_lang_setting_img{
-	height: 200px;
-	width: 480px;
+	width: 70%;
 	float: left;
 }
 #first_time_guide_content{
@@ -1569,6 +1589,7 @@ footer a{
 	flex-direction: column;
 	width: 100%;
 	justify-content: center;
+	background-color: #fafafa;
 }
 #first_time_guide_next_button_wrapper{
 	width: calc(100% - 20px);
@@ -1590,8 +1611,8 @@ footer a{
 	flex-direction: column;
 }
 #first_time_guide_before_end_image{
-	width: 700px;
-	height: 350px;
+	width: 70%;
+	height: 400px;
 }
 #first_time_guide_end_title{
 	color: #2c2e33;
@@ -1708,17 +1729,27 @@ footer a{
 	font-family: 'Roboto','Arial',sans-serif;
 	text-align: center;
 }
-#regist_page_error,#login_page_error,#my_profil_change_password_error,#my_profil_change_password_succes{
+#regist_page_error,
+#login_page_error,
+#my_profil_change_password_error,
+#my_profil_change_password_succes{
 	color: #ff0000;
 	font-weight: lighter;
 	font-family: 'Roboto','Arial',sans-serif;
 	margin-bottom: 20px;
 }
-#my_profil_change_password_error,#my_profil_change_password_succes{
+
+#my_profil_change_password_error,
+#my_profil_change_password_succes{
 	margin-top: 20px;
 }
 #my_profil_change_password_succes{
 	color: #65c178;
+}
+#forgot_page_success{
+	color: #65c178;
+	font-family: 'Roboto','Arial',sans-serif;
+	margin-bottom: 20px;
 }
 #user_logined_header_name{
 	color: #fff;
@@ -1913,6 +1944,8 @@ footer a{
 	display: block;
 	font-family: 'Roboto','Arial',sans-serif;
 	color: #fff;
+	position: absolute;
+	left: 0;
 }
 .mail_not_verifed_input{
 	border: 1px solid #e34961;
@@ -2062,6 +2095,9 @@ footer a{
 	cursor: pointer;
 	color: #2c2e33;
 }
+.found_tag:first-child{
+	color: #077fcc;
+}
 .found_tag:hover{
 	color: #077fcc;
 }
@@ -2100,8 +2136,8 @@ footer a{
 	color: #1a5e8a;
 }
 .question_tags_wrapper img{
-	width: 22px;
-	height: 22px;
+	width: 25px;
+	height: 25px;
 	margin-right: 8px;
 }
 .question_tags_more_tags{
@@ -2333,6 +2369,7 @@ footer a{
 }
 .opened_question_comment_to_answer_footer{
 	display: flex;
+	align-items: center;
 }
 .answer_comment_reply{
 	color: #185eaf;
@@ -2398,4 +2435,41 @@ footer a{
 	height: 10px;
 	width: 10px;
 	border-radius: 5px;
+}
+.select{
+	width: 97%;
+	background-color: #fafafa;
+	border: solid 1px #e8e7e8;
+	border-radius: 5px;
+	display: none;
+}
+.select_options_wrapper{
+	width: calc(100% - 20px);
+	background-color: #fafafa;
+	border-top: none;
+	padding: 5px 10px;
+	display: flex;
+	flex-direction: column;
+	display: none;
+	border-radius: 5px;
+}
+.select_option{
+	color: #000;
+	width: 100%;
+	padding: 5px 0;
+}
+.select_option:hover{
+	color: #185eaf;
+}
+.select_selectedOption{
+	display: flex;
+	width: calc(100% - 20px);
+	align-items: center;
+	padding: 5px 10px;
+	justify-content: space-between;
+	cursor: pointer;
+}
+.opened_user_profil_selections{
+	float: left;
+	margin-top: 10px;
 }

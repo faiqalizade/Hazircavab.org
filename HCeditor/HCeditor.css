@@ -13,7 +13,7 @@
 #HCeditor_error{
     color: #e34961;
     font-size: 11px;
-    font-family: 'Montserrat';
+    font-family: 'Roboto';
     border: none;
 }
 .editor_buttons_block{
@@ -27,7 +27,6 @@
     justify-content: flex-start;
     border-radius: 4px 0 0 0 ;
     background-color: #fbfafb;
-    overflow-x: scroll;
 }
 .image_local{
     cursor: pointer;

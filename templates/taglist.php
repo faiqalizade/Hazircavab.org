@@ -1,5 +1,5 @@
 <div class="main_page_header">
-	<p id="main_page_title">Теги</p>
+	<p id="main_page_title"><?=$langVals[$defLang]['tagsText']?></p>
 </div>
 <div class='tags_list_wrapper'>
 <?php
@@ -20,18 +20,18 @@ foreach ($tag_list_get_tags as $tag):
 	if($cycle_number >= $list_limit_last && $cycle_number < $list_limit):
 ?>
 <div class='tag_list_block'>
-<a href="index.php?page=tags&tag=<?=$tag->name_ru?>&questions" id="tag_list_tag_image"><img src="tagimages/<?=$tag->name_ru?>.png"></a>
-<a href="index.php?page=tags&tag=<?=$tag->name_ru?>&questions"><p id="tag_list_tag_name"><?=$tag->name_ru?></p></a>
+<a href="index.php?page=tags&tag=<?=$tag->id?>&questions" id="tag_list_tag_image"><img src="tagimages/<?=$tag->id?>.png"></a>
+<a href="index.php?page=tags&tag=<?=$tag->id?>&questions"><p id="tag_list_tag_name"><?= ($defLang == 'ru') ? $tag->name_ru : $tag->name_az ?></p></a>
 <p id='tag_list_tag_asked'>
-<a href="index.php?page=tags&tag=<?=$tag->name_ru?>&questions"><?=$tag->questions?> <?= $langVals[$defLang]['questions'] ?></a>
+<a href="index.php?page=tags&tag=<?=$tag->id?>&questions"> <?= $langVals[$defLang]['questions'] ?> - <?=$tag->questions?></a>
 </p>
 <div class='tag_list_tag_subscribe_wrapper'>
 <?php
-$subscribed_tag_logined_user = R::find('users','WHERE id = ? AND subscribe_tag LIKE ?',[$user_infos->id,'%,'.$tag->name_ru.',%']);
+$subscribed_tag_logined_user = R::find('tagsubscribes','WHERE user_id = ? AND tag_id = ?',[$user_infos->id,$tag->id]);
 if(empty($subscribed_tag_logined_user)):?>
-	<a href='index.php?page=subscribe&sub_tag=<?=$tag->id?>' class='tag_list_tag_subscribe' >Подписаться <span><?=$tag->subscribes?></span></a>
+	<a href='index.php?page=subscribe&sub_tag=<?=$tag->id?>' class='tag_list_tag_subscribe' ><?=$langVals[$defLang]['subscribeText']?> <span><?=$tag->subscribes?></span></a>
 <?php else:?>
-	<a href='index.php?page=unsubscribe&sub_tag=<?=$tag->id?>' class='tag_list_tag_subscribed' >Вы подписаны<span><?=$tag->subscribes?></span></a>
+	<a href='index.php?page=unsubscribe&sub_tag=<?=$tag->id?>' class='tag_list_tag_subscribed' ><?=$langVals[$defLang]['subscribedText']?><span><?=$tag->subscribes?></span></a>
 <?php endif;?>
 </div>
 </div>

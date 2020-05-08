@@ -60,3 +60,10 @@ header{
 .header_login img{
 	display: none;
 }
+.container{
+	display: block;
+}
+.wall{
+	max-width: none;
+	height: 100%;
+}
